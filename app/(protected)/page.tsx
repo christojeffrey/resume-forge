@@ -47,7 +47,7 @@ const hardCodedData = [
   },
 ];
 
-const generateRandomID = (data: any[]) => {
+const generateID = (data: any[]) => {
   return data.map((item, index) => {
     return {
       ...item,
@@ -55,7 +55,7 @@ const generateRandomID = (data: any[]) => {
     };
   });
 };
-export const resumeDataAtom = atom(generateRandomID(hardCodedData));
+export const resumeDataAtom = atom(generateID(hardCodedData));
 export const recomputePreviewAtom = atom(true);
 
 const Title = ({ data }: any) => {
@@ -139,8 +139,8 @@ function TurnToDraggable({ id, index, children }: any) {
   );
 }
 
-function QuoteApp() {
-  const [data, setData] = useAtom(resumeDataAtom);
+function ResumeEditor() {
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
 
   function onDragEnd(result: any) {
     if (!result.destination) {
@@ -151,8 +151,8 @@ function QuoteApp() {
       return;
     }
 
-    const newData = reorder(data, result.source.index, result.destination.index);
-    setData(newData);
+    const newResumeData = reorder(resumeData, result.source.index, result.destination.index);
+    setResumeData(newResumeData);
   }
 
   return (
@@ -160,7 +160,7 @@ function QuoteApp() {
       <StrictModeDroppable droppableId="list">
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            {data.map((item, index) => {
+            {resumeData.map((item, index) => {
               const { type, data, id } = item;
               const Component = typeToComponents.find((component) => component.type === type)?.component;
               if (!Component) {
@@ -184,7 +184,7 @@ export default function Home() {
   return (
     <div className="relative h-full">
       <div className="w-1/2 mx-auto">
-        <QuoteApp />
+        <ResumeEditor />
       </div>
       <Button
         onClick={() => {
