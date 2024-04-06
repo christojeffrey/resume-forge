@@ -1,19 +1,21 @@
 "use client";
 
 import { pdf, Page, Text, View, Document, StyleSheet, PDFViewer, Link, BlobProvider } from "@react-pdf/renderer";
+import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { Document as PDFViewerDocument, Page as PDFViewerPage } from "react-pdf";
 import { pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
+import { recomputePreviewAtom } from "../page";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.js", import.meta.url).toString();
 
-export default function TestPage() {
+export default function Preview() {
   const [pdfString, setPdfString] = useState("");
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const [doCalcuateBlob, setDoCalculateBlob] = useState(true);
+  const [doRecomputePreview, setDoRecomputePreview] = useAtom(recomputePreviewAtom);
 
   const onDocumentLoadSuccess = ({ numPages }: any) => {
     setNumPages(numPages);
@@ -42,14 +44,17 @@ export default function TestPage() {
         setPdfString(base64String);
       };
     };
-    if (doCalcuateBlob) updateBase64String();
-  }, [doCalcuateBlob]);
+    if (doRecomputePreview) {
+      updateBase64String();
+      setDoRecomputePreview(false);
+    }
+  }, [doRecomputePreview]);
 
   return (
-    <div className="w-screen flex justify-center items-center">
+    <div className="flex justify-center items-center">
       <div>
         <PDFViewerDocument file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
-          <PDFViewerPage pageNumber={pageNumber} className="border-2 border-black" />
+          <PDFViewerPage pageNumber={pageNumber} className="border-2 border-black testing" width={300} />
         </PDFViewerDocument>
         <div className="border-2 border-black">
           <p>
