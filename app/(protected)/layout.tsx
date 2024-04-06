@@ -1,6 +1,4 @@
-import { redirect } from "next/navigation";
-import { getKindeServerSession, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/server";
-import { Button } from "@/components/ui/button";
+import NavBar from "./_components/navbar";
 
 export default async function Layout({
   children,
@@ -8,11 +6,9 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Button>
-        <LogoutLink>Sign out</LogoutLink>
-      </Button>
+    <div className="flex w-screen h-screen flex-col">
+      <NavBar />
       {children}
-    </>
+    </div>
   );
 }
