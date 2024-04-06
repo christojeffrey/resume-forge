@@ -7,13 +7,14 @@ import { Document as PDFViewerDocument, Page as PDFViewerPage } from "react-pdf"
 import { pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
-import { recomputePreviewAtom } from "../page";
+import { recomputePreviewAtom, resumeDataAtom } from "../page";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.js", import.meta.url).toString();
 
 export default function Preview() {
   const [pdfString, setPdfString] = useState("");
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
 
   const [doRecomputePreview, setDoRecomputePreview] = useAtom(recomputePreviewAtom);
 
@@ -36,7 +37,7 @@ export default function Preview() {
 
   useEffect(() => {
     const updateBase64String = async () => {
-      const blob = await pdf(Resume()).toBlob();
+      const blob = await pdf(Resume(resumeData)).toBlob();
       let reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
@@ -97,20 +98,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const ResumeTitle = () => {
+const ResumeTitle = ({ data }: { data: string }) => {
   return (
     <>
-      <Text style={{ fontSize: 14, textAlign: "center" }}>testing</Text>
+      <Text style={{ fontSize: 14, textAlign: "center" }}>{data}</Text>
     </>
   );
 };
 
 type ResumeLink = {
   title: string;
-  url: string;
+  href: string;
 };
 
-const ResumeLinks = ({ links }: { links: ResumeLink[] }) => {
+const ResumeLinks = ({ data }: { data: ResumeLink[] }) => {
   return (
     <View
       style={{
@@ -119,56 +120,63 @@ const ResumeLinks = ({ links }: { links: ResumeLink[] }) => {
         alignItems: "center",
       }}
     >
-      {links.map((link, index) => (
+      {data.map((link, index) => (
         <Text key={index} style={{ margin: 1 }}>
-          <Link src={link.url}>{link.title}</Link>
+          <Link src={link.href}>{link.title}</Link>
         </Text>
       ))}
     </View>
   );
 };
-const ResumeSectionHeading = ({ children }: { children: string }) => {
-  return <Text style={{ fontSize: 18, borderBottom: "1px solid black" }}>{children}</Text>;
+const ResumeHeading = ({ data }: { data: string }) => {
+  return <Text style={{ fontSize: 18, borderBottom: "1px solid black" }}>{data}</Text>;
 };
-
-const ResumeItemHeading = ({ title, date, subtitle, keyword }: { title: string; date: string; subtitle: string; keyword: string }) => {
+type ResumeItemData = {
+  title: string;
+  date: string;
+  subtitle: string;
+  moreInformation: string;
+};
+const ResumeItem = ({ data }: { data: ResumeItemData }) => {
   return (
     <>
       <View style={{ textAlign: "center", flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={{ fontSize: 12, fontFamily: "Times-Bold" }}>{title}</Text>
-        <Text>{date}</Text>
+        <Text style={{ fontSize: 12, fontFamily: "Times-Bold" }}>{data.title}</Text>
+        <Text>{data.date}</Text>
       </View>
       <View style={{ textAlign: "center", flexDirection: "row", justifyContent: "space-between" }}>
-        <Text>{subtitle}</Text>
-        <Text>{keyword}</Text>
+        <Text>{data.subtitle}</Text>
+        <Text>{data.moreInformation}</Text>
       </View>
     </>
   );
 };
 
-const Description = ({ children }: { children: string }) => {
-  return <Text style={{ fontSize: 12 }}>{children}</Text>;
-};
 const Divider = () => {
   return <View style={{ borderBottom: "1px solid black" }} />;
 };
-const Resume = () => (
-  <Document>
-    <Page style={styles.body}>
-      <ResumeTitle />
-      <ResumeLinks
-        links={[
-          { title: "test", url: "https://www.google.com" },
-          { title: "test", url: "https://www.google.com" },
-          { title: "test", url: "https://www.google.com" },
-          { title: "test", url: "https://www.google.com" },
-        ]}
-      />
-      <ResumeSectionHeading>Education</ResumeSectionHeading>
-      <ResumeItemHeading title="title" date="22 Aug - Sep 23" subtitle="subtitle" keyword="react, next" />
-      {/* flex */}
-      <Description>asdf</Description>
-      <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} fixed />
-    </Page>
-  </Document>
-);
+
+const typeToComponents = [
+  { type: "title", component: ResumeTitle },
+  { type: "links", component: ResumeLinks },
+  { type: "heading", component: ResumeHeading },
+  { type: "item", component: ResumeItem },
+  { type: "divider", component: Divider },
+];
+
+const Resume = (resumeData: any) => {
+  return (
+    <Document>
+      <Page style={styles.body}>
+        {resumeData.map((item, index) => {
+          const { type, data, id } = item;
+          const Component = typeToComponents.find((component) => component.type === type)?.component;
+          if (!Component) {
+            return null;
+          }
+          return <Component key={id} data={data} />;
+        })}
+      </Page>
+    </Document>
+  );
+};

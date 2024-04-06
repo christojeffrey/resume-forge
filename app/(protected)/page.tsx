@@ -55,7 +55,7 @@ const generateRandomID = (data: any[]) => {
     };
   });
 };
-const dataAtom = atom(generateRandomID(hardCodedData));
+export const resumeDataAtom = atom(generateRandomID(hardCodedData));
 export const recomputePreviewAtom = atom(true);
 
 const Title = ({ data }: any) => {
@@ -140,7 +140,7 @@ function TurnToDraggable({ id, index, children }: any) {
 }
 
 function QuoteApp() {
-  const [data, setData] = useAtom(dataAtom);
+  const [data, setData] = useAtom(resumeDataAtom);
 
   function onDragEnd(result: any) {
     if (!result.destination) {
