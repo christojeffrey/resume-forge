@@ -3,7 +3,7 @@ import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable, DroppableProps } from "react-beautiful-dnd";
-import Preview from "./_components/preview";
+import Preview from "./_components/resumePreview";
 import { Button } from "@/components/ui/button";
 // main page
 const hardCodedData = [
