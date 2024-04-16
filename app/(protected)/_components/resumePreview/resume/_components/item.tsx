@@ -10,11 +10,25 @@ type ResumeItemData = {
 export default function ResumeItem({ data }: { data: ResumeItemData }) {
   return (
     <>
-      <View style={{ textAlign: "center", flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={{ fontSize: 12, fontFamily: "Times-Bold" }}>{data.title}</Text>
+      <View
+        style={{
+          textAlign: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={{ fontSize: 12, fontFamily: "Times-Bold" }}>
+          {data.title}
+        </Text>
         <Text>{data.date}</Text>
       </View>
-      <View style={{ textAlign: "center", flexDirection: "row", justifyContent: "space-between" }}>
+      <View
+        style={{
+          textAlign: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
         <Text>{data.subtitle}</Text>
         <Text>{data.moreInformation}</Text>
       </View>
