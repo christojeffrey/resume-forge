@@ -4,6 +4,10 @@ import {
   LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "@/components/ui/button";
+
+function unusedFunction(){
+  
+}
 export default function Page() {
   return (
     <main>
