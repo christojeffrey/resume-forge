@@ -26,11 +26,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.17
-          cache: yarn
-          cache-dependency-path: ././yarn.lock
+          # cache: yarn
+          # cache-dependency-path: ./yarn.lock
 
       - name: Install packages
-        run: yarn --ignore-scripts install
+        run: npm --ignore-scripts install
 
       # review dogs
 
@@ -39,7 +39,6 @@ jobs:
         with:
           reporter: github-pr-review
           workdir: .
-          eslint_flags: "src/"
           # fail_on_error: true
           github_token: ${{secrets.GITHUB_TOKEN}}
 
@@ -58,7 +57,6 @@ jobs:
         with:
           reporter: github-pr-review
           workdir: .
-          stylelint_input: "src/**/*.css"
           # fail_on_error: true
           github_token: ${{secrets.GITHUB_TOKEN}}
 
