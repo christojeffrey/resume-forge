@@ -8,7 +8,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: EPMatt/reviewdog-action-prettier@v1
@@ -24,5 +24,5 @@ jobs:
           # More about reviewdog reporter level at
           # https://github.com/reviewdog/reviewdog#reporters
           level: warning
-          prettier_flags: "--check ./**/*.{js,jsx,ts,tsx}"
+          prettier_flags: "./**/*.{js,jsx,ts,tsx}"
           fail_on_error: true
