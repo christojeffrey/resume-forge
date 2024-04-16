@@ -12,9 +12,14 @@ export default function Page() {
 
 
 
-        
+
         <LoginLink>Sign in</LoginLink>
       </Button>
+
+
+
+
+      
       <Button>
         <RegisterLink>Sign up</RegisterLink>
       </Button>

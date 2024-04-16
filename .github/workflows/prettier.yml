@@ -23,3 +23,4 @@ jobs:
           # https://github.com/reviewdog/reviewdog#reporters
           level: warning
           prettier_flags: "--check ./**/*.{js,jsx,ts,tsx}"
+          fail_on_error: true
