@@ -2,7 +2,12 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 import { useState } from "react";
-import { DragDropContext, Droppable, Draggable, DroppableProps } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DroppableProps,
+} from "react-beautiful-dnd";
 import Preview from "./_components/resumePreview";
 import { Button } from "@/components/ui/button";
 // main page
@@ -129,8 +134,12 @@ const reorder = (list: any, startIndex: number, endIndex: number) => {
 function TurnToDraggable({ id, index, children }: any) {
   return (
     <Draggable draggableId={id} index={index}>
-      {(provided) => (
-        <div className="w-full border-2 border-black mb-4 p-4" ref={provided.innerRef} {...provided.draggableProps}>
+      {provided => (
+        <div
+          className="w-full border-2 border-black mb-4 p-4"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+        >
           <div {...provided.dragHandleProps}>handle</div>
           {children}
         </div>
@@ -151,18 +160,24 @@ function ResumeEditor() {
       return;
     }
 
-    const newResumeData = reorder(resumeData, result.source.index, result.destination.index);
+    const newResumeData = reorder(
+      resumeData,
+      result.source.index,
+      result.destination.index
+    );
     setResumeData(newResumeData);
   }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <StrictModeDroppable droppableId="list">
-        {(provided) => (
+        {provided => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {resumeData.map((item, index) => {
               const { type, data, id } = item;
-              const Component = typeToComponents.find((component) => component.type === type)?.component;
+              const Component = typeToComponents.find(
+                component => component.type === type
+              )?.component;
               if (!Component) {
                 return null;
               }
