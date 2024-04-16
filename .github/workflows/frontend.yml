@@ -2,13 +2,12 @@ name: Frontend
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [opened, synchronize, reopened]
     paths:
       - ./**
 
 jobs:
   run-lint:
-    # if: github.event.pull_request.draft == false
     defaults:
       run:
         shell: bash
@@ -38,17 +37,11 @@ jobs:
         uses: reviewdog/action-eslint@v1
         with:
           reporter: github-pr-review
-          workdir: .
-          # fail_on_error: true
-          github_token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Run ReviewDog Prettier
         uses: EPMatt/reviewdog-action-prettier@v1
         with:
-          workdir: .
           reporter: github-pr-review
-          # fail_on_error: true
-          github_token: ${{secrets.GITHUB_TOKEN}}
           prettier_flags: '--check "src/**/*.{js,jsx,ts,tsx}"'
         # run: yarn prettier --check "src/**/*.{js,jsx,ts,tsx}"
 
@@ -56,14 +49,8 @@ jobs:
         uses: reviewdog/action-stylelint@v1
         with:
           reporter: github-pr-review
-          workdir: .
-          # fail_on_error: true
-          github_token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Run ReviewDog tsc
         uses: EPMatt/reviewdog-action-tsc@v1
         with:
           reporter: github-pr-review
-          workdir: .
-          # fail_on_error: true
-          github_token: ${{secrets.GITHUB_TOKEN}}
