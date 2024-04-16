@@ -3,13 +3,19 @@
 import { pdf } from "@react-pdf/renderer";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { Document as PDFViewerDocument, Page as PDFViewerPage } from "react-pdf";
+import {
+  Document as PDFViewerDocument,
+  Page as PDFViewerPage,
+} from "react-pdf";
 import { pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { recomputePreviewAtom, resumeDataAtom } from "../../page";
 import { Resume } from "./resume";
-pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.js", import.meta.url).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
+).toString();
 
 export default function ResumePreview() {
   const [pdfString, setPdfString] = useState("");
@@ -17,7 +23,8 @@ export default function ResumePreview() {
   const [pageNumber, setPageNumber] = useState(1);
   const [resumeData] = useAtom(resumeDataAtom);
 
-  const [doRecomputePreview, setDoRecomputePreview] = useAtom(recomputePreviewAtom);
+  const [doRecomputePreview, setDoRecomputePreview] =
+    useAtom(recomputePreviewAtom);
 
   const onDocumentLoadSuccess = ({ numPages }: any) => {
     setNumPages(numPages);
@@ -25,7 +32,7 @@ export default function ResumePreview() {
   };
 
   function changePage(offset: number) {
-    setPageNumber((prevPageNumber) => prevPageNumber + offset);
+    setPageNumber(prevPageNumber => prevPageNumber + offset);
   }
 
   function previousPage() {
@@ -56,7 +63,11 @@ export default function ResumePreview() {
     <div>
       {/* pdf preview */}
       <PDFViewerDocument file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
-        <PDFViewerPage pageNumber={pageNumber} className="border-2 border-black testing" width={300} />
+        <PDFViewerPage
+          pageNumber={pageNumber}
+          className="border-2 border-black testing"
+          width={300}
+        />
       </PDFViewerDocument>
       {/* page navigation */}
       <div className="border-2 border-black">
@@ -66,7 +77,11 @@ export default function ResumePreview() {
         <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
           Previous
         </button>
-        <button type="button" disabled={pageNumber >= numPages} onClick={nextPage}>
+        <button
+          type="button"
+          disabled={pageNumber >= numPages}
+          onClick={nextPage}
+        >
           Next
         </button>
       </div>
