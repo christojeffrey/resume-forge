@@ -4,6 +4,9 @@ jobs:
   prettier:
     name: runner / prettier
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v2
       - uses: EPMatt/reviewdog-action-prettier@v1
