@@ -12,7 +12,10 @@ function getMongoDBClient() {
   });
   return client;
 }
-export async function GET(request: Request, { params }: { params: { userID: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: { userID: string } }
+) {
   const userID = params.userID;
   let data;
 
