@@ -6,6 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 import { headers } from "next/headers";
 import FourOhFour from "@/components/features/fourOhFour";
+import Landing from "@/components/features/landing";
 
 export const metadata: Metadata = {
   title: "Resume Forge",
@@ -14,35 +15,31 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  landing,
 }: Readonly<{
   children: React.ReactNode;
-  landing: React.ReactNode;
 }>) {
   const { isAuthenticated } = getKindeServerSession();
   const authenticated = await isAuthenticated();
 
   const pathname = headers().get("pathname") || "/";
 
-  const allowed = ["/"];
+  function renderSwitchFeature() {
+    switch (pathname) {
+      case "/":
+        return <Landing />;
+      default:
+        return <FourOhFour />;
+    }
+  }
 
+  // if not authenticated, only allow landing page or 404
   if (!authenticated) {
     // if not allowed, display 404
-    if (!allowed.includes(pathname)) {
-      return (
-        <html lang="en">
-          <body className={inter.className}>
-            <FourOhFour />
-          </body>
-        </html>
-      );
-    } else {
-      return (
-        <html lang="en">
-          <body className={inter.className}>{landing}</body>
-        </html>
-      );
-    }
+    return (
+      <html lang="en">
+        <body className={inter.className}>{renderSwitchFeature()}</body>
+      </html>
+    );
   }
 
   return (

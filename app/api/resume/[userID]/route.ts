@@ -13,14 +13,8 @@ function getMongoDBClient() {
   return client;
 }
 
-
-
-
 export async function GET(
   request: Request,
-
-
-  
   { params }: { params: { userID: string } }
 ) {
   const userID = params.userID;
@@ -40,20 +34,14 @@ export async function GET(
   }
   return Response.json(data);
 }
-
-// async function run() {
-//   try {
-//     // Connect the client to the server	(optional starting in v4.7)
-//     await client.connect();
-//     // Send a ping to confirm a successful connection
-//     await client.db("admin").command({ ping: 1 });
-//     // write sample data to the database
-//     const resume = client.db("resume-database").collection("resumes");
-//     // const result = await resume.insertOne({ name: "Red", age: 21 });
-//     // console.log(`New listing created with the following id: ${result.insertedId}`);
-//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//     await client.close();
-//   }
-// }
+// post
+export async function POST(
+  request: Request,
+  { params }: { params: { userID: string } }
+) {
+  // get body
+  const body = await request.json();
+  const { userID } = params;
+  // return body
+  return Response.json(body);
+}
