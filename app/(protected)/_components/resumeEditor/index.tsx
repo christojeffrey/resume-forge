@@ -1,15 +1,8 @@
 "use client";
-import { useAtom } from "jotai";
+import { Separator } from "@/components/ui/separator";
 import { useEffect } from "react";
 import { useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DroppableProps,
-} from "react-beautiful-dnd";
-import { typeToComponents } from "./_components";
-import { resumeDataAtom } from "@/store";
+import { Droppable, Draggable, DroppableProps } from "react-beautiful-dnd";
 // main page
 
 export const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
@@ -27,7 +20,7 @@ export const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   return <Droppable {...props}>{children}</Droppable>;
 };
 
-const reorder = (list: any, startIndex: number, endIndex: number) => {
+export const reorder = (list: any, startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -35,66 +28,51 @@ const reorder = (list: any, startIndex: number, endIndex: number) => {
   return result;
 };
 
-function TurnToDraggable({ id, index, children }: any) {
+export function TurnToDraggable({ id, index, children, array }: any) {
   return (
     <Draggable draggableId={id} index={index}>
-      {provided => (
-        <div
-          className="w-full border-2 border-black mb-4 p-4"
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-        >
-          <div {...provided.dragHandleProps}>handle</div>
-          {children}
-        </div>
-      )}
+      {provided => {
+        console.log("provided", provided);
+        return (
+          <>
+            <div
+              className="mb-4 p-4"
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+            >
+              <div className="flex">
+                <div {...provided.dragHandleProps}><DraggableSVG/></div>
+                {children}
+              </div>
+              {/* if not the last, add separator */}
+              <Separator />
+            </div>
+          </>
+        );
+      }}
     </Draggable>
   );
 }
 
-export function ResumeEditor() {
-  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
-
-  function onDragEnd(result: any) {
-    if (!result.destination) {
-      return;
-    }
-
-    if (result.destination.index === result.source.index) {
-      return;
-    }
-
-    const newResumeData = reorder(
-      resumeData,
-      result.source.index,
-      result.destination.index
-    );
-    setResumeData(newResumeData);
-  }
-
+function DraggableSVG() {
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <StrictModeDroppable droppableId="list">
-        {provided => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            {resumeData.map((item, index) => {
-              const { type, data, id } = item;
-              const Component = typeToComponents.find(
-                component => component.type === type
-              )?.component;
-              if (!Component) {
-                return null;
-              }
-              return (
-                <TurnToDraggable id={id} index={index} key={id}>
-                  <Component data={data} />
-                </TurnToDraggable>
-              );
-            })}
-            {provided.placeholder}
-          </div>
-        )}
-      </StrictModeDroppable>
-    </DragDropContext>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      enable-background="new 0 0 24 24"
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
+    >
+      <g>
+        <rect fill="none" height="24" width="24" />
+      </g>
+      <g>
+        <g>
+          <g>
+            <path d="M20,9H4v2h16V9z M4,15h16v-2H4V15z" />
+          </g>
+        </g>
+      </g>
+    </svg>
   );
 }

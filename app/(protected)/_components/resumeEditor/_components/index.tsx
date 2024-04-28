@@ -1,6 +1,6 @@
-const Title = ({ data }: any) => {
-  return <h1>{data}</h1>;
-};
+import Title from "./Title";
+
+
 const Links = ({ data }: any) => {
   return (
     <div>
