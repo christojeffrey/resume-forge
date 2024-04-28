@@ -21,8 +21,9 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@react-pdf/renderer": "^3.4.2",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "framer-motion": "^11.1.7",
     "jotai": "^2.7.2",
     "lucide-react": "^0.365.0",
     "mongodb": "^6.5.0",
@@ -32,7 +33,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",
     "react-pdf": "^7.7.1",
-    "tailwind-merge": "^2.2.2",
+    "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
