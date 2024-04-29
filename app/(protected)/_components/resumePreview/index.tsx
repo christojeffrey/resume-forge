@@ -17,7 +17,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-export default function ResumePreview() {
+export default function ResumePreview({ width }: { width?: number }) {
   const [pdfString, setPdfString] = useState("");
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
@@ -43,6 +43,11 @@ export default function ResumePreview() {
     changePage(1);
   }
 
+  // trigger on page load
+  useEffect(() => {
+    setDoRecomputePreview(true);
+  }, []);
+
   useEffect(() => {
     const updateBase64String = async () => {
       const blob = await pdf(Resume(resumeData)).toBlob();
@@ -60,30 +65,39 @@ export default function ResumePreview() {
   }, [doRecomputePreview]);
 
   return (
-    <div>
+    <div className="w-fit">
       {/* pdf preview */}
       <PDFViewerDocument file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
         <PDFViewerPage
           pageNumber={pageNumber}
-          className="border-2 border-black testing"
-          width={300}
+          className="border-slate-400 border-[1px]"
+          width={width}
         />
       </PDFViewerDocument>
       {/* page navigation */}
-      <div className="border-2 border-black">
+      <div className="text-center">
         <p>
           Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
         </p>
-        <button type="button" disabled={pageNumber <= 1} onClick={previousPage}>
-          Previous
-        </button>
-        <button
-          type="button"
-          disabled={pageNumber >= numPages}
-          onClick={nextPage}
-        >
-          Next
-        </button>
+
+        <div>
+          <button
+            type="button"
+            disabled={pageNumber <= 1}
+            onClick={previousPage}
+            className="font-bold mx-2"
+          >
+            {`<`}
+          </button>
+          <button
+            type="button"
+            disabled={pageNumber >= numPages}
+            onClick={nextPage}
+            className="font-bold mx-2"
+          >
+            {`>`}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/context-menu";
 import Adder from "./_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Link from "next/link";
 
 // main page
 
@@ -45,7 +46,8 @@ export default function Home() {
         </ContextMenu>
         {/* right side */}
         <div className="absolute right-0 top-0">
-          <Preview />
+          <Preview width={300} />
+          <Link href="/preview">preview</Link>
         </div>
         {/* left side */}
         <div className="absolute left-0 top-0">
