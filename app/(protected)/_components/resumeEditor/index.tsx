@@ -32,7 +32,6 @@ export function TurnToDraggable({ id, index, children, array }: any) {
   return (
     <Draggable draggableId={id} index={index}>
       {provided => {
-        console.log("provided", provided);
         return (
           <>
             <div

@@ -83,7 +83,27 @@ export default function Title({ data, id }: { data: any; id: string }) {
                   className="text-2xl"
                 />
                 <div className="flex items-center space-x-2">
-                  <Checkbox id="draft" />
+                  <Checkbox
+                    id="draft"
+                    checked={titleItem.draft}
+                    onCheckedChange={_ => {
+                      setResumeData(prev => {
+                        const result = prev.map(item => {
+                          if (item.id === id) {
+                            return {
+                              ...item,
+                              draft: !item.draft,
+                            };
+                          }
+                          return item;
+                        });
+                        setTitleItem(
+                          result.find((item: any) => item.id === id)
+                        );
+                        return result;
+                      });
+                    }}
+                  />
                   <Label
                     htmlFor="draft"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

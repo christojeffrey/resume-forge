@@ -2,6 +2,7 @@ export const hardCodedData = [
   {
     type: "title",
     data: "Jeffrey",
+    draft: false,
   },
   {
     type: "links",
@@ -19,10 +20,12 @@ export const hardCodedData = [
         href: "https://christojeffrey.com",
       },
     ],
+    draft: false,
   },
   {
     type: "heading",
     data: "Education",
+    draft: false,
   },
   {
     type: "item",
@@ -31,10 +34,19 @@ export const hardCodedData = [
       subtitle: "University of the Philippines Los Baños",
       date: "2018-2022",
       moreInformation: "GPA: 3.00/4.00",
-      details: ["lorem ipsum", "lorem ipsum", "lorem ipsum"],
+      details: {
+        htmlValue: "<p>asfd</p>",
+        objectValue: [
+          {
+            insert: "asfd\n",
+          },
+        ],
+      },
     },
+    draft: false,
   },
   {
     type: "divider",
+    draft: false,
   },
 ];

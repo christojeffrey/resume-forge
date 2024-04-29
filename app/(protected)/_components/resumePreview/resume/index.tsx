@@ -27,7 +27,10 @@ export const Resume = (resumeData: any) => {
         }}
       >
         {resumeData.map((item: any, index: number) => {
-          const { type, data, id } = item;
+          const { type, data, id, draft } = item;
+          if (draft) {
+            return null;
+          }
           const Component = typeToComponents.find(
             component => component.type === type
           )?.component;
