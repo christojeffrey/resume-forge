@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import Preview from "./_components/resumePreview";
 import { Button } from "@/components/ui/button";
 import { ResumeEditor } from "./_components/resumeEditor/ResumeEditor";
-import { recomputePreviewAtom } from "@/store";
+import { recomputePreviewAtom, resumeDataAtom, userAtom } from "@/store";
 import { CommandMenu } from "./_components/commandMenu";
 import {
   ContextMenu,
@@ -19,6 +19,8 @@ import Link from "next/link";
 
 export default function Home() {
   const [recomputePreview, setRecomputePreview] = useAtom(recomputePreviewAtom);
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [userData, setUserData] = useAtom(userAtom);
   return (
     <div className="h-full w-3/4 mx-auto py-2">
       <div className="h-full relative">
@@ -35,6 +37,17 @@ export default function Home() {
                   }}
                 >
                   recompute
+                </Button>
+                <Button
+                  onClick={async () => {
+                    const res = await fetch(`/api/resume/${userData.email}`, {
+                      method: "POST",
+                      body: JSON.stringify(resumeData),
+                    });
+                    console.log(res);
+                  }}
+                >
+                  save
                 </Button>
               </div>
             </div>

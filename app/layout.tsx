@@ -7,6 +7,8 @@ const inter = Inter({ subsets: ["latin"] });
 import { headers } from "next/headers";
 import FourOhFour from "@/components/features/fourOhFour";
 import Landing from "@/components/features/landing";
+import GlobalStateSetter from "./_components/GlobalStateSetter";
+const BASE_URL = process.env.BASE_URL || "";
 
 export const metadata: Metadata = {
   title: "Resume Forge",
@@ -18,8 +20,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isAuthenticated } = getKindeServerSession();
+  const { isAuthenticated, getUser } = getKindeServerSession();
   const authenticated = await isAuthenticated();
+  const user = await getUser();
+  console.log("user");
+  console.log(user);
 
   const pathname = headers().get("pathname") || "/";
 
@@ -42,9 +47,21 @@ export default async function RootLayout({
     );
   }
 
+  const resumeData = (
+    await fetch(`${BASE_URL}/api/resume/${user?.email}`).then(res => res.json())
+  ).body;
+
+  console.log(resumeData)
+  console.log("resumeData")
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <GlobalStateSetter
+        isAuthenticated={authenticated}
+        user={user}
+        resumeData={resumeData}
+      >
+        <body className={inter.className}>{children}</body>
+      </GlobalStateSetter>
     </html>
   );
 }

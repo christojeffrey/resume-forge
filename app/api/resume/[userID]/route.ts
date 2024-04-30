@@ -17,14 +17,19 @@ export async function GET(
   request: Request,
   { params }: { params: { userID: string } }
 ) {
-  const userID = params.userID;
+  const { userID } = params;
   let data;
 
   const client = getMongoDBClient();
   try {
+    console.log("connecting");
     client.connect();
     const resume = client.db("resume-database").collection("resumes");
+
+    console.log("get resume");
     data = await resume.findOne({ name: userID });
+    console.log("data");
+    console.log(data);
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
@@ -42,6 +47,24 @@ export async function POST(
   // get body
   const body = await request.json();
   const { userID } = params;
-  // return body
+  const client = getMongoDBClient();
+  try {
+    client.connect();
+    const resume = client.db("resume-database").collection("resumes");
+    await resume.updateOne(
+      { name: userID },
+      {
+        $set: {
+          body: body,
+          name: userID,
+        },
+      },
+      { upsert: true }
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+
   return Response.json(body);
 }
