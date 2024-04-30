@@ -4,6 +4,7 @@ import Preview from "./_components/resumePreview";
 import { Button } from "@/components/ui/button";
 import { ResumeEditor } from "./_components/resumeEditor/ResumeEditor";
 import {
+  isAuthenticatedAtom,
   isSavingAtom,
   recomputePreviewAtom,
   resumeDataAtom,
@@ -20,6 +21,7 @@ import { Loader2 } from "lucide-react";
 export default function Home() {
   const [recomputePreview, setRecomputePreview] = useAtom(recomputePreviewAtom);
   const [resumeData, _setResumeData] = useAtom(resumeDataAtom);
+  const [isAuthenticated, _setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [userData, _setUserData] = useAtom(userAtom);
   const [isSaving, setIsSaving] = useAtom(isSavingAtom);
 
@@ -45,8 +47,9 @@ export default function Home() {
     };
   }, [resumeData]);
 
-  // save every 8 seconds
+  // save every 15 seconds
   useEffect(() => {
+    if (!isAuthenticated) return;
     // use timeout
     if (timeoutSaveItem) {
       clearTimeout(timeoutSaveItem);

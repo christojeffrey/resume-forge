@@ -1,24 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { Label } from "@/components/ui/label";
 import { resumeDataAtom } from "@/store";
 import { useAtom } from "jotai";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+
 import { Input } from "@/components/ui/input";
 import { CommonEditor } from "./CommonEditor";
 
@@ -29,7 +15,7 @@ function View({ item }: any) {
         <Label className="text-xs font-semibold text-slate-400">links</Label>
 
         <ul>
-          {item.data.map((link: any, index: number) => (
+          {item?.data?.map((link: any, index: number) => (
             <li key={index}>
               <a href={link.href} key={index}>
                 {link.text}
@@ -137,6 +123,8 @@ export default function Links({ id }: any) {
   const [item, setItem] = useState(
     resumeData.find((item: any) => item.id === id)
   );
+
+  console.log("link item", item);
   useEffect(() => {
     setItem(resumeData.find((item: any) => item.id === id));
   }, [resumeData]);

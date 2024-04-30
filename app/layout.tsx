@@ -36,14 +36,14 @@ export default async function RootLayout({
   }
 
   // if not authenticated, only allow landing page or 404
-  if (!authenticated) {
-    // if not allowed, display 404
-    return (
-      <html lang="en">
-        <body className={inter.className}>{renderSwitchFeature()}</body>
-      </html>
-    );
-  }
+  // if (!authenticated) {
+  //   // if not allowed, display 404
+  //   return (
+  //     <html lang="en">
+  //       <body className={inter.className}>{renderSwitchFeature()}</body>
+  //     </html>
+  //   );
+  // }
 
   const resumeData = (
     await fetch(`${BASE_URL}/api/resume/${user?.email}`).then(res => res.json())

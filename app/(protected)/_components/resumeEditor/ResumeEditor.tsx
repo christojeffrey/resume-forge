@@ -38,6 +38,8 @@ export function ResumeEditor() {
               if (!Component) {
                 return null;
               }
+              console.log("item", item);
+              console.log("item's component", Component);
               return (
                 <TurnToDraggable id={id} index={index} key={id} array={array}>
                   <Component id={id} />

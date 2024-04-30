@@ -1,8 +1,14 @@
 "use client";
 
-import { isAuthenticatedAtom, resumeDataAtom, userAtom } from "@/store";
+import { hardCodedData } from "@/constant/exampleData";
+import {
+  generateID,
+  isAuthenticatedAtom,
+  resumeDataAtom,
+  userAtom,
+} from "@/store";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function GlobalStateSetter({
   user,
@@ -14,11 +20,20 @@ export default function GlobalStateSetter({
   const [_isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 
   const [_resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [isSet, setIsSet] = useState(true);
+
   useEffect(() => {
+    setIsSet(false);
+    console.log("setting global state");
     setUser(user);
     setIsAuthenticated(isAuthenticated);
-    setResumeData(resumeData);
+    console.log("isAuthenticated", isAuthenticated);
+    console.log("resumeData", resumeData);
+    console.log("user", user);
+
+    setResumeData(generateID(isAuthenticated ? resumeData : hardCodedData));
+    setIsSet(true);
   }, []);
 
-  return <>{children}</>;
+  return <>{isSet && children}</>;
 }
