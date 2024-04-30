@@ -99,8 +99,8 @@ export function CommonEditor({
           <DialogHeader>
             <DialogTitle>Edit Title</DialogTitle>
             <DialogDescription>
-              <div className="flex flex-col gap-2">
-                {Editor}
+              {Editor}
+              <div className="flex flex-col gap-2 mt-2">
                 {/* common editor */}
                 <div className="flex items-center space-x-2">
                   <Checkbox

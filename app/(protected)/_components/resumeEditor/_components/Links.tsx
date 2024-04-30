@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,205 +20,133 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Input } from "@/components/ui/input";
+import { CommonEditor } from "./CommonEditor";
 
-export default function Links({ id }: any) {
-  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
-  const [linkItem, setLinkItem] = useState(
-    resumeData.find((item: any) => item.id === id)
+function View({ item }: any) {
+  return (
+    <>
+      <div>
+        <Label className="text-xs font-semibold text-slate-400">links</Label>
+
+        <ul>
+          {item.data.map((link: any, index: number) => (
+            <li key={index}>
+              <a href={link.href} key={index}>
+                {link.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
+}
+
+function Editor({ id, item }: any) {
+  const [_resumeData, setResumeData] = useAtom(resumeDataAtom);
 
   return (
-    <div className="mb-2 w-full">
-      <Dialog>
-        {/* view mode */}
-        <ContextMenu>
-          <ContextMenuTrigger>
-            <div className="flex justify-between w-full">
-              {/* right click trigger */}
-              <div>
-                <Label className="text-xs font-semibold text-slate-400">
-                  links
-                </Label>
-
-                <ul>
-                  {linkItem.data.map((link: any, index: number) => (
-                    <li key={index}>
-                      <a href={link.href} key={index}>
-                        {link.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {/* trigger */}
-              <DialogTrigger asChild>
-                <Button>Edit</Button>
-              </DialogTrigger>
-            </div>
-          </ContextMenuTrigger>
-          {/* right click content */}
-          <ContextMenuContent>
-            <DialogTrigger asChild>
-              <ContextMenuItem>edit</ContextMenuItem>
-            </DialogTrigger>
-          </ContextMenuContent>
-        </ContextMenu>
-        {/* edit mode*/}
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Links</DialogTitle>
-            <DialogDescription>
-              <div className="flex flex-col gap-2">
-                {/* links */}
-                <Label htmlFor="link">links</Label>
-                {linkItem.data.map((link: any, index: number) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <Input
-                      id="link"
-                      placeholder="text"
-                      value={link.text}
-                      onChange={e => {
-                        setResumeData(prev => {
-                          const result = prev.map(item => {
-                            if (item.id === id) {
-                              return {
-                                ...item,
-                                data: item.data.map((link: any, i: number) => {
-                                  if (i === index) {
-                                    return {
-                                      ...link,
-                                      text: e.target.value,
-                                    };
-                                  }
-                                  return link;
-                                }),
-                              };
-                            }
-                            return item;
-                          });
-                          setLinkItem(
-                            result.find((item: any) => item.id === id)
-                          );
-                          return result;
-                        });
-                      }}
-                    />
-                    <Input
-                      id="link"
-                      placeholder="link"
-                      value={link.href}
-                      onChange={e => {
-                        setResumeData(prev => {
-                          const result = prev.map(item => {
-                            if (item.id === id) {
-                              return {
-                                ...item,
-                                data: item.data.map((link: any, i: number) => {
-                                  if (i === index) {
-                                    return {
-                                      ...link,
-                                      href: e.target.value,
-                                    };
-                                  }
-                                  return link;
-                                }),
-                              };
-                            }
-                            return item;
-                          });
-                          setLinkItem(
-                            result.find((item: any) => item.id === id)
-                          );
-                          return result;
-                        });
-                      }}
-                    />
-                    {/* delete button */}
-                    <Button
-                      onClick={() => {
-                        setResumeData(prev => {
-                          const result = prev.map(item => {
-                            if (item.id === id) {
-                              return {
-                                ...item,
-                                data: item.data.filter(
-                                  (_: any, i: number) => i !== index
-                                ),
-                              };
-                            }
-                            return item;
-                          });
-                          setLinkItem(
-                            result.find((item: any) => item.id === id)
-                          );
-                          return result;
-                        });
-                      }}
-                    >
-                      delete
-                    </Button>
-                  </div>
-                ))}
-                {/* add button */}
-                <Button
-                  onClick={() => {
-                    setResumeData(prev => {
-                      const result = prev.map(item => {
-                        if (item.id === id) {
-                          return {
-                            ...item,
-                            data: [
-                              ...item.data,
-                              {
-                                text: "",
-                                href: "",
-                              },
-                            ],
-                          };
-                        }
-                        return item;
-                      });
-                      setLinkItem(result.find((item: any) => item.id === id));
-                      return result;
-                    });
-                  }}
-                >
-                  add
-                </Button>
-
-                {/* draft checkbox */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="draft"
-                    checked={linkItem.draft}
-                    onCheckedChange={_ => {
-                      setResumeData(prev => {
-                        const result = prev.map(item => {
-                          if (item.id === id) {
+    <>
+      <Label htmlFor="link">links</Label>
+      <div className="flex flex-col gap-2">
+        {item.data.map((link: any, index: number) => (
+          <div key={index} className="flex items-center space-x-2">
+            <Input
+              id="link"
+              placeholder="text"
+              value={link.text}
+              onChange={e => {
+                setResumeData(prev => {
+                  const result = prev.map(item => {
+                    if (item.id === id) {
+                      return {
+                        ...item,
+                        data: item.data.map((link: any, i: number) => {
+                          if (i === index) {
                             return {
-                              ...item,
-                              draft: !item.draft,
+                              ...link,
+                              text: e.target.value,
                             };
                           }
-                          return item;
-                        });
-                        setLinkItem(result.find((item: any) => item.id === id));
-                        return result;
-                      });
-                    }}
-                  />
-                  <Label
-                    htmlFor="draft"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    draft
-                  </Label>
-                </div>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </div>
+                          return link;
+                        }),
+                      };
+                    }
+                    return item;
+                  });
+                  return result;
+                });
+              }}
+            />
+            <Input
+              id="link"
+              placeholder="link"
+              value={link.href}
+              onChange={e => {
+                setResumeData(prev => {
+                  const result = prev.map(item => {
+                    if (item.id === id) {
+                      return {
+                        ...item,
+                        data: item.data.map((link: any, i: number) => {
+                          if (i === index) {
+                            return {
+                              ...link,
+                              href: e.target.value,
+                            };
+                          }
+                          return link;
+                        }),
+                      };
+                    }
+                    return item;
+                  });
+                  return result;
+                });
+              }}
+            />
+            {/* delete button */}
+            <Button
+              onClick={() => {
+                setResumeData(prev => {
+                  const result = prev.map(item => {
+                    if (item.id === id) {
+                      return {
+                        ...item,
+                        data: item.data.filter(
+                          (_: any, i: number) => i !== index
+                        ),
+                      };
+                    }
+                    return item;
+                  });
+                  return result;
+                });
+              }}
+            >
+              delete
+            </Button>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+export default function Links({ id }: any) {
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [item, setItem] = useState(
+    resumeData.find((item: any) => item.id === id)
+  );
+  useEffect(() => {
+    setItem(resumeData.find((item: any) => item.id === id));
+  }, [resumeData]);
+
+  return (
+    <CommonEditor
+      id={id}
+      item={item}
+      View={View({ item: item })}
+      Editor={Editor({ item: item, id: id })}
+    />
   );
 }
