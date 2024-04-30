@@ -23,8 +23,6 @@ export default async function RootLayout({
   const { isAuthenticated, getUser } = getKindeServerSession();
   const authenticated = await isAuthenticated();
   const user = await getUser();
-  console.log("user");
-  console.log(user);
 
   const pathname = headers().get("pathname") || "/";
 
@@ -51,8 +49,7 @@ export default async function RootLayout({
     await fetch(`${BASE_URL}/api/resume/${user?.email}`).then(res => res.json())
   ).body;
 
-  console.log(resumeData)
-  console.log("resumeData")
+
   return (
     <html lang="en">
       <GlobalStateSetter

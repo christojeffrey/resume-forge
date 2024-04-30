@@ -22,14 +22,10 @@ export async function GET(
 
   const client = getMongoDBClient();
   try {
-    console.log("connecting");
     client.connect();
     const resume = client.db("resume-database").collection("resumes");
 
-    console.log("get resume");
     data = await resume.findOne({ name: userID });
-    console.log("data");
-    console.log(data);
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();

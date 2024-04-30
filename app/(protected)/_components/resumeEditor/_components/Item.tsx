@@ -1,22 +1,28 @@
 "use client";
-import React, { useRef, useState } from "react";
-import ReactQuill from "react-quill";
+import React, { useMemo, useRef, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 // only allow bold for now
 function RichInput({ value: initialValue, onChange }: any) {
   const [value, setValue] = useState(initialValue);
-  const ref = useRef<any>();
+  const ReactQuill = useMemo(
+    () => dynamic(() => import("react-quill"), { ssr: false }),
+    []
+  );
 
-  function handleChange(newValue: string) {
+  function handleChange(
+    newValue: string,
+    _delta: any,
+    _source: any,
+    editor: any
+  ) {
     setValue(newValue);
-    const delta = ref.current?.unprivilegedEditor?.getContents();
+    const delta = editor.getContents();
     onChange(newValue, delta?.ops);
-    console.log(newValue, delta?.ops);
   }
+
   return (
     <ReactQuill
-      ref={ref}
       theme="snow"
       value={value}
       onChange={handleChange}
@@ -46,6 +52,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Input } from "@/components/ui/input";
+import dynamic from "next/dynamic";
 export default function Section({ id }: any) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
   const [sectionItem, setSectionItem] = useState(

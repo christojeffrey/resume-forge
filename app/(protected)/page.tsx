@@ -19,8 +19,8 @@ import Link from "next/link";
 
 export default function Home() {
   const [recomputePreview, setRecomputePreview] = useAtom(recomputePreviewAtom);
-  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
-  const [userData, setUserData] = useAtom(userAtom);
+  const [resumeData, _setResumeData] = useAtom(resumeDataAtom);
+  const [userData, _setUserData] = useAtom(userAtom);
   return (
     <div className="h-full w-3/4 mx-auto py-2">
       <div className="h-full relative">
@@ -44,7 +44,7 @@ export default function Home() {
                       method: "POST",
                       body: JSON.stringify(resumeData),
                     });
-                    console.log(res);
+                    // console.log(res);
                   }}
                 >
                   save
