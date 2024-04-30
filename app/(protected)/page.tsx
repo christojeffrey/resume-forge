@@ -9,13 +9,7 @@ import {
   resumeDataAtom,
   userAtom,
 } from "@/store";
-import { CommandMenu } from "./_components/commandMenu";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+
 import Adder from "./_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
@@ -86,34 +80,24 @@ export default function Home() {
   return (
     <div className="h-full w-3/4 mx-auto py-2">
       <div className="h-full relative">
-        <ContextMenu>
-          <ContextMenuTrigger>
-            <div className="h-full flex flex-col justify-between">
-              <ScrollArea className="w-1/2 mx-auto">
-                <ResumeEditor />
-              </ScrollArea>
-              <div className="text-end">
-                <Button
-                  onClick={() => {
-                    setRecomputePreview(!recomputePreview);
-                  }}
-                >
-                  recompute
-                </Button>
-                <Button onClick={handleSave} disabled={isSaving}>
-                  {isSaving && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  save
-                </Button>
-              </div>
-            </div>
-            <CommandMenu />
-          </ContextMenuTrigger>
-          <ContextMenuContent>
-            <ContextMenuItem>add new item</ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
+        <div className="h-full flex flex-col justify-between">
+          <ScrollArea className="w-1/2 mx-auto">
+            <ResumeEditor />
+          </ScrollArea>
+          <div className="justify-end flex gap-2">
+            <Button
+              onClick={() => {
+                setRecomputePreview(!recomputePreview);
+              }}
+            >
+              recompute
+            </Button>
+            <Button onClick={handleSave} disabled={isSaving}>
+              {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              save
+            </Button>
+          </div>
+        </div>
         {/* right side */}
         <div className="absolute right-0 top-0">
           <Preview width={300} />
