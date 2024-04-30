@@ -45,8 +45,8 @@ export function CommonEditor({
   const [_resumeData, setResumeData] = useAtom(resumeDataAtom);
 
   const toggleDraft = () => {
-    setResumeData(prev => {
-      const result = prev.map(item => {
+    setResumeData((prev: any) => {
+      const result = prev.map((item: any) => {
         if (item.id === id) {
           return {
             ...item,
@@ -60,7 +60,7 @@ export function CommonEditor({
   };
 
   const handleDelete = () => {
-    setResumeData(prev => {
+    setResumeData((prev: any) => {
       return prev.filter((item: any) => item.id !== id);
     });
   };
@@ -73,8 +73,8 @@ export function CommonEditor({
           <ContextMenuTrigger>
             <div className="flex justify-between w-full group">
               {/* right click trigger */}
-              {View}
-              {/* trigger */}
+              <div>{View}</div>
+              {/* icons */}
               <DialogTrigger>
                 <SVGIcon
                   source={editSVG}

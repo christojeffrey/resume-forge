@@ -56,8 +56,8 @@ function Editor({ id, item }: any) {
               placeholder="text"
               value={link.text}
               onChange={e => {
-                setResumeData(prev => {
-                  const result = prev.map(item => {
+                setResumeData((prev: any) => {
+                  const result = prev.map((item: any) => {
                     if (item.id === id) {
                       return {
                         ...item,
@@ -83,8 +83,8 @@ function Editor({ id, item }: any) {
               placeholder="link"
               value={link.href}
               onChange={e => {
-                setResumeData(prev => {
-                  const result = prev.map(item => {
+                setResumeData((prev: any) => {
+                  const result = prev.map((item: any) => {
                     if (item.id === id) {
                       return {
                         ...item,
@@ -108,8 +108,8 @@ function Editor({ id, item }: any) {
             {/* delete button */}
             <Button
               onClick={() => {
-                setResumeData(prev => {
-                  const result = prev.map(item => {
+                setResumeData((prev: any) => {
+                  const result = prev.map((item: any) => {
                     if (item.id === id) {
                       return {
                         ...item,

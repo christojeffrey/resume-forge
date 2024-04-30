@@ -30,8 +30,8 @@ export function ResumeEditor() {
       <StrictModeDroppable droppableId="list">
         {provided => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            {resumeData.map((item, index, array: any[]) => {
-              const { type, data, id } = item;
+            {resumeData.map((item: any, index: number, array: any[]) => {
+              const { type, id } = item;
               const Component = typeToComponents.find(
                 component => component.type === type
               )?.component;
@@ -40,7 +40,7 @@ export function ResumeEditor() {
               }
               return (
                 <TurnToDraggable id={id} index={index} key={id} array={array}>
-                  <Component data={data} id={id} />
+                  <Component id={id} />
                 </TurnToDraggable>
               );
             })}

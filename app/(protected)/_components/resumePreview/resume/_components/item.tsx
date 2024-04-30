@@ -11,6 +11,7 @@ type ResumeItemData = {
   };
 };
 export default function ResumeItem({ data }: { data: ResumeItemData }) {
+  console.log("data", data);
   return (
     <>
       <View
@@ -36,31 +37,40 @@ export default function ResumeItem({ data }: { data: ResumeItemData }) {
         <Text>{data.moreInformation}</Text>
       </View>
       <View style={{ margin: 1 }}>
-        {data.details.objectValue.map((item: any, index: number) => (
-          <>
-            {item.attributes?.bold ? (
-              <Text
-                key={index}
-                style={{ fontFamily: "Times-Bold" }}
-                wrap={false}
-              >
-                {item.insert}
-              </Text>
-            ) : (
-              item.insert
-                .split("\n")
-                .map((line: string, i: number, array: string[]) => {
-                  return (
-                    <>
-                      <Text key={i} wrap={i !== array.length - 1}>
-                        {line}
-                      </Text>
-                    </>
-                  );
-                })
-            )}
-          </>
-        ))}
+        {/* example intended structure */}
+        {/* <Text>
+          2testin
+          <Text style={{ fontFamily: "Times-Bold" }}>testin</Text>
+          asdfasd{`\n`}asdf
+        </Text> */}
+        <Text>
+          {data.details.objectValue.map((item: any, index: number) => (
+            <>
+              {item.attributes?.bold ? (
+                <Text
+                  key={index}
+                  style={{ fontFamily: "Times-Bold" }}
+                  wrap={false}
+                >
+                  {item.insert}
+                </Text>
+              ) : (
+                <>
+                  {item.insert
+                    .split("\n")
+                    .map((line: string, i: number, array: string[]) => {
+                      return (
+                        <>
+                          {line}
+                          {i !== array.length - 1 && `\n`}
+                        </>
+                      );
+                    })}
+                </>
+              )}
+            </>
+          ))}
+        </Text>
       </View>
     </>
   );

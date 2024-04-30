@@ -14,4 +14,4 @@ export const generateID = (data: any[]) => {
   });
 };
 // main page
-export const resumeDataAtom = atom(generateID(hardCodedData));
+export const resumeDataAtom = atom<any>([]);

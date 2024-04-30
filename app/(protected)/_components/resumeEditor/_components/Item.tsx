@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 // only allow bold for now
@@ -32,39 +32,89 @@ function RichInput({ value: initialValue, onChange }: any) {
   );
 }
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { resumeDataAtom } from "@/store";
 import { useAtom } from "jotai";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+
 import { Input } from "@/components/ui/input";
 import dynamic from "next/dynamic";
+import { CommonEditor } from "./CommonEditor";
+
+function View({ item }: any) {
+  return (
+    <>
+      <Label className="text-xs font-semibold text-slate-400">Section</Label>
+      <h3 className="text-xl font-semibold">{item.data.title}</h3>
+      <h4 className="text-lg font-semibold">{item.data.subtitle}</h4>
+      <p>{item.data.date}</p>
+      <p>{item.data.moreInformation}</p>
+      <ObjectValueRenderer value={item.data.details.objectValue} />
+    </>
+  );
+}
+
+function Editor({ item, handleChange }: any) {
+  return (
+    <>
+      <div className="flex flex-col gap-2">
+        {/* form */}
+        <Label htmlFor="title">title</Label>
+        <Input
+          id="title"
+          value={item.data.title}
+          onChange={e => handleChange(e.target.value, "title")}
+        />
+        <Label htmlFor="subtitle">subtitle</Label>
+        <Input
+          id="subtitle"
+          value={item.data.subtitle}
+          onChange={e => handleChange(e.target.value, "subtitle")}
+        />
+        <Label htmlFor="date">date</Label>
+        <Input
+          id="date"
+          value={item.data.date}
+          onChange={e => handleChange(e.target.value, "date")}
+        />
+        <Label htmlFor="moreInformation">more information</Label>
+        <Input
+          id="moreInformation"
+          value={item.data.moreInformation}
+          onChange={e => handleChange(e.target.value, "moreInformation")}
+        />
+        <Label htmlFor="details">details</Label>
+        <RichInput
+          id="details"
+          value={item.data.details.htmlValue}
+          onChange={(htmlValue: string, objectValue: any) =>
+            handleChange(
+              {
+                htmlValue: htmlValue,
+                objectValue: objectValue,
+              },
+              "details"
+            )
+          }
+        />
+      </div>
+    </>
+  );
+}
 export default function Section({ id }: any) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
-  const [sectionItem, setSectionItem] = useState(
+  const [item, setItem] = useState(
     resumeData.find((item: any) => item.id === id)
   );
+  useEffect(() => {
+    setItem(resumeData.find((item: any) => item.id === id));
+  }, [resumeData]);
 
   const handleChange = (
     value: any,
     type: "title" | "subtitle" | "date" | "moreInformation" | "details"
   ) => {
-    setResumeData(prev => {
-      const result = prev.map(item => {
+    setResumeData((prev: any) => {
+      const result = prev.map((item: any) => {
         if (item.id === id) {
           return {
             ...item,
@@ -76,143 +126,19 @@ export default function Section({ id }: any) {
         }
         return item;
       });
-      setSectionItem(result.find((item: any) => item.id === id));
       return result;
     });
   };
   return (
-    <div className="mb-2 w-full">
-      <Dialog>
-        {/* view */}
-        <ContextMenu>
-          <ContextMenuTrigger>
-            <div className="flex justify-between w-full">
-              {/* right click trigger */}
-              <div>
-                <Label className="text-xs font-semibold text-slate-400">
-                  Section
-                </Label>
-                <h3>{sectionItem.data.title}</h3>
-                <h4>{sectionItem.data.subtitle}</h4>
-                <p>{sectionItem.data.date}</p>
-                <p>{sectionItem.data.moreInformation}</p>
-                <ObjectValueRenderer
-                  value={sectionItem.data.details.objectValue}
-                />
-              </div>
-              {/* trigger */}
-              <DialogTrigger asChild>
-                <Button>Edit</Button>
-              </DialogTrigger>
-            </div>
-          </ContextMenuTrigger>
-          {/* right click content */}
-          <ContextMenuContent>
-            <DialogTrigger asChild>
-              <ContextMenuItem>edit</ContextMenuItem>
-            </DialogTrigger>
-          </ContextMenuContent>
-        </ContextMenu>
-        {/* edit */}
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Section</DialogTitle>
-            <DialogDescription>
-              <div className="flex flex-col gap-2">
-                {/* form */}
-                <Label htmlFor="title">title</Label>
-                <Input
-                  id="title"
-                  value={sectionItem.data.title}
-                  onChange={e => handleChange(e.target.value, "title")}
-                />
-                <Label htmlFor="subtitle">subtitle</Label>
-                <Input
-                  id="subtitle"
-                  value={sectionItem.data.subtitle}
-                  onChange={e => handleChange(e.target.value, "subtitle")}
-                />
-                <Label htmlFor="date">date</Label>
-                <Input
-                  id="date"
-                  value={sectionItem.data.date}
-                  onChange={e => handleChange(e.target.value, "date")}
-                />
-                <Label htmlFor="moreInformation">more information</Label>
-                <Input
-                  id="moreInformation"
-                  value={sectionItem.data.moreInformation}
-                  onChange={e =>
-                    handleChange(e.target.value, "moreInformation")
-                  }
-                />
-                <Label htmlFor="details">details</Label>
-                <RichInput
-                  id="details"
-                  value={sectionItem.data.details.htmlValue}
-                  onChange={(htmlValue: string, objectValue: any) =>
-                    handleChange(
-                      {
-                        htmlValue: htmlValue,
-                        objectValue: objectValue,
-                      },
-                      "details"
-                    )
-                  }
-                />
-                {/* draft */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="draft"
-                    checked={sectionItem.draft}
-                    onCheckedChange={_ => {
-                      setResumeData(prev => {
-                        const result = prev.map(item => {
-                          if (item.id === id) {
-                            return {
-                              ...item,
-                              draft: !item.draft,
-                            };
-                          }
-                          return item;
-                        });
-                        setSectionItem(
-                          result.find((item: any) => item.id === id)
-                        );
-                        return result;
-                      });
-                    }}
-                  />
-                  <Label
-                    htmlFor="draft"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    draft
-                  </Label>
-                </div>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    </div>
+    <CommonEditor
+      id={id}
+      item={item}
+      View={View({ item })}
+      Editor={Editor({ item, handleChange })}
+    />
   );
 }
 
-const example = [
-  {
-    insert: "asfasdf ",
-  },
-  {
-    attributes: {
-      bold: true,
-    },
-    insert: "asfsadf",
-  },
-  {
-    insert: "\n",
-  },
-];
 function ObjectValueRenderer({ value }: { value: any[] }) {
   return (
     <>

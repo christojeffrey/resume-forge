@@ -14,6 +14,7 @@ import {
 import Adder from "./_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 // main page
 
@@ -21,6 +22,30 @@ export default function Home() {
   const [recomputePreview, setRecomputePreview] = useAtom(recomputePreviewAtom);
   const [resumeData, _setResumeData] = useAtom(resumeDataAtom);
   const [userData, _setUserData] = useAtom(userAtom);
+
+  const [timeoutItem, setTimeoutItem] = useState<NodeJS.Timeout | null>(null);
+  // recompute every 2 seconds no change in resumeData
+  useEffect(() => {
+    // use timeout
+    if (timeoutItem) {
+      clearTimeout(timeoutItem);
+    }
+    const t = setTimeout(() => {
+      setRecomputePreview(!recomputePreview);
+    }, 1000);
+    setTimeoutItem(t);
+
+    return () => {
+      if (timeoutItem) {
+        clearTimeout(timeoutItem);
+      }
+    };
+  }, [resumeData]);
+
+  // run recompute first time
+  useEffect(() => {
+    setRecomputePreview(!recomputePreview);
+  }, []);
   return (
     <div className="h-full w-3/4 mx-auto py-2">
       <div className="h-full relative">
