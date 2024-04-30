@@ -14,7 +14,7 @@ import { useAtom } from "jotai";
 export default function Adder() {
   const [_, setResumeData] = useAtom(resumeDataAtom);
   const addTitle = () => {
-    setResumeData(prev =>
+    setResumeData((prev: any) =>
       generateID([
         ...prev,
         {
@@ -27,7 +27,7 @@ export default function Adder() {
   };
 
   const addLinks = () => {
-    setResumeData(prev =>
+    setResumeData((prev: any) =>
       generateID([
         ...prev,
         {
@@ -45,7 +45,7 @@ export default function Adder() {
   };
 
   const addHeading = () => {
-    setResumeData(prev =>
+    setResumeData((prev: any) =>
       generateID([
         ...prev,
         {
@@ -58,7 +58,7 @@ export default function Adder() {
   };
 
   const addSection = () => {
-    setResumeData(prev =>
+    setResumeData((prev: any) =>
       generateID([
         ...prev,
         {
@@ -84,7 +84,7 @@ export default function Adder() {
   };
 
   const addDivider = () => {
-    setResumeData(prev =>
+    setResumeData((prev: any) =>
       generateID([
         ...prev,
         {
@@ -98,11 +98,13 @@ export default function Adder() {
   return (
     <>
       <Dialog>
-        <DialogTrigger>Add</DialogTrigger>
+        <DialogTrigger asChild>
+          <Button variant="outline">Add</Button>
+        </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>What component to add?</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="flex flex-col gap-2 w-1/2 mx-auto">
               <DialogClose asChild>
                 <Button
                   onClick={() => {

@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/context-menu";
 import { PenLine } from "lucide-react";
 
-
 export function CommonEditor({
   id,
   item,
