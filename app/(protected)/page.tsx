@@ -64,8 +64,9 @@ export default function Home() {
   }, [resumeData]);
 
   const handleSave = async () => {
-    setIsSaving(true);
-    await fetch(`/api/resume/${userData.email}`, {
+    if (isSaving) return;
+    if (!userData) return;
+    await fetch(`/api/resume/${userData?.email}`, {
       method: "POST",
       body: JSON.stringify(resumeData),
     });
