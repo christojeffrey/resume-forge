@@ -3,7 +3,12 @@ import { useAtom } from "jotai";
 import Preview from "./_components/resumePreview";
 import { Button } from "@/components/ui/button";
 import { ResumeEditor } from "./_components/resumeEditor/ResumeEditor";
-import { recomputePreviewAtom, resumeDataAtom, userAtom } from "@/store";
+import {
+  isSavingAtom,
+  recomputePreviewAtom,
+  resumeDataAtom,
+  userAtom,
+} from "@/store";
 import { CommandMenu } from "./_components/commandMenu";
 import {
   ContextMenu,
@@ -15,15 +20,19 @@ import Adder from "./_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
+import { Loader2 } from "lucide-react";
 // main page
 
 export default function Home() {
   const [recomputePreview, setRecomputePreview] = useAtom(recomputePreviewAtom);
   const [resumeData, _setResumeData] = useAtom(resumeDataAtom);
   const [userData, _setUserData] = useAtom(userAtom);
+  const [isSaving, setIsSaving] = useAtom(isSavingAtom);
 
   const [timeoutItem, setTimeoutItem] = useState<NodeJS.Timeout | null>(null);
+  const [timeoutSaveItem, setTimeoutSaveItem] = useState<NodeJS.Timeout | null>(
+    null
+  );
   // recompute every 2 seconds no change in resumeData
   useEffect(() => {
     // use timeout
@@ -41,6 +50,34 @@ export default function Home() {
       }
     };
   }, [resumeData]);
+
+  // save every 8 seconds
+  useEffect(() => {
+    // use timeout
+    if (timeoutSaveItem) {
+      clearTimeout(timeoutSaveItem);
+    }
+    const t = setTimeout(async () => {
+      await handleSave();
+    }, 15000);
+    setTimeoutSaveItem(t);
+
+    return () => {
+      if (timeoutSaveItem) {
+        clearTimeout(timeoutSaveItem);
+      }
+    };
+  }, [resumeData]);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    await fetch(`/api/resume/${userData.email}`, {
+      method: "POST",
+      body: JSON.stringify(resumeData),
+    });
+    // console.log(res);
+    setIsSaving(false);
+  };
 
   // run recompute first time
   useEffect(() => {
@@ -63,15 +100,10 @@ export default function Home() {
                 >
                   recompute
                 </Button>
-                <Button
-                  onClick={async () => {
-                    const res = await fetch(`/api/resume/${userData.email}`, {
-                      method: "POST",
-                      body: JSON.stringify(resumeData),
-                    });
-                    // console.log(res);
-                  }}
-                >
+                <Button onClick={handleSave} disabled={isSaving}>
+                  {isSaving && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   save
                 </Button>
               </div>

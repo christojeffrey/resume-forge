@@ -17,20 +17,9 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import editSVG from "@/public/edit.svg";
-import Image from "next/image";
+import { PenLine } from "lucide-react";
 
-function SVGIcon({ source, className }: { source: any; className: string }) {
-  return (
-    <Image
-      src={source}
-      width={20}
-      height={20}
-      alt="icon"
-      className={className}
-    />
-  );
-}
+
 export function CommonEditor({
   id,
   item,
@@ -76,10 +65,8 @@ export function CommonEditor({
               <div>{View}</div>
               {/* icons */}
               <DialogTrigger>
-                <SVGIcon
-                  source={editSVG}
-                  className="hidden group-hover:block"
-                />
+                <PenLine className="hidden group-hover:block size-5" />
+                {/* <SVGIcon source={editSVG} /> */}
               </DialogTrigger>
             </div>
           </ContextMenuTrigger>

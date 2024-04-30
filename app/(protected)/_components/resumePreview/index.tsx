@@ -1,6 +1,6 @@
 "use client";
 
-import { pdf } from "@react-pdf/renderer";
+import { pdf, PDFDownloadLink } from "@react-pdf/renderer";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import {
@@ -98,6 +98,9 @@ export default function ResumePreview({ width }: { width?: number }) {
             {`>`}
           </button>
         </div>
+        <PDFDownloadLink document={Resume(resumeData)} fileName="resume.pdf">
+          {({ blob, url, loading, error }) => "Download"}
+        </PDFDownloadLink>
       </div>
     </div>
   );

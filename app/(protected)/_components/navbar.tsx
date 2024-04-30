@@ -1,5 +1,4 @@
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/server";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,

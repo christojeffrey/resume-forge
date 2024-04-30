@@ -4,6 +4,7 @@ import { atom } from "jotai";
 export const recomputePreviewAtom = atom(true);
 export const userAtom = atom<any>({});
 export const isAuthenticatedAtom = atom(false);
+export const isSavingAtom = atom(false);
 
 export const generateID = (data: any[]) => {
   return data.map((item, index) => {
