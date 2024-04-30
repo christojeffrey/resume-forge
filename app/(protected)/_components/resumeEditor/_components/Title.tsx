@@ -45,8 +45,8 @@ export default function Title({ id }: { id: string }) {
   }, [resumeData]);
 
   const handleTitleChange = (e: any) => {
-    setResumeData(prev => {
-      const result = prev.map(item => {
+    setResumeData((prev: any) => {
+      const result = prev.map((item: any) => {
         if (item.id === id) {
           return {
             ...item,
