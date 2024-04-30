@@ -1,6 +1,12 @@
 "use client";
 
-import { isAuthenticatedAtom, resumeDataAtom, userAtom } from "@/store";
+import { hardCodedData } from "@/constant/exampleData";
+import {
+  generateID,
+  isAuthenticatedAtom,
+  resumeDataAtom,
+  userAtom,
+} from "@/store";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 
@@ -17,7 +23,7 @@ export default function GlobalStateSetter({
   useEffect(() => {
     setUser(user);
     setIsAuthenticated(isAuthenticated);
-    setResumeData(resumeData);
+    setResumeData(generateID(resumeData ? resumeData : hardCodedData));
   }, []);
 
   return <>{children}</>;
