@@ -65,13 +65,15 @@ export default function Home() {
 
   const handleSave = async () => {
     if (isSaving) return;
-    if (!userData) return;
     setIsSaving(true);
-    await fetch(`/api/resume/${userData?.email}`, {
-      method: "POST",
-      body: JSON.stringify(resumeData),
-    });
-    // console.log(res);
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
+
+    if (!userData) {
+      await fetch(`/api/resume/${userData?.email}`, {
+        method: "POST",
+        body: JSON.stringify(resumeData),
+      });
+    }
     setIsSaving(false);
   };
 
