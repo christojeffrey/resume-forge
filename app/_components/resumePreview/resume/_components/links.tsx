@@ -13,9 +13,13 @@ export default function ResumeLinks({ data }: { data: ResumeLink[] }) {
       }}
     >
       {data.map((link, index) => (
-        <Text key={index} style={{ margin: 1 }}>
-          <Link src={link.href}>{link.text}</Link>
-        </Text>
+        <Link
+          key={index}
+          src={link.href}
+          style={{ margin: 1, textDecoration: "underline", color: "black" }}
+        >
+          {link.text}
+        </Link>
       ))}
     </View>
   );
