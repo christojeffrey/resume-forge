@@ -18,6 +18,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 export default function ResumePreview({ width }: { width?: number }) {
+  // run recompute first time
+
   const [pdfString, setPdfString] = useState("");
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
@@ -25,6 +27,10 @@ export default function ResumePreview({ width }: { width?: number }) {
 
   const [doRecomputePreview, setDoRecomputePreview] =
     useAtom(recomputePreviewAtom);
+    
+  useEffect(() => {
+    setDoRecomputePreview(true);
+  }, []);
 
   const onDocumentLoadSuccess = ({ numPages }: any) => {
     setNumPages(numPages);

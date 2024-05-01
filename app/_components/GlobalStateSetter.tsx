@@ -27,7 +27,6 @@ export default function GlobalStateSetter({
     const localResumeData = localStorage.getItem("resumeData")
       ? JSON.parse(localStorage.getItem("resumeData") as string)
       : hardCodedData;
-    console.log("localResumeData", localResumeData);
 
     const validResumeData = isAuthenticated ? resumeData : localResumeData;
     setResumeData(generateID(validResumeData));

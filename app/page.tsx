@@ -45,7 +45,7 @@ export default function Home() {
     };
   }, [resumeData]);
 
-  // save every 8 seconds
+  // save every 15 seconds
   useEffect(() => {
     // use timeout
     if (timeoutSaveItem) {
@@ -77,10 +77,7 @@ export default function Home() {
     setIsSaving(false);
   };
 
-  // run recompute first time
-  useEffect(() => {
-    setRecomputePreview(!recomputePreview);
-  }, []);
+ 
   return (
     <div className="h-full w-3/4 mx-auto py-2">
       <div className="h-full relative">
