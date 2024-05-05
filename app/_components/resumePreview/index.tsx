@@ -12,7 +12,8 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { Resume } from "./resume";
 import { resumeDataAtom, recomputePreviewAtom } from "@/store";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -27,12 +28,11 @@ export default function ResumePreview({
   isFullScreen?: boolean;
 }) {
   // run recompute first time
-
+  const router = useRouter();
   const [pdfString, setPdfString] = useState("");
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [resumeData] = useAtom(resumeDataAtom);
-
   const [doRecomputePreview, setDoRecomputePreview] =
     useAtom(recomputePreviewAtom);
 
@@ -110,6 +110,9 @@ export default function ResumePreview({
         file={pdfString}
         onLoadSuccess={onDocumentLoadSuccess}
         className="overflow-auto flex-1"
+        onClick={() => {
+          router.push("/preview");
+        }}
       >
         <PDFViewerPage
           pageNumber={pageNumber}
@@ -148,7 +151,6 @@ export default function ResumePreview({
         </div>
         {/* button */}
         <div className="flex items-center justify-end">
-          <Link href="/preview">preview</Link>
           <Button
             onClick={() => {
               setDoRecomputePreview(!doRecomputePreview);
