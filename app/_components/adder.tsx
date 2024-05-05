@@ -96,7 +96,7 @@ export default function Adder() {
   };
 
   return (
-    <>
+    <div className="flex flex-col">
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">Add</Button>
@@ -154,6 +154,6 @@ export default function Adder() {
           </DialogHeader>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }

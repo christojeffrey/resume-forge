@@ -58,10 +58,25 @@ export default async function RootLayout({
           user={user}
           resumeData={resumeData}
         >
-          <div className="flex h-screen flex-col">
+          <div className="h-screen flex flex-col">
             <NavBar />
             <Separator />
-            <div className="flex-1">{children}</div>
+            {/* fill */}
+            {/* whenever you want to fill with overflow only in that area, always follow with overflow-auto */}
+            {/* whenever you want a flex, always specify the height. like h-full */}
+            <div className="flex-1 overflow-auto">
+              {/* <div className="w-3/4 mx-auto flex h-full">
+                <div className="w-1/2">
+                  <div className="flex flex-col h-full">
+                    <div className="flex-1 overflow-auto">
+                      <div className="bg-blue-50 h-[20vh]">long page</div>
+                    </div>
+                    <div>button</div>
+                  </div>
+                </div>
+              </div> */}
+              {children}
+            </div>
           </div>
         </GlobalStateSetter>
       </body>

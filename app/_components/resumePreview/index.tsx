@@ -27,7 +27,7 @@ export default function ResumePreview({ width }: { width?: number }) {
 
   const [doRecomputePreview, setDoRecomputePreview] =
     useAtom(recomputePreviewAtom);
-    
+
   useEffect(() => {
     setDoRecomputePreview(true);
   }, []);
@@ -73,7 +73,11 @@ export default function ResumePreview({ width }: { width?: number }) {
   return (
     <div className="w-fit">
       {/* pdf preview */}
-      <PDFViewerDocument file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
+      <PDFViewerDocument
+        file={pdfString}
+        onLoadSuccess={onDocumentLoadSuccess}
+        className=""
+      >
         <PDFViewerPage
           pageNumber={pageNumber}
           className="border-slate-400 border-[1px]"

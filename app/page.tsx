@@ -77,36 +77,38 @@ export default function Home() {
     setIsSaving(false);
   };
 
- 
   return (
-    <div className="h-full w-3/4 mx-auto py-2">
-      <div className="h-full relative">
-        <div className="h-full flex flex-col justify-between">
-          <ScrollArea className="w-1/2 mx-auto">
-            <ResumeEditor />
-          </ScrollArea>
-          <div className="justify-end flex gap-2">
-            <Button
-              onClick={() => {
-                setRecomputePreview(!recomputePreview);
-              }}
-            >
-              recompute
-            </Button>
+    <div className="w-3/4 mx-auto flex h-full py-2 gap-2">
+      <div className="flex-1 flex flex-col h-full overflow-auto gap-2">
+        <ScrollArea className="flex-1 overflow-auto">
+          <ResumeEditor />
+        </ScrollArea>
+        <Adder />
+      </div>
+      <div className="w-fit border-2 border-black">
+        <div className="flex flex-col items-end h-full">
+          {/* preview part */}
+          <div className="flex-1 overflow-auto">
+            <Preview />
+          </div>
+          {/* bottom part */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-end">
+              <Link href="/preview">preview</Link>
+              <Button
+                onClick={() => {
+                  setRecomputePreview(!recomputePreview);
+                }}
+                variant="outline"
+              >
+                refresh
+              </Button>
+            </div>
             <Button onClick={handleSave} disabled={isSaving}>
               {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               save
             </Button>
           </div>
-        </div>
-        {/* right side */}
-        <div className="absolute right-0 top-0">
-          <Preview width={300} />
-          <Link href="/preview">preview</Link>
-        </div>
-        {/* left side */}
-        <div className="absolute left-0 top-0">
-          <Adder />
         </div>
       </div>
     </div>
