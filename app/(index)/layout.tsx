@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <NavBar />
         <Separator />
         {/* fill */}
-        {/* whenever you want to fill with overflow only in that area, always follow with overflow-auto */}
+        {/* whenever you want to fill with overflow only in that area, always flex-1 follow with overflow-auto */}
         {/* whenever you want a flex, always specify the height. like h-full */}
         <div className="flex-1 overflow-auto">
           {/* <div className="w-3/4 mx-auto flex h-full">

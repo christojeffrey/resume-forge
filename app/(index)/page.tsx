@@ -57,7 +57,7 @@ export default function Home() {
 function Editor() {
   return (
     <>
-      <ScrollArea className="w-full overflow-auto">
+      <ScrollArea className="w-full overflow-auto h-full">
         <ResumeEditor />
       </ScrollArea>
       <Adder />
