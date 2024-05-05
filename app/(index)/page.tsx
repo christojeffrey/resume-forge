@@ -1,8 +1,8 @@
 "use client";
 import { useAtom } from "jotai";
-import Preview from "./_components/resumePreview";
+import Preview from "../_components/resumePreview";
 import { Button } from "@/components/ui/button";
-import { ResumeEditor } from "./_components/resumeEditor/ResumeEditor";
+import { ResumeEditor } from "../_components/resumeEditor/ResumeEditor";
 import {
   isSavingAtom,
   recomputePreviewAtom,
@@ -10,7 +10,7 @@ import {
   userAtom,
 } from "@/store";
 
-import Adder from "./_components/adder";
+import Adder from "../_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";

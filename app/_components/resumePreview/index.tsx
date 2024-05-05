@@ -1,6 +1,6 @@
 "use client";
 
-import { pdf, PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import {
@@ -19,7 +19,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-export default function ResumePreview({ width }: { width?: number }) {
+export default function ResumePreview({
+  width,
+  isFullScreen = false,
+}: {
+  width?: number;
+  isFullScreen?: boolean;
+}) {
   // run recompute first time
 
   const [pdfString, setPdfString] = useState("");
@@ -70,14 +76,9 @@ export default function ResumePreview({ width }: { width?: number }) {
     changePage(1);
   }
 
-  // trigger on page load
-  useEffect(() => {
-    setDoRecomputePreview(true);
-  }, []);
-
   useEffect(() => {
     const updateBase64String = async () => {
-      const blob = await pdf(Resume(resumeData)).toBlob();
+      const blob = await pdf(Resume({ resumeData })).toBlob();
 
       let reader = new FileReader();
       reader.readAsDataURL(blob);
@@ -92,9 +93,19 @@ export default function ResumePreview({ width }: { width?: number }) {
     }
   }, [doRecomputePreview]);
 
+  if (isFullScreen) {
+    return (
+      <>
+        <PDFViewer className="w-screen h-screen">
+          {<Resume resumeData={resumeData} />}
+        </PDFViewer>
+      </>
+    );
+  }
   return (
     <div className="flex flex-col h-full w-full">
       {/* pdf preview */}
+
       <PDFViewerDocument
         file={pdfString}
         onLoadSuccess={onDocumentLoadSuccess}

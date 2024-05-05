@@ -13,7 +13,7 @@ const typeToComponents = [
   { type: "divider", component: Divider },
 ];
 
-export const Resume = (resumeData: any) => {
+export const Resume = ({ resumeData = [] }: { resumeData: any }) => {
   console.log("resumedata", resumeData);
   return (
     <Document>
