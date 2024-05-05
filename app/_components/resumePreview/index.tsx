@@ -12,6 +12,8 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { Resume } from "./resume";
 import { resumeDataAtom, recomputePreviewAtom } from "@/store";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
   import.meta.url
@@ -40,6 +42,25 @@ export default function ResumePreview({ width }: { width?: number }) {
   function changePage(offset: number) {
     setPageNumber(prevPageNumber => prevPageNumber + offset);
   }
+  const [timeoutItem, setTimeoutItem] = useState<NodeJS.Timeout | null>(null);
+
+  // recompute every second no change in resumeData
+  useEffect(() => {
+    // use timeout
+    if (timeoutItem) {
+      clearTimeout(timeoutItem);
+    }
+    const t = setTimeout(() => {
+      setDoRecomputePreview(!doRecomputePreview);
+    }, 1000);
+    setTimeoutItem(t);
+
+    return () => {
+      if (timeoutItem) {
+        clearTimeout(timeoutItem);
+      }
+    };
+  }, [resumeData]);
 
   function previousPage() {
     changePage(-1);
@@ -57,6 +78,7 @@ export default function ResumePreview({ width }: { width?: number }) {
   useEffect(() => {
     const updateBase64String = async () => {
       const blob = await pdf(Resume(resumeData)).toBlob();
+
       let reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = () => {
@@ -71,12 +93,12 @@ export default function ResumePreview({ width }: { width?: number }) {
   }, [doRecomputePreview]);
 
   return (
-    <div className="w-fit">
+    <div className="flex flex-col h-full w-full">
       {/* pdf preview */}
       <PDFViewerDocument
         file={pdfString}
         onLoadSuccess={onDocumentLoadSuccess}
-        className=""
+        className="overflow-auto flex-1"
       >
         <PDFViewerPage
           pageNumber={pageNumber}
@@ -84,33 +106,47 @@ export default function ResumePreview({ width }: { width?: number }) {
           width={width}
         />
       </PDFViewerDocument>
-      {/* page navigation */}
-      <div className="text-center">
-        <p>
-          Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-        </p>
+      <div className="flex justify-between">
+        {/* page navigation */}
+        <div className="">
+          <p>
+            Page {pageNumber || (numPages ? 1 : "--")} / {numPages || "--"}
+          </p>
 
-        <div>
-          <button
-            type="button"
-            disabled={pageNumber <= 1}
-            onClick={previousPage}
-            className="font-bold mx-2"
-          >
-            {`<`}
-          </button>
-          <button
-            type="button"
-            disabled={pageNumber >= numPages}
-            onClick={nextPage}
-            className="font-bold mx-2"
-          >
-            {`>`}
-          </button>
+          <div>
+            <button
+              type="button"
+              disabled={pageNumber <= 1}
+              onClick={previousPage}
+              className="font-bold mx-2"
+            >
+              {`<`}
+            </button>
+            <button
+              type="button"
+              disabled={pageNumber >= numPages}
+              onClick={nextPage}
+              className="font-bold mx-2"
+            >
+              {`>`}
+            </button>
+          </div>
+          <PDFDownloadLink document={Resume(resumeData)} fileName="resume.pdf">
+            {({ blob, url, loading, error }) => "Download"}
+          </PDFDownloadLink>
         </div>
-        <PDFDownloadLink document={Resume(resumeData)} fileName="resume.pdf">
-          {({ blob, url, loading, error }) => "Download"}
-        </PDFDownloadLink>
+        {/* button */}
+        <div className="flex items-center justify-end">
+          <Link href="/preview">preview</Link>
+          <Button
+            onClick={() => {
+              setDoRecomputePreview(!doRecomputePreview);
+            }}
+            variant="outline"
+          >
+            refresh
+          </Button>
+        </div>
       </div>
     </div>
   );
