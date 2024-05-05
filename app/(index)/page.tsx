@@ -96,7 +96,7 @@ function Viewer() {
     setIsSaving(true);
     localStorage.setItem("resumeData", JSON.stringify(resumeData));
 
-    if (!userData) {
+    if (userData) {
       await fetch(`/api/resume/${userData?.email}`, {
         method: "POST",
         body: JSON.stringify(resumeData),
