@@ -8,7 +8,7 @@ import { CommonEditor } from "./CommonEditor";
 
 function View({ item }: { item: any }) {
   return (
-    <div>
+    <div className="overflow-auto">
       <Label className="text-xs font-semibold text-slate-400">title</Label>
       <h1 className="text-3xl font-bold">{item.data}</h1>
     </div>

@@ -1,8 +1,7 @@
 "use client";
-
 import { pdf, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Document as PDFViewerDocument,
   Page as PDFViewerPage,
@@ -15,6 +14,8 @@ import { resumeDataAtom, recomputePreviewAtom } from "@/store";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useContainerDimensions } from "@/hooks/useContainerDimension";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
   import.meta.url
@@ -93,6 +94,9 @@ export default function ResumePreview({
     }
   }, [doRecomputePreview]);
 
+  const ref = useRef<any>(null);
+  const dimension = useContainerDimensions(ref);
+
   if (isFullScreen) {
     return (
       <>
@@ -102,24 +106,22 @@ export default function ResumePreview({
       </>
     );
   }
-  return (
-    <div className="flex flex-col h-full w-full">
-      {/* pdf preview */}
 
-      <PDFViewerDocument
-        file={pdfString}
-        onLoadSuccess={onDocumentLoadSuccess}
-        className="overflow-auto flex-1"
-        onClick={() => {
-          router.push("/preview");
-        }}
-      >
-        <PDFViewerPage
-          pageNumber={pageNumber}
-          className="border-slate-400 border-[1px]"
-          width={width}
-        />
-      </PDFViewerDocument>
+  return (
+    <div ref={ref} className="flex flex-col h-full w-full ">
+      <ScrollArea className="border-slate-400 border-[1px]">
+        {/* pdf preview */}
+        <PDFViewerDocument
+          file={pdfString}
+          onLoadSuccess={onDocumentLoadSuccess}
+          className="flex-1"
+          onClick={() => {
+            router.push("/preview");
+          }}
+        >
+          <PDFViewerPage pageNumber={pageNumber} width={dimension.width} />
+        </PDFViewerDocument>
+      </ScrollArea>
       <div className="flex justify-between">
         {/* page navigation */}
         <div className="">
@@ -145,7 +147,10 @@ export default function ResumePreview({
               {`>`}
             </button>
           </div>
-          <PDFDownloadLink document={Resume(resumeData)} fileName="resume.pdf">
+          <PDFDownloadLink
+            document={Resume({ resumeData })}
+            fileName="resume.pdf"
+          >
             {({ blob, url, loading, error }) => "Download"}
           </PDFDownloadLink>
         </div>

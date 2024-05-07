@@ -54,14 +54,15 @@ export function CommonEditor({
   };
 
   return (
-    <div className={`"mb-2 w-full ${item.draft ? "text-slate-400" : ""}`}>
+    <div className={`"flex mb-2 w-full ${item.draft ? "text-slate-400" : ""}`}>
       <Dialog>
         {/* view */}
         <ContextMenu>
+          {/* right click trigger */}
           <ContextMenuTrigger>
-            <div className="flex justify-between w-full group">
-              {/* right click trigger */}
-              <div>{View}</div>
+            <div className="flex flex-row justify-between w-full group">
+              {/* fill */}
+              <div className="flex-1 overflow-auto w-full">{View}</div>
               {/* icons */}
               <DialogTrigger>
                 <PenLine className="hidden group-hover:block size-5" />
