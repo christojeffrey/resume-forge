@@ -14,7 +14,7 @@ const typeToComponents = [
 ];
 
 export const Resume = ({ resumeData = [] }: { resumeData: any }) => {
-  console.log("resumedata", resumeData);
+  // console.log("resumedata", resumeData);
   return (
     <Document>
       <Page

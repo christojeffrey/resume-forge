@@ -140,28 +140,22 @@ export default function Section({ id }: any) {
 }
 
 function ObjectValueRenderer({ value }: { value: any[] }) {
-  return (
-    <>
-      {value.map((item: any, index: number) => (
-        <>
-          {item.attributes?.bold ? (
-            <span className="font-bold">{item.insert}</span>
-          ) : (
-            item.insert
-              .split("\n")
-              .map((line: string, i: number, array: string[]) => {
-                return (
-                  <>
-                    <span key={i} className="text-md">
-                      {line}
-                    </span>
-                    {i !== array.length - 1 && <br />}
-                  </>
-                );
-              })
-          )}
-        </>
-      ))}
-    </>
+  return value.map((item: any, index: number) =>
+    item.attributes?.bold ? (
+      <span className="font-bold" key={`bold-${index}`}>
+        {item.insert}
+      </span>
+    ) : (
+      item.insert
+        .split("\n")
+        .map((line: string, i: number, array: string[]) => {
+          return (
+            <span key={`reguler-${i}`}>
+              <span className="text-md">{line}</span>
+              {i !== array.length - 1 && <br />}
+            </span>
+          );
+        })
+    )
   );
 }
