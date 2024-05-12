@@ -1,79 +1,90 @@
 "use client";
 import { useAtom } from "jotai";
+import { DragDropContext } from "react-beautiful-dnd";
 import { typeToComponents } from "./_components";
 import { resumeDataAtom } from "@/store";
-
-import React from "react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-
-import { SortableItem } from "./SortableItem";
+import { reorder, StrictModeDroppable, TurnToDraggable } from ".";
 
 export function ResumeEditor() {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-  function handleDragEnd(event: any) {
-    const { active, over } = event;
-
-    if (active.id !== over.id) {
-      const oldIndex = resumeData.indexOf(active.id);
-      const newIndex = resumeData.indexOf(over.id);
-      console.log("oldIndex");
-      console.log(active);
-      console.log("newIndex");
-      console.log(over);
-
-      let newResumeData = arrayMove(resumeData, oldIndex, newIndex);
-      console.log("newResumeData");
-      console.log(newResumeData);
-      setResumeData(newResumeData);
+  function onDragEnd(result: any) {
+    if (!result.destination) {
+      return;
     }
+
+    if (result.destination.index === result.source.index) {
+      return;
+    }
+
+    const newResumeData = reorder(
+      resumeData,
+      result.source.index,
+      result.destination.index
+    );
+    setResumeData(newResumeData);
   }
+
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext
-        items={resumeData}
-        strategy={verticalListSortingStrategy}
-      >
-        {resumeData.map((item: any, index: number) => {
-          const { type, id: itemID } = item;
-          const Component = typeToComponents.find(
-            component => component.type === type
-          )?.component;
-          if (!Component) {
-            return null;
-          }
-          return (
-            <SortableItem key={index} id={index}>
-              <div className="border-b-2 border-black">
-                <Component id={itemID} />
+    <>
+      {/* first attempt */}
+
+      {/* <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-auto">
+          <div className="bg-blue-50 h-[200vh]">
+            long page
+            <div className="flex border-2 border-black overflow-auto">
+              <div className="flex-1 overflow-auto">
+                <div className="overflow-auto w-[50vw] bg-blue-50">
+                  longpart
+                </div>
               </div>
-            </SortableItem>
-          );
-        })}
-      </SortableContext>
-    </DndContext>
+              <div className="w-24 bg-white">right part</div>
+            </div>
+          </div>
+        </div>
+        <div>button</div>
+      </div> */}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <StrictModeDroppable droppableId="list">
+          {provided => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className="flex w-full flex-col"
+            >
+              {resumeData.map((item: any, index: number, array: any[]) => {
+                const { type, id } = item;
+                const Component = typeToComponents.find(
+                  component => component.type === type
+                )?.component;
+                if (!Component) {
+                  return null;
+                }
+                return (
+                  // <div
+                  //   key={id}
+                  //   className=" w-full flex border-2 border-black overflow-auto"
+                  // >
+                  //   {/* long */}
+                  //   <div className="flex-1 overflow-auto">
+                  //     <div className="overflow-auto w-screen bg-blue-50">
+                  //       longpart
+                  //     </div>
+                  //   </div>
+                  //   {/* right */}
+                  //   <div className="w-24 bg-white">right part</div>
+                  // </div>
+                  <TurnToDraggable id={id} index={index} key={id} array={array}>
+                    <Component id={id} />
+                  </TurnToDraggable>
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </StrictModeDroppable>
+      </DragDropContext>
+    </>
   );
 }

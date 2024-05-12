@@ -52,7 +52,7 @@ export default function Home() {
 function Editor() {
   return (
     <>
-      <ScrollArea className="w-full overflow-auto h-full">
+      <ScrollArea>
         <ResumeEditor />
       </ScrollArea>
       <Adder />
@@ -100,16 +100,18 @@ function Viewer() {
     setIsSaving(false);
   };
   return (
-    <>
+    <div className="flex flex-col w-full h-full overflow-auto">
       {/* preview part */}
-      <div className="flex-1 overflow-auto w-full">
+      <div className="flex-1 overflow-auto">
         <Preview />
       </div>
       {/* bottom part */}
-      <Button onClick={handleSave} disabled={isSaving}>
-        {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        save
-      </Button>
-    </>
+      <div>
+        <Button onClick={handleSave} disabled={isSaving}>
+          {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          save
+        </Button>
+      </div>
+    </div>
   );
 }

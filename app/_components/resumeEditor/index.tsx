@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Droppable, Draggable, DroppableProps } from "react-beautiful-dnd";
 // main page
-
 export const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   const [enabled, setEnabled] = useState(false);
   useEffect(() => {
@@ -35,43 +34,24 @@ export function TurnToDraggable({ id, index, children, array }: any) {
         return (
           <>
             <div
-              className="mb-4 p-4"
+              className="flex flex-col w-full mb-4 p-2 overflow-auto"
               ref={provided.innerRef}
               {...provided.draggableProps}
             >
-              <div className="flex">
-                <div {...provided.dragHandleProps}><DraggableSVG/></div>
-                {children}
+              <div className="flex w-full overflow-auto mb-2">
+                <div {...provided.dragHandleProps}>
+                  {/* <DraggableSVG /> */}
+                  <div className="h-full bg-slate-200 hover:bg-slate-500 w-2 rounded-lg mx-2" />
+                </div>
+
+                <div className="flex-1 overflow-auto">{children}</div>
               </div>
               {/* if not the last, add separator */}
-              <Separator />
+              {/* <Separator /> */}
             </div>
           </>
         );
       }}
     </Draggable>
-  );
-}
-
-function DraggableSVG() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      enable-background="new 0 0 24 24"
-      height="24"
-      viewBox="0 0 24 24"
-      width="24"
-    >
-      <g>
-        <rect fill="none" height="24" width="24" />
-      </g>
-      <g>
-        <g>
-          <g>
-            <path d="M20,9H4v2h16V9z M4,15h16v-2H4V15z" />
-          </g>
-        </g>
-      </g>
-    </svg>
   );
 }

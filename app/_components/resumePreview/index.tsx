@@ -114,7 +114,7 @@ export default function ResumePreview({
         <PDFViewerDocument
           file={pdfString}
           onLoadSuccess={onDocumentLoadSuccess}
-          className="flex-1"
+          className=""
           onClick={() => {
             router.push("/preview");
           }}
