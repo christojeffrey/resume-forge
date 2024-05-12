@@ -108,18 +108,20 @@ export default function ResumePreview({
   }
 
   return (
-    <div ref={ref} className="flex flex-col h-full w-full ">
-      <ScrollArea className="border-slate-400 border-[1px]">
+    <div ref={ref} className="flex flex-col h-full w-full justify-between">
+      {/* later issue - this will give noticable bottom margin by giving flex grow */}
+      <ScrollArea className="flex-1 border-slate-400 border">
         {/* pdf preview */}
         <PDFViewerDocument
           file={pdfString}
           onLoadSuccess={onDocumentLoadSuccess}
-          className=""
+          className="my-1" // to prevent scroll bar from showing up when the container actually has enough space
           onClick={() => {
             router.push("/preview");
           }}
         >
-          <PDFViewerPage pageNumber={pageNumber} width={dimension.width} />
+          {/* -2 to prevent jitter */}
+          <PDFViewerPage pageNumber={pageNumber} width={dimension.width - 2} />
         </PDFViewerDocument>
       </ScrollArea>
       <div className="flex justify-between">
