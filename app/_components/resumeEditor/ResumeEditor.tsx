@@ -4,11 +4,17 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { typeToComponents } from "./_components";
 import { resumeDataAtom } from "@/store";
 import { reorder, StrictModeDroppable, TurnToDraggable } from ".";
+import { useState } from "react";
 
 export function ResumeEditor() {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
 
+  const [isAnyDragged, setIsAnyDragged] = useState(false);
+  function handleDragStart() {
+    setIsAnyDragged(true);
+  }
   function onDragEnd(result: any) {
+    setIsAnyDragged(false);
     if (!result.destination) {
       return;
     }
@@ -27,12 +33,7 @@ export function ResumeEditor() {
 
   return (
     <>
-      <DragDropContext
-        onDragEnd={onDragEnd}
-        onDragStart={() => {
-          console.log("drag start");
-        }}
-      >
+      <DragDropContext onDragEnd={onDragEnd} onDragStart={handleDragStart}>
         <StrictModeDroppable droppableId="list">
           {provided => (
             <div
@@ -56,6 +57,7 @@ export function ResumeEditor() {
                       key={id}
                       array={array}
                       className=""
+                      isAnyDragged={isAnyDragged}
                     >
                       <Component id={id} />
                     </TurnToDraggable>

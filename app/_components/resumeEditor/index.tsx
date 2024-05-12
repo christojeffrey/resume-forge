@@ -34,10 +34,11 @@ export function TurnToDraggable({
   children,
   array,
   className,
+  isAnyDragged = false,
 }: any) {
   return (
     <Draggable draggableId={id} index={index}>
-      {provided => {
+      {(provided, snapshot) => {
         return (
           <>
             <div
@@ -47,8 +48,9 @@ export function TurnToDraggable({
             >
               <div className="flex w-full overflow-auto mb-2">
                 <div {...provided.dragHandleProps}>
-                  {/* <DraggableSVG /> */}
-                  <div className="h-full bg-slate-200 hover:bg-slate-500 w-2 rounded-lg mx-2" />
+                  <div
+                    className={`h-full hover:bg-slate-500 w-2 rounded-lg mx-2 ${snapshot.isDragging ? "bg-slate-500" : "bg-slate-200"}`}
+                  />
                 </div>
 
                 <div className="flex-1 overflow-auto">{children}</div>
@@ -56,12 +58,18 @@ export function TurnToDraggable({
               {/* if not the last, add separator */}
               {/* <Separator /> */}
               {/* adder */}
-              <div className="w-full h-4 px-8">
+              <div className={`w-full h-4 px-8`}>
                 <Adder location={index + 1}>
                   <div className="flex h-2 justify-center items-center group py-1">
-                    <div className="bg-black h-[2px] w-full rounded-full group-hover:block hidden" />
-                    <Plus className="group-hover:block hidden" />
-                    <div className="bg-black h-[2px] w-full rounded-full group-hover:block hidden" />
+                    <div
+                      className={`bg-black h-[2px] w-full rounded-full ${isAnyDragged ? "" : "group-hover:block"}  hidden`}
+                    />
+                    <Plus
+                      className={`${isAnyDragged ? "" : "group-hover:block"} hidden`}
+                    />
+                    <div
+                      className={`bg-black h-[2px] w-full rounded-full ${isAnyDragged ? "" : "group-hover:block"}  hidden`}
+                    />
                   </div>
                 </Adder>
               </div>

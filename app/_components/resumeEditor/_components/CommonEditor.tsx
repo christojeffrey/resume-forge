@@ -63,7 +63,7 @@ export function CommonEditor({
             {/* fill */}
             <DialogTrigger asChild>
               <div
-                className={`flex-1 overflow-auto ${item.draft ? "opacity-20" : ""}`}
+                className={`flex-1 overflow-auto group ${item.draft ? "opacity-20" : ""}`}
               >
                 {View}
               </div>
@@ -71,14 +71,14 @@ export function CommonEditor({
             {/* icons */}
             {item.draft ? (
               <EyeOff
-                className="size-5"
+                className="size-5 group-hover:opacity-100 opacity-50"
                 onClick={() => {
                   toggleDraft();
                 }}
               />
             ) : (
               <Eye
-                className="size-5"
+                className="size-5 group-hover:opacity-100 opacity-50"
                 onClick={() => {
                   toggleDraft();
                 }}
