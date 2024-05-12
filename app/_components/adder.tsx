@@ -11,96 +11,79 @@ import {
 import { generateID, resumeDataAtom } from "@/store";
 import { useAtom } from "jotai";
 
-export default function Adder() {
-  const [_, setResumeData] = useAtom(resumeDataAtom);
-  const addTitle = () => {
-    setResumeData((prev: any) =>
-      generateID([
-        ...prev,
-        {
-          type: "title",
-          data: "testing",
-          draft: false,
-        },
-      ])
-    );
-  };
-
-  const addLinks = () => {
-    setResumeData((prev: any) =>
-      generateID([
-        ...prev,
-        {
-          type: "links",
-          data: [
-            {
-              text: "testing",
-              href: "https://testing.com",
-            },
-          ],
-          draft: false,
-        },
-      ])
-    );
-  };
-
-  const addHeading = () => {
-    setResumeData((prev: any) =>
-      generateID([
-        ...prev,
-        {
-          type: "heading",
-          data: "testing",
-          draft: false,
-        },
-      ])
-    );
-  };
-
-  const addSection = () => {
-    setResumeData((prev: any) =>
-      generateID([
-        ...prev,
-        {
-          type: "item",
-          data: {
-            title: "testing",
-            subtitle: "testing",
-            date: "testing",
-            moreInformation: "testing",
-            details: {
-              htmlValue: "",
-              objectValue: [
-                {
-                  insert: "\n",
-                },
-              ],
-            },
+const initialDataForEachType = {
+  title: {
+    type: "title",
+    data: "testing",
+    draft: false,
+  },
+  links: {
+    type: "links",
+    data: [
+      {
+        text: "testing",
+        href: "https://testing.com",
+      },
+    ],
+    draft: false,
+  },
+  heading: {
+    type: "heading",
+    data: "testing",
+    draft: false,
+  },
+  section: {
+    type: "item",
+    data: {
+      title: "testing",
+      subtitle: "testing",
+      date: "testing",
+      moreInformation: "testing",
+      details: {
+        htmlValue: "",
+        objectValue: [
+          {
+            insert: "\n",
           },
-          draft: false,
-        },
-      ])
-    );
-  };
+        ],
+      },
+    },
+    draft: false,
+  },
+  divider: {
+    type: "divider",
+    draft: false,
+  },
+};
+export default function Adder({
+  children,
+  location,
+}: {
+  children: React.ReactNode;
+  location?: number; // added after index number <location>
+}) {
+  const [_, setResumeData] = useAtom(resumeDataAtom);
 
-  const addDivider = () => {
-    setResumeData((prev: any) =>
-      generateID([
-        ...prev,
-        {
-          type: "divider",
-          draft: false,
-        },
-      ])
-    );
+  const handleAdd = (
+    type: "title" | "links" | "heading" | "section" | "divider"
+  ) => {
+    setResumeData((prev: any) => {
+      if (location !== undefined) {
+        return generateID([
+          ...prev.slice(0, location),
+          initialDataForEachType[type],
+          ...prev.slice(location),
+        ]);
+      } else {
+        return generateID([...prev, initialDataForEachType[type]]);
+      }
+    });
   };
 
   return (
     <div className="flex flex-col">
       <Dialog>
-        <DialogTrigger asChild>
-          <Button>Add</Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>What component to add?</DialogTitle>
@@ -108,7 +91,7 @@ export default function Adder() {
               <DialogClose asChild>
                 <Button
                   onClick={() => {
-                    addTitle();
+                    handleAdd("title");
                   }}
                 >
                   add title
@@ -117,7 +100,7 @@ export default function Adder() {
               <DialogClose asChild>
                 <Button
                   onClick={() => {
-                    addLinks();
+                    handleAdd("links");
                   }}
                 >
                   add links
@@ -126,7 +109,7 @@ export default function Adder() {
               <DialogClose asChild>
                 <Button
                   onClick={() => {
-                    addHeading();
+                    handleAdd("heading");
                   }}
                 >
                   add heading
@@ -135,7 +118,7 @@ export default function Adder() {
               <DialogClose asChild>
                 <Button
                   onClick={() => {
-                    addSection();
+                    handleAdd("section");
                   }}
                 >
                   add section
@@ -144,7 +127,7 @@ export default function Adder() {
               <DialogClose asChild>
                 <Button
                   onClick={() => {
-                    addDivider();
+                    handleAdd("divider");
                   }}
                 >
                   add divider

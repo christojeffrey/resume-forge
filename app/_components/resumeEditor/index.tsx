@@ -1,8 +1,9 @@
 "use client";
-import { Separator } from "@/components/ui/separator";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Droppable, Draggable, DroppableProps } from "react-beautiful-dnd";
+import Adder from "../adder";
+import { Plus } from "lucide-react";
 // main page
 export const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
   const [enabled, setEnabled] = useState(false);
@@ -27,14 +28,20 @@ export const reorder = (list: any, startIndex: number, endIndex: number) => {
   return result;
 };
 
-export function TurnToDraggable({ id, index, children, array }: any) {
+export function TurnToDraggable({
+  id,
+  index,
+  children,
+  array,
+  className,
+}: any) {
   return (
     <Draggable draggableId={id} index={index}>
       {provided => {
         return (
           <>
             <div
-              className="flex flex-col w-full mb-4 p-2 overflow-auto"
+              className={`flex flex-col w-full p-2 overflow-auto ${className}`}
               ref={provided.innerRef}
               {...provided.draggableProps}
             >
@@ -48,6 +55,16 @@ export function TurnToDraggable({ id, index, children, array }: any) {
               </div>
               {/* if not the last, add separator */}
               {/* <Separator /> */}
+              {/* adder */}
+              <div className="w-full h-4 px-8">
+                <Adder location={index + 1}>
+                  <div className="flex h-2 justify-center items-center group py-1">
+                    <div className="bg-black h-[2px] w-full rounded-full group-hover:block hidden" />
+                    <Plus className="group-hover:block hidden" />
+                    <div className="bg-black h-[2px] w-full rounded-full group-hover:block hidden" />
+                  </div>
+                </Adder>
+              </div>
             </div>
           </>
         );

@@ -51,12 +51,14 @@ export default function Home() {
 
 function Editor() {
   return (
-    <>
+    <div className="flex flex-col justify-between h-full">
       <ScrollArea>
         <ResumeEditor />
       </ScrollArea>
-      <Adder />
-    </>
+      <Adder>
+        <Button variant="outline">Add</Button>
+      </Adder>
+    </div>
   );
 }
 
