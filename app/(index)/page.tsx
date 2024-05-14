@@ -3,17 +3,20 @@ import { useAtom } from "jotai";
 import Preview from "../_components/resumePreview";
 import { Button } from "@/components/ui/button";
 import { ResumeEditor } from "../_components/resumeEditor/ResumeEditor";
-import { isSavingAtom, resumeDataAtom, userAtom } from "@/store";
+import { isSavingAtom, modeAtom, resumeDataAtom, userAtom } from "@/store";
 
 import Adder from "../_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+import AIAnalysis from "../_components/AIAnalysis";
 
 // main page
 
 export default function Home() {
+  const [mode] = useAtom(modeAtom);
   return (
     <div className="h-full">
       {/* phone */}
@@ -36,12 +39,12 @@ export default function Home() {
       <div className="hidden xl:block w-3/4 mx-auto h-full py-2 gap-2">
         <div className="flex h-full gap-2">
           {/* left */}
-          <div className="w-3/5 flex flex-col h-full overflow-auto gap-2">
+          <div className="w-1/2 flex flex-col h-full overflow-auto gap-2">
             <Editor />
           </div>
           {/* right */}
-          <div className="w-2/5 flex flex-col items-end h-full">
-            <Viewer />
+          <div className="w-1/2 flex flex-col h-full">
+            {mode === "edit" ? <AIAnalysis /> : <Viewer />}
           </div>
         </div>
       </div>
@@ -99,6 +102,7 @@ function Viewer() {
         body: JSON.stringify(resumeData),
       });
     }
+    toast("Saved!", { icon: "👍" });
     setIsSaving(false);
   };
   return (

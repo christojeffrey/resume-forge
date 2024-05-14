@@ -42,14 +42,14 @@ export function TurnToDraggable({
         return (
           <>
             <div
-              className={`flex flex-col w-full p-2 overflow-auto ${className}`}
+              className={`flex flex-col w-full p-2 overflow-auto group/whole-draggable ${className}`}
               ref={provided.innerRef}
               {...provided.draggableProps}
             >
               <div className="flex w-full overflow-auto mb-2">
                 <div {...provided.dragHandleProps}>
                   <div
-                    className={`h-full hover:bg-slate-500 w-2 rounded-lg mx-2 ${snapshot.isDragging ? "bg-slate-500" : "bg-slate-200"}`}
+                    className={`h-full  w-2 rounded-lg mx-2 ${snapshot.isDragging ? "bg-slate-500" : "group-hover/whole-draggable:bg-slate-200"}`}
                   />
                 </div>
 
