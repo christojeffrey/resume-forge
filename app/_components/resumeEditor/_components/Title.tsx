@@ -26,7 +26,7 @@ function Editor({
       <Label htmlFor="title">title</Label>
       <Textarea
         id="title"
-        value={item.data}
+        defaultValue={item.data}
         onChange={handleTitleChange}
         placeholder="Title"
         className="text-2xl"

@@ -3,7 +3,14 @@ import { useAtom } from "jotai";
 import Preview from "../_components/resumePreview";
 import { Button } from "@/components/ui/button";
 import { ResumeEditor } from "../_components/resumeEditor/ResumeEditor";
-import { isSavingAtom, modeAtom, resumeDataAtom, userAtom } from "@/store";
+import {
+  editingComponentAtom,
+  isEditingAtom,
+  isSavingAtom,
+  modeAtom,
+  resumeDataAtom,
+  userAtom,
+} from "@/store";
 
 import Adder from "../_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,6 +24,9 @@ import AIAnalysis from "../_components/AIAnalysis";
 
 export default function Home() {
   const [mode] = useAtom(modeAtom);
+  const [isEditing, setIsEditing] = useAtom(isEditingAtom);
+  const [editingComponent, setEditingComponent] = useAtom(editingComponentAtom);
+
   return (
     <div className="h-full">
       {/* phone */}
@@ -39,13 +49,40 @@ export default function Home() {
       <div className="hidden xl:block w-3/4 mx-auto h-full py-2 gap-2">
         <div className="flex h-full gap-2">
           {/* left */}
-          <div className="w-1/2 flex flex-col h-full overflow-auto gap-2">
+          <div
+            className={`${isEditing ? "w-1/3" : "w-1/2"} flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
+          >
             <Editor />
           </div>
+          {/* middle */}
+
+          <div
+            className={`${isEditing ? "w-1/3" : "w-0"} overflow-hidden transition-all duration-300  
+              ease-out`}
+          >
+            <div
+              onClick={() => {
+                setEditingComponent(null);
+                setIsEditing(false);
+              }}
+            >
+              close
+            </div>
+            {/* fade in and out */}
+            <div
+              className={`transition-opacity ease-in duration-300 ${isEditing ? "opacity-100" : "opacity-0"}`}
+            >
+              {editingComponent}
+            </div>
+          </div>
+
           {/* right */}
-          <div className="w-1/2 flex flex-col h-full">
+          <div
+            className={`${isEditing ? "w-1/3" : "w-1/2"} w-1/2 flex flex-col h-full transition-all duration-300 ease-out`}
+          >
             {mode === "edit" ? <AIAnalysis /> : <Viewer />}
           </div>
+        
         </div>
       </div>
     </div>

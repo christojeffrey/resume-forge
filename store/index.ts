@@ -7,9 +7,17 @@ export const isAuthenticatedAtom = atom(false);
 export const isSavingAtom = atom(false);
 export const modeAtom = atom<"edit" | "view">("edit");
 
+export const isEditingAtom = atom(false);
+// react component
+export const editingComponentAtom = atom<React.ReactNode>(null);
+
 // AI stuff
 export const messagesAtom = atom<CoreMessage[]>([]);
 export const latestAnalysisAtom = atom<any>({});
+
+export const AIFeatureRightNowAtom = atom<"chat" | "analyze" | "cover-letter">(
+  "chat"
+);
 
 export const generateID = (data: any[]) => {
   return data.map((item, index) => {

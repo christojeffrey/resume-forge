@@ -55,6 +55,14 @@ const initialDataForEachType = {
     draft: false,
   },
 };
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useState } from "react";
+
 export default function Adder({
   children,
   location,
@@ -63,6 +71,7 @@ export default function Adder({
   location?: number; // added after index number <location>
 }) {
   const [_, setResumeData] = useAtom(resumeDataAtom);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleAdd = (
     type: "title" | "links" | "heading" | "section" | "divider"
@@ -82,61 +91,26 @@ export default function Adder({
 
   return (
     <div className="flex flex-col">
-      <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>What component to add?</DialogTitle>
-            <DialogDescription className="flex flex-col gap-2 w-1/2 mx-auto">
-              <DialogClose asChild>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <PopoverTrigger asChild>{children}</PopoverTrigger>
+        <PopoverContent className="flex flex-col gap-2">
+          {["title", "links", "heading", "section", "divider"].map(itemType => {
+            return (
+              <>
                 <Button
+                  variant="outline"
                   onClick={() => {
-                    handleAdd("title");
+                    handleAdd(itemType as any);
+                    setIsPopoverOpen(false);
                   }}
                 >
-                  add title
+                  add {itemType}
                 </Button>
-              </DialogClose>
-              <DialogClose asChild>
-                <Button
-                  onClick={() => {
-                    handleAdd("links");
-                  }}
-                >
-                  add links
-                </Button>
-              </DialogClose>
-              <DialogClose asChild>
-                <Button
-                  onClick={() => {
-                    handleAdd("heading");
-                  }}
-                >
-                  add heading
-                </Button>
-              </DialogClose>
-              <DialogClose asChild>
-                <Button
-                  onClick={() => {
-                    handleAdd("section");
-                  }}
-                >
-                  add section
-                </Button>
-              </DialogClose>
-              <DialogClose asChild>
-                <Button
-                  onClick={() => {
-                    handleAdd("divider");
-                  }}
-                >
-                  add divider
-                </Button>
-              </DialogClose>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+              </>
+            );
+          })}
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

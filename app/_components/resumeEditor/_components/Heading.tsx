@@ -1,5 +1,5 @@
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { resumeDataAtom } from "@/store";
@@ -14,19 +14,29 @@ function View({ item }: { item: any }) {
     </div>
   );
 }
-function Editor({
-  item,
-  handleHeadingChange,
-}: {
-  item: any;
-  handleHeadingChange: any;
-}) {
+function Editor({ id }: { id: string }) {
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const handleHeadingChange = (e: any) => {
+    setResumeData((prev: any) => {
+      const result = prev.map((item: any) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            data: e.target.value,
+          };
+        }
+        return item;
+      });
+      return result;
+    });
+  };
   return (
     <>
       <Label htmlFor="heading">heading</Label>
       <Textarea
+        key="heading"
         id="heading"
-        value={item.data}
+        defaultValue={resumeData.find((item: any) => item.id === id).data}
         onChange={handleHeadingChange}
         placeholder="Heading"
         className="text-2xl"
@@ -44,27 +54,21 @@ export default function Heading({ id }: { id: string }) {
     setItem(resumeData.find((item: any) => item.id === id));
   }, [resumeData]);
 
-  const handleHeadingChange = (e: any) => {
-    setResumeData((prev: any) => {
-      const result = prev.map((item: any) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            data: e.target.value,
-          };
-        }
-        return item;
-      });
-      return result;
-    });
-  };
+  return CommonEditor({
+    id: id,
+    item: item,
+    View: View({ item: item }),
+    Editor: Editor({
+      id,
+    }),
+  });
 
-  return (
-    <CommonEditor
-      id={id}
-      item={item}
-      View={View({ item: item })}
-      Editor={Editor({ item: item, handleHeadingChange: handleHeadingChange })}
-    />
-  );
+  // return (
+  //   <CommonEditor
+  //     id={id}
+  //     item={item}
+  //     View={View({ item: item })}
+  //     Editor={Editor({ item: item, handleHeadingChange: handleHeadingChange })}
+  //   />
+  // );
 }

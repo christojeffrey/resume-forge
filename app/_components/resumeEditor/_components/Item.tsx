@@ -61,25 +61,25 @@ function Editor({ item, handleChange }: any) {
         <Label htmlFor="title">title</Label>
         <Input
           id="title"
-          value={item.data.title}
+          defaultValue={item.data.title}
           onChange={e => handleChange(e.target.value, "title")}
         />
         <Label htmlFor="subtitle">subtitle</Label>
         <Input
           id="subtitle"
-          value={item.data.subtitle}
+          defaultValue={item.data.subtitle}
           onChange={e => handleChange(e.target.value, "subtitle")}
         />
         <Label htmlFor="date">date</Label>
         <Input
           id="date"
-          value={item.data.date}
+          defaultValue={item.data.date}
           onChange={e => handleChange(e.target.value, "date")}
         />
         <Label htmlFor="moreInformation">more information</Label>
         <Input
           id="moreInformation"
-          value={item.data.moreInformation}
+          defaultValue={item.data.moreInformation}
           onChange={e => handleChange(e.target.value, "moreInformation")}
         />
         <Label htmlFor="details">details</Label>
