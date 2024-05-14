@@ -1,23 +1,71 @@
-import { useChat } from "ai/react";
+"use client";
 
+import { type CoreMessage } from "ai";
+import { useState } from "react";
+import { continueConversation } from "@/app/actions";
+import { readStreamableValue } from "ai/rsc";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { resumeDataToPlainText } from "@/lib/utils";
+import { useAtom } from "jotai";
+import { messagesAtom, resumeDataAtom } from "@/store";
+import Markdown from "react-markdown";
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const [resumeData] = useAtom(resumeDataAtom);
+  const [messages, setMessages] = useAtom(messagesAtom);
+  const [input, setInput] = useState("");
+  const [data, setData] = useState<any>();
 
+  async function invokeChat() {
+    const newMessages: CoreMessage[] = [
+      ...messages,
+      {
+        content: `${input}`,
+        role: "user",
+      },
+    ];
+
+    setMessages(newMessages);
+    setInput("");
+
+    const result = await continueConversation(
+      newMessages,
+      resumeDataToPlainText(resumeData)
+    );
+    setData(result.data);
+
+    for await (const content of readStreamableValue(result.message)) {
+      setMessages([
+        ...newMessages,
+        {
+          role: "assistant",
+          content: content as string,
+        },
+      ]);
+    }
+  }
   return (
-    <div className="h-full flex flex-col justify-end w-full max-w-md py-24 mx-auto">
-      {messages.map(m => (
-        <div key={m.id} className="whitespace-pre-wrap">
-          {m.role === "user" ? "User: " : "AI: "}
-          {m.content}
+    <div className="flex flex-col h-full">
+      {/* {data && <pre>{JSON.stringify(data, null, 2)}</pre>} */}
+      {/* chat */}
+      <ScrollArea className="flex-1  overflow-auto">
+        <div className="">
+          {messages.map((m, i) => (
+            <div key={i} className="whitespace-pre-wrap">
+              {m.role === "user" ? "User: " : "AI: "}
+              <Markdown>{m.content as string}</Markdown>
+            </div>
+          ))}
         </div>
-      ))}
+      </ScrollArea>
 
-      <form onSubmit={handleSubmit}>
+      {/* bottom part - input */}
+      <form className="w-4/5 mx-auto" action={invokeChat}>
+        <div>suggestion input:</div>
         <input
-          className="bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
+          className="bottom-0 w-full p-2 border border-gray-300 rounded shadow-xl"
           value={input}
-          placeholder="Say something..."
-          onChange={handleInputChange}
+          placeholder="Suggest improvement for my resume!"
+          onChange={e => setInput(e.target.value)}
         />
       </form>
     </div>

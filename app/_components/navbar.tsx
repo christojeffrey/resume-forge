@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAtom } from "jotai";
-import { isAuthenticatedAtom, userAtom } from "@/store";
+import { isAuthenticatedAtom, modeAtom, userAtom } from "@/store";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -28,6 +28,7 @@ import {
 export default function NavBar() {
   const [user] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
+  const [mode, setMode] = useAtom(modeAtom);
   console.log("user", user);
   return (
     <>
@@ -35,15 +36,23 @@ export default function NavBar() {
         <div className="font-bold">Resume Forge</div>
         <div className="flex gap-6">
           {/* mode */}
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Mode" defaultValue="view" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="view">View</SelectItem>
-              <SelectItem value="edit">AI Edit</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="hidden xl:block">
+            <Select
+              onValueChange={value => {
+                console.log("value", value);
+                setMode(value as "edit" | "view");
+              }}
+              defaultValue={mode}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="view">View</SelectItem>
+                <SelectItem value="edit">AI Edit</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -76,25 +85,5 @@ export default function NavBar() {
         </div>
       </nav>
     </>
-  );
-}
-
-export function SelectDemo() {
-  return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a fruit" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
   );
 }

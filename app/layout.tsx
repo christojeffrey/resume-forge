@@ -45,8 +45,8 @@ export default async function RootLayout({
         `}
         </Script>
       </head>
-
-      <body className={inter.className}>
+      {/* ${inter.className} */}
+      <body className={`font-sans `}>
         <noscript
           dangerouslySetInnerHTML={{
             __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${GoogleTagManagerID}" height="0" width="0" style="display: none; visibility: hidden;" />`,

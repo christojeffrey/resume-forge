@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import Preview from "../_components/resumePreview";
 import { Button } from "@/components/ui/button";
 import { ResumeEditor } from "../_components/resumeEditor/ResumeEditor";
-import { isSavingAtom, resumeDataAtom, userAtom } from "@/store";
+import { isSavingAtom, modeAtom, resumeDataAtom, userAtom } from "@/store";
 
 import Adder from "../_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -16,6 +16,7 @@ import AIAnalysis from "../_components/AIAnalysis";
 // main page
 
 export default function Home() {
+  const [mode] = useAtom(modeAtom);
   return (
     <div className="h-full">
       {/* phone */}
@@ -38,15 +39,12 @@ export default function Home() {
       <div className="hidden xl:block w-3/4 mx-auto h-full py-2 gap-2">
         <div className="flex h-full gap-2">
           {/* left */}
-          <div className="w-1/3 flex flex-col h-full overflow-auto gap-2">
+          <div className="w-1/2 flex flex-col h-full overflow-auto gap-2">
             <Editor />
           </div>
           {/* right */}
-          <div className="w-1/3 flex flex-col h-full">
-            <AIAnalysis />
-          </div>
-          <div className="w-1/3 flex flex-col h-full">
-            <Viewer />
+          <div className="w-1/2 flex flex-col h-full">
+            {mode === "edit" ? <AIAnalysis /> : <Viewer />}
           </div>
         </div>
       </div>

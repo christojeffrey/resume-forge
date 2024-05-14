@@ -56,7 +56,8 @@ const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 const model = google("models/gemini-1.5-pro-latest");
-export async function GET(req: Request) {
+
+export async function temp(req: Request) {
   //   const { description } = await req.json();
   //   console.log(description);
 
