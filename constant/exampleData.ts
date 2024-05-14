@@ -1,4 +1,52 @@
-export const hardCodedData = [
+export type ResumeTitle = {
+  type: "title";
+  data: string;
+  draft: boolean;
+};
+
+export type ResumeLinks = {
+  type: "links";
+  data: {
+    text: string;
+    href: string;
+  }[];
+  draft: boolean;
+};
+
+export type ResumeHeading = {
+  type: "heading";
+  data: string;
+  draft: boolean;
+};
+
+export type ResumeItem = {
+  type: "item";
+  data: {
+    title: string;
+    subtitle: string;
+    date: string;
+    moreInformation: string;
+    details: {
+      htmlValue: string;
+      objectValue: { insert: string }[];
+    };
+  };
+  draft: boolean;
+};
+
+export type ResumeDivider = {
+  type: "divider";
+  draft: boolean;
+};
+
+export type ResumeData =
+  | ResumeTitle
+  | ResumeLinks
+  | ResumeHeading
+  | ResumeItem
+  | ResumeDivider;
+
+export const hardCodedData: ResumeData[] = [
   {
     type: "title",
     data: "Jeffrey",

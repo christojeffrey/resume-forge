@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 const inter = Inter({ subsets: ["latin"] });
-
+import { Toaster } from "@/components/ui/sonner";
 import GlobalStateSetter from "./_components/GlobalStateSetter";
 import Script from "next/script";
 
@@ -58,6 +58,7 @@ export default async function RootLayout({
           resumeData={resumeData}
         >
           {children}
+          <Toaster />
         </GlobalStateSetter>
       </body>
     </html>

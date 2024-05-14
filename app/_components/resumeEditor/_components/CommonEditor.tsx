@@ -104,21 +104,24 @@ export function CommonEditor({
             {Editor}
             <div className="flex flex-col gap-2 mt-2">
               {/* common editor */}
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="draft"
-                  checked={item.draft}
-                  onCheckedChange={toggleDraft}
-                />
-                {/* butttons */}
-                <Label
-                  htmlFor="draft"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  draft
-                </Label>
+              <div className="flex items-center space-x-2 justify-between">
+                <div className="flex gap-2">
+                  <Checkbox
+                    id="draft"
+                    checked={item.draft}
+                    onCheckedChange={toggleDraft}
+                  />
+                  <Label
+                    htmlFor="draft"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    draft
+                  </Label>
+                </div>
                 {/* delete */}
-                <Button onClick={handleDelete}>Delete</Button>
+                <Button onClick={handleDelete} variant="destructive">
+                  Delete
+                </Button>
               </div>
             </div>
           </DialogDescription>
