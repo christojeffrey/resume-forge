@@ -128,6 +128,7 @@ function EditorWithCommonAttribute({
   handleDelete: () => void;
 }) {
   console.log("testing");
+
   return (
     <>
       {editor}
@@ -152,7 +153,7 @@ function EditorWithCommonAttribute({
           <Button onClick={handleDelete} variant="destructive">
             Delete
           </Button>
-          <Button>suggest!</Button>
+          {/* <Button onClick={() => {}}>suggest!</Button> */}
         </div>
       </div>
     </>

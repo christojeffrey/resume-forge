@@ -15,7 +15,7 @@ import {
 import Adder from "../_components/adder";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import AIAnalysis from "../_components/AIAnalysis";
@@ -54,8 +54,8 @@ export default function Home() {
           >
             <Editor />
           </div>
-          {/* middle */}
 
+          {/* middle */}
           <div
             className={`${isEditing ? "w-1/3" : "w-0"} overflow-hidden transition-all duration-300  
               ease-out`}
@@ -65,8 +65,9 @@ export default function Home() {
                 setEditingComponent(null);
                 setIsEditing(false);
               }}
+              className="flex justify-end cursor-pointer"
             >
-              close
+              <X className="w-6 h-6 " />
             </div>
             {/* fade in and out */}
             <div
@@ -82,7 +83,6 @@ export default function Home() {
           >
             {mode === "edit" ? <AIAnalysis /> : <Viewer />}
           </div>
-        
         </div>
       </div>
     </div>

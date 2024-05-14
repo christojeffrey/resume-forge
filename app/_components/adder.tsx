@@ -63,6 +63,12 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 
+function getID(item: any, length: number) {
+  return {
+    ...item,
+    id: length,
+  };
+}
 export default function Adder({
   children,
   location,
@@ -70,7 +76,7 @@ export default function Adder({
   children: React.ReactNode;
   location?: number; // added after index number <location>
 }) {
-  const [_, setResumeData] = useAtom(resumeDataAtom);
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleAdd = (
@@ -78,13 +84,13 @@ export default function Adder({
   ) => {
     setResumeData((prev: any) => {
       if (location !== undefined) {
-        return generateID([
+        return [
           ...prev.slice(0, location),
-          initialDataForEachType[type],
+          getID(initialDataForEachType[type], prev.length),
           ...prev.slice(location),
-        ]);
+        ];
       } else {
-        return generateID([...prev, initialDataForEachType[type]]);
+        return [...prev, getID(initialDataForEachType[type], prev.length)];
       }
     });
   };
