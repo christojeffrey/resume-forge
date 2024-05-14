@@ -26,7 +26,6 @@ export async function POST(req: Request) {
         "You are an Excellent Human Resource Agent who's job is to review resumes and provide feedback. You are reviewing a resume of a candidate who is applying for a job. Be constructive, point out the good thing before giving suggestion",
       prompt: `Review the resume of the candidate applying for a job position. The resume is given in plain text, so focus on the content. The resume is as follows: ${resume}`,
     });
-    console.log("object", object);
     return Response.json(object);
   } catch (e) {
     console.log("ERROR!");

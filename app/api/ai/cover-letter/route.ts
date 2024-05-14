@@ -1,11 +1,11 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { generateObject, generateText } from "ai";
-import { z } from "zod";
+import { generateText } from "ai";
 
 const google = createGoogleGenerativeAI({
   // custom settings
   apiKey: process.env.GEMINI_API_KEY,
 });
+
 const model = google("models/gemini-pro");
 export async function POST(req: Request) {
   const { resume, job } = await req.json();
