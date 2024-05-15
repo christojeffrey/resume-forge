@@ -1,7 +1,6 @@
 import { Label } from "@/components/ui/label";
 
 export default function LinksViewer({ item }: any) {
-  console.log("item from links", JSON.stringify(item, null, 2));
   return (
     <>
       <div>

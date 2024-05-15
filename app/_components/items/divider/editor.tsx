@@ -1,3 +1,11 @@
+"use client";
+
+import { Label } from "@/components/ui/label";
+
 export default function DividerEditor() {
-  return <></>;
+  return (
+    <>
+      <Label htmlFor="heading">divider</Label>
+    </>
+  );
 }

@@ -3,7 +3,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { currentItemEditedAtom, resumeDataAtom } from "@/store";
 import { useAtom } from "jotai";
-import { useState } from "react";
 
 export default function TitleEditor() {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
@@ -14,12 +13,13 @@ export default function TitleEditor() {
     setResumeData((prev: any) => {
       const result = prev.map((item: any) => {
         if (item.id === itemEdited.id) {
-          return {
+          const newItem = {
             ...item,
             data: e.target.value,
           };
+          setItemEdited(newItem);
+          return newItem;
         }
-        setItemEdited(item);
         return item;
       });
       return result;

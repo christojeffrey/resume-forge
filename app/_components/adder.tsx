@@ -68,7 +68,7 @@ export default function Adder({
   children: React.ReactNode;
   location?: number; // added after index number <location>
 }) {
-  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [, setResumeData] = useAtom(resumeDataAtom);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleAdd = (

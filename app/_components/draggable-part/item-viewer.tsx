@@ -18,8 +18,7 @@ import { Eye, EyeOff } from "lucide-react";
 export default function ItemViewer({ id }: { id: string }) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
   const item = resumeData.find((item: any) => item.id === id);
-  console.log("item:", JSON.stringify(item, null, 2));
-  const [isEditing, setIsEditing] = useAtom(isEditingAtom);
+  const [, setIsEditing] = useAtom(isEditingAtom);
   const [currentItemEdited, setCurrentItemEdited] = useAtom(
     currentItemEditedAtom
   );
@@ -28,10 +27,15 @@ export default function ItemViewer({ id }: { id: string }) {
     setResumeData((prev: any) => {
       const result = prev.map((item: any) => {
         if (item.id === id) {
-          return {
+          const newItem = {
             ...item,
             draft: !item.draft,
           };
+          // check if id them same
+          if (currentItemEdited?.id === id) {
+            setCurrentItemEdited(newItem);
+          }
+          return newItem;
         }
         return item;
       });
@@ -43,12 +47,15 @@ export default function ItemViewer({ id }: { id: string }) {
     setResumeData((prev: any) => {
       return prev.filter((item: any) => item.id !== id);
     });
-    // set id editing
-    setCurrentItemEdited(null);
+    if (currentItemEdited?.id === id) {
+      setCurrentItemEdited(null);
+    }
   };
 
-  function handleEditButtonClick() {
+  function handleDoEdit() {
     // set currentIDEdited
+    console.log("item", item);
+    // setCurrentItemEdited(null);
     setCurrentItemEdited(item);
     setIsEditing(true);
   }
@@ -61,7 +68,7 @@ export default function ItemViewer({ id }: { id: string }) {
           <div className="flex flex-row justify-between w-full group">
             {/* fill */}
             <div
-              onClick={handleEditButtonClick}
+              onClick={handleDoEdit}
               className={`flex-1 overflow-auto group ${item.draft ? "opacity-20" : ""}`}
             >
               {typeToDraggableItem[item.type]({ item })}
@@ -86,9 +93,7 @@ export default function ItemViewer({ id }: { id: string }) {
         </ContextMenuTrigger>
         {/* right click content */}
         <ContextMenuContent>
-          <ContextMenuItem onClick={handleEditButtonClick}>
-            edit
-          </ContextMenuItem>
+          <ContextMenuItem onClick={handleDoEdit}>edit</ContextMenuItem>
           <ContextMenuItem onClick={handleDelete}>delete</ContextMenuItem>
           <ContextMenuItem onClick={toggleDraft}>
             {item.draft ? "show on resume" : "turn to draft"}

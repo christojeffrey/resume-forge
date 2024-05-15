@@ -9,12 +9,20 @@ import SectionEditor from "../items/section/editor";
 import LinksEditor from "../items/links/editor";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
 
 // editor with common attribute
 export default function ItemEditor() {
-  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [, setResumeData] = useAtom(resumeDataAtom);
   const [itemEdited, setItemEdited] = useAtom(currentItemEditedAtom);
 
+  // const [Component, setComponent] = useState<any>(<></>);
+
+  // useEffect(() => {
+  //   if (itemEdited) {
+  //     setComponent(typeToEditor[itemEdited.type]);
+  //   }
+  // }, [itemEdited]);
   const handleDelete = () => {
     setResumeData((prev: any) => {
       return prev.filter((item: any) => item.id !== itemEdited.id);
@@ -41,12 +49,15 @@ export default function ItemEditor() {
 
   if (!itemEdited) return null;
 
+  const Component = typeToEditor[itemEdited.type];
+
   return (
     <>
       {/* editor */}
-      {itemEdited.type}
-      {itemEdited.id}
-      <div>{typeToEditor[itemEdited.type]()}</div>
+      {/* {itemEdited.type} */}
+      {/* {itemEdited.id} */}
+      {Component && <Component />}
+
       <div className="flex flex-col gap-2 mt-2">
         {/* common editor */}
         <div className="flex items-center space-x-2 justify-between">
