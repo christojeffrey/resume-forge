@@ -7,7 +7,6 @@ import HeadingEditor from "../items/heading/editor";
 import TitleEditor from "../items/title/editor";
 import SectionEditor from "../items/section/editor";
 import LinksEditor from "../items/links/editor";
-import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
@@ -26,12 +25,14 @@ export default function ItemEditor() {
     setResumeData((prev: any) => {
       const result = prev.map((item: any) => {
         if (item.id === itemEdited.id) {
-          return {
+          const newItem = {
             ...item,
             draft: !item.draft,
           };
+
+          setItemEdited(newItem);
+          return newItem;
         }
-        setItemEdited(item);
         return item;
       });
       return result;
@@ -39,11 +40,13 @@ export default function ItemEditor() {
   };
 
   if (!itemEdited) return null;
+
   return (
     <>
       {/* editor */}
       {itemEdited.type}
-      {/* <div>{typeToEditor[itemEdited.type]()}</div> */}
+      {itemEdited.id}
+      <div>{typeToEditor[itemEdited.type]()}</div>
       testing
       <div className="flex flex-col gap-2 mt-2">
         {/* common editor */}

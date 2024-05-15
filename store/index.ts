@@ -10,7 +10,7 @@ export const modeAtom = atom<"edit" | "view">("edit");
 
 export const isEditingAtom = atom(false);
 
-export const currentItemEditedAtom = atom<any>({});
+export const currentItemEditedAtom = atom<any>(null);
 
 // AI part
 export const messagesAtom = atom<CoreMessage[]>([]);
