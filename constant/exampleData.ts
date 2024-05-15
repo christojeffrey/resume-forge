@@ -1,58 +1,14 @@
-export type ResumeTitle = {
-  type: "title";
-  data: string;
-  draft: boolean;
-};
+import { ResumeItem } from "@/src/lib/type";
 
-export type ResumeLinks = {
-  type: "links";
-  data: {
-    text: string;
-    href: string;
-  }[];
-  draft: boolean;
-};
-
-export type ResumeHeading = {
-  type: "heading";
-  data: string;
-  draft: boolean;
-};
-
-export type ResumeItem = {
-  type: "item";
-  data: {
-    title: string;
-    subtitle: string;
-    date: string;
-    moreInformation: string;
-    details: {
-      htmlValue: string;
-      objectValue: { insert: string }[];
-    };
-  };
-  draft: boolean;
-};
-
-export type ResumeDivider = {
-  type: "divider";
-  draft: boolean;
-};
-
-export type ResumeData =
-  | ResumeTitle
-  | ResumeLinks
-  | ResumeHeading
-  | ResumeItem
-  | ResumeDivider;
-
-export const hardCodedData: ResumeData[] = [
+export const hardCodedData: ResumeItem[] = [
   {
     type: "title",
     data: "Jeffrey",
     draft: false,
+    id: "1",
   },
   {
+    id: "2",
     type: "links",
     data: [
       {
@@ -60,33 +16,33 @@ export const hardCodedData: ResumeData[] = [
         href: "https://christojeffrey.com",
       },
       {
-        text: "christojeffrey.com",
-        href: "https://christojeffrey.com",
-      },
-      {
-        text: "christojeffrey.com",
-        href: "https://christojeffrey.com",
+        text: "github.com/christojeffrey",
+        href: "https://github.com/christojeffrey",
       },
     ],
     draft: false,
   },
   {
+    id: "3",
     type: "heading",
     data: "Education",
     draft: false,
   },
   {
-    type: "item",
+    id: "4",
+    type: "section",
     data: {
-      title: "Bachelor of Science in Computer Science",
-      subtitle: "University of the Philippines Los Baños",
-      date: "2018-2022",
+      title: "Institut Teknologi Bandung",
+      subtitle: "Computer Science",
+      date: "2020 - 2024",
       moreInformation: "GPA: 3.00/4.00",
       details: {
-        htmlValue: "<p>asfd</p>",
+        htmlValue:
+          "<p>- excellent student, number one in the field</p><p>- Took courses in data structures, algorithms, and machine learning.</p><p>- Proficient in Python, with 3 years of experience.</p><p>- Designed and implemented a database system for a small business.</p>",
         objectValue: [
           {
-            insert: "asfd\n",
+            insert:
+              "- excellent student, number one in the field\n- Took courses in data structures, algorithms, and machine learning.\n- Proficient in Python, with 3 years of experience.\n- Designed and implemented a database system for a small business.\n",
           },
         ],
       },
@@ -94,6 +50,7 @@ export const hardCodedData: ResumeData[] = [
     draft: false,
   },
   {
+    id: "5",
     type: "divider",
     draft: false,
   },
