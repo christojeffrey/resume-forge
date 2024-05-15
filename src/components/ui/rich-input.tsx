@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { UnprivilegedEditor } from "react-quill";
 import {
   Popover,
@@ -12,9 +12,13 @@ const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
 
-    return ({ forwardedRef, ...props }: any) => (
+    const Component = ({ forwardedRef, ...props }: any) => (
       <RQ ref={forwardedRef} {...props} />
     );
+
+    Component.displayName = "ReactQuill";
+
+    return Component;
   },
   {
     ssr: false,
