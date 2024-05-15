@@ -1,4 +1,4 @@
-import { ResumeItem } from "@/lib/type";
+import { ResumeItem } from "@/src/lib/type";
 
 export const hardCodedData: ResumeItem[] = [
   {

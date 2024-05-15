@@ -1,3 +1,4 @@
+import { ResumeData, ResumeItem } from "@/src/lib/type";
 import { CoreMessage } from "ai";
 import { atom } from "jotai";
 
@@ -10,7 +11,7 @@ export const modeAtom = atom<"edit" | "view">("edit");
 
 export const isEditingAtom = atom(false);
 
-export const currentItemEditedAtom = atom<any>(null);
+export const currentItemEditedAtom = atom<ResumeItem | null>(null);
 
 // AI part
 export const messagesAtom = atom<CoreMessage[]>([]);
@@ -20,7 +21,7 @@ export const AIFeatureRightNowAtom = atom<"chat" | "analyze" | "cover-letter">(
   "chat"
 );
 
-export const generateID = (data: any[]) => {
+export const generateID = (data: ResumeData) => {
   return data.map((item, index) => {
     return {
       ...item,
@@ -29,4 +30,4 @@ export const generateID = (data: any[]) => {
   });
 };
 // main page
-export const resumeDataAtom = atom<any>([]);
+export const resumeDataAtom = atom<ResumeData>([]);
