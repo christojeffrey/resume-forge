@@ -13,7 +13,7 @@ export default function Chat() {
   const [resumeData] = useAtom(resumeDataAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
   const [input, setInput] = useState("");
-  const [data, setData] = useState<any>();
+  const [, setData] = useState<any>();
 
   async function invokeChat() {
     const newMessages: CoreMessage[] = [

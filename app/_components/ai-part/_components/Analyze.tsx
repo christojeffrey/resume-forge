@@ -5,7 +5,7 @@ import { latestAnalysisAtom, resumeDataAtom } from "@/store";
 import { useAtom } from "jotai";
 
 export default function Analyze() {
-  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [resumeData] = useAtom(resumeDataAtom);
 
   const [analysisResponse, setAnalysisResponse] = useAtom(latestAnalysisAtom);
 
@@ -31,7 +31,7 @@ export default function Analyze() {
             Keyword And ATS Optimization
           </div>
           <ProgressBarScore
-            maxScore="10"
+            maxScore={10}
             currentScore={analysisResponse.keywordAndATSOptimization}
             title="keyword And ATS Optimization"
           />
@@ -44,7 +44,7 @@ export default function Analyze() {
             Action Verbs Optimization
           </div>
           <ProgressBarScore
-            maxScore="10"
+            maxScore={10}
             currentScore={analysisResponse.actionVerbs}
             title="keyword And ATS Optimization"
           />
@@ -75,7 +75,15 @@ export default function Analyze() {
 
 import { Card, ProgressBar } from "@tremor/react";
 
-export function ProgressBarScore({ currentScore, title, maxScore }: any) {
+export function ProgressBarScore({
+  currentScore,
+  title,
+  maxScore,
+}: {
+  currentScore: number;
+  title: string;
+  maxScore: number;
+}) {
   return (
     <>
       <Card className="mx-auto max-w-sm">

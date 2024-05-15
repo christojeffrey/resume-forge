@@ -19,7 +19,9 @@ export default function AIAnalysis() {
         value={AIFeatureRightNow}
         className="h-full flex flex-col"
         onValueChange={value => {
-          setAIFeatureRightNowAtom(value as any);
+          setAIFeatureRightNowAtom(
+            value as "chat" | "analyze" | "cover-letter"
+          );
         }}
       >
         <TabsList className="w-fit">

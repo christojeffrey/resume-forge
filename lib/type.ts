@@ -41,10 +41,58 @@ const dividerSchema = z.object({
   type: z.literal("divider"),
 });
 
-const resumeSchema = z.union([
+export const resumeSchema = z.union([
   titleSchema,
   linksSchema,
   headingSchema,
   itemSchema,
   dividerSchema,
 ]);
+
+export type TitleType = {
+  type: "title";
+  data: string;
+  draft: boolean;
+};
+
+export type LinksType = {
+  type: "links";
+  data: {
+    text: string;
+    href: string;
+  }[];
+  draft: boolean;
+};
+
+export type HeadingType = {
+  type: "heading";
+  data: string;
+  draft: boolean;
+};
+
+export type SectionType = {
+  type: "section";
+  data: {
+    title: string;
+    subtitle: string;
+    date: string;
+    moreInformation: string;
+    details: {
+      htmlValue: string;
+      objectValue: { insert: string }[];
+    };
+  };
+  draft: boolean;
+};
+
+export type DividerType = {
+  type: "divider";
+  draft: boolean;
+};
+
+export type ResumeItem =
+  | TitleType
+  | LinksType
+  | HeadingType
+  | SectionType
+  | DividerType;
