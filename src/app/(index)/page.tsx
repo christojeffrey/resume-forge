@@ -42,22 +42,14 @@ export default function Home() {
         <div className="flex h-full gap-2">
           {/* left */}
           <div
-            className={`${isEditing ? "w-1/3" : "w-1/2"} flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
+            className={`w-1/2 flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
           >
             <ResumeDraggablePart />
           </div>
 
-          {/* middle */}
-          <div
-            className={`${isEditing ? "w-1/3" : "w-0"} overflow-hidden transition-all duration-300  
-              ease-out`}
-          >
-            <ResumeEditorPart />
-          </div>
-
           {/* right */}
           <div
-            className={`${isEditing ? "w-1/3" : "w-1/2"} w-1/2 flex flex-col h-full transition-all duration-300 ease-out`}
+            className={`w-1/2 flex flex-col h-full transition-all duration-300 ease-out`}
           >
             {mode === "edit" ? <AIAnalysis /> : <ResumePreviewPart />}
           </div>

@@ -15,11 +15,38 @@ import {
 } from "@/src/components/ui/context-menu";
 import { Eye, EyeOff } from "lucide-react";
 import { ResumeData, ResumeItem } from "@/src/lib/type";
+import DividerEditor from "../items/divider/editor";
+import HeadingEditor from "../items/heading/editor";
+import TitleEditor from "../items/title/editor";
+import SectionEditor from "../items/section/editor";
+import LinksEditor from "../items/links/editor";
+import ItemEditor from "../editor-part/item-editor";
 
-export default function ItemViewer({ id }: { id: string }) {
+export default function ItemViewerAndEditor({ id }: { id: string }) {
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [isEditing, setIsEditing] = useAtom(isEditingAtom);
+
+  const [currentItemEdited, setCurrentItemEdited] = useAtom(
+    currentItemEditedAtom
+  );
+  const item = resumeData.find((item: ResumeItem) => item.id === id) ?? null;
+
+  if (!item) return null;
+
+  return isEditing && currentItemEdited?.id === item.id ? (
+    <>
+      <ItemEditor />
+    </>
+  ) : (
+    <>
+      <ItemViewer id={id} />
+    </>
+  );
+}
+export function ItemViewer({ id }: { id: string }) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
   const item = resumeData.find((item: ResumeItem) => item.id === id) ?? null;
-  const [, setIsEditing] = useAtom(isEditingAtom);
+  const [isEditing, setIsEditing] = useAtom(isEditingAtom);
   const [currentItemEdited, setCurrentItemEdited] = useAtom(
     currentItemEditedAtom
   );
@@ -58,6 +85,7 @@ export default function ItemViewer({ id }: { id: string }) {
     setIsEditing(true);
   }
   if (!item) return null;
+
   return (
     <>
       {/* view */}
@@ -110,4 +138,14 @@ const typeToDraggableItem: {
   title: TitleViewer,
   section: SectionViewer,
   links: LinksViewer,
+};
+
+const typeToEditor: {
+  [key: string]: () => JSX.Element;
+} = {
+  divider: DividerEditor,
+  heading: HeadingEditor,
+  title: TitleEditor,
+  section: SectionEditor,
+  links: LinksEditor,
 };

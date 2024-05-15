@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
-import { UnprivilegedEditor } from "react-quill";
+import { useMemo, useRef, useState } from "react";
+import ReactQuill, { UnprivilegedEditor } from "react-quill";
 import {
   Popover,
   PopoverContent,
@@ -14,16 +14,18 @@ import { toast } from "sonner";
 // only allow bold for now
 export function RichInput({ value: initialValue, onChange }: any) {
   const [value, setValue] = useState(initialValue);
-  const ReactQuill = useMemo(
-    () => dynamic(() => import("react-quill"), { ssr: false }),
-    []
-  );
+  // const ReactQuill = useMemo(
+  //   () => dynamic(() => import("react-quill"), { ssr: false }),
+  //   []
+  // );
   const [openPopover, setOpenPopover] = useState(false);
   const [highlightedText, setHighlightedText] = useState("");
+  const [highlightedTextIndex, setHighlightedTextIndex] = useState(0);
 
   const [paraphraseSuggestions, setParaphraseSuggestions] = useState<string[]>(
     []
   );
+  const quillRef = useRef<any>(null);
 
   function handleChangeSelection(
     selection: any,
@@ -40,6 +42,7 @@ export function RichInput({ value: initialValue, onChange }: any) {
         const text = editor.getText(range.index, range.length);
         console.log("User has highlighted: ", text);
         setHighlightedText(text);
+        setHighlightedTextIndex(range.index);
         setParaphraseSuggestions([]);
       }
     } else {
@@ -57,13 +60,18 @@ export function RichInput({ value: initialValue, onChange }: any) {
     onChange(newValue, delta?.ops);
   }
 
-  async function handleParaPhraseButtonClick() {
+  function handleApplyParaphrase(suggestion: string) {
+    quillRef.current
+      .getEditor()
+      .deleteText(highlightedTextIndex, highlightedText.length);
+    quillRef.current.getEditor().insertText(highlightedTextIndex, suggestion);
+  }
+  async function handleParaphraseButtonClick() {
     // call api
     try {
       const response = await fetch("/api/ai/paraphrase", {
         method: "POST",
         body: JSON.stringify({
-          resume: "resume",
           textToParaphrase: highlightedText,
         }),
       });
@@ -78,6 +86,7 @@ export function RichInput({ value: initialValue, onChange }: any) {
     <>
       <Popover open={openPopover} onOpenChange={setOpenPopover}>
         <ReactQuill
+          ref={quillRef}
           onChangeSelection={handleChangeSelection}
           theme="snow"
           value={value}
@@ -89,7 +98,7 @@ export function RichInput({ value: initialValue, onChange }: any) {
         <PopoverContent>
           <div>{highlightedText}</div>
           <Button
-            onClick={handleParaPhraseButtonClick}
+            onClick={handleParaphraseButtonClick}
             disabled={!highlightedText}
           >
             paraphrase!
@@ -97,7 +106,16 @@ export function RichInput({ value: initialValue, onChange }: any) {
           {/* paraphrase suggestion */}
           <div>
             {paraphraseSuggestions.map((suggestion, index) => (
-              <div key={index}>{suggestion}</div>
+              <div key={index} className="flex">
+                <div className="flex-1">{suggestion}</div>
+                <Button
+                  className="w-12"
+                  variant="ghost"
+                  onClick={() => handleApplyParaphrase(suggestion)}
+                >
+                  apply
+                </Button>
+              </div>
             ))}
           </div>
         </PopoverContent>

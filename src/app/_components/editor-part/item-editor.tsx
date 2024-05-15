@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
-import { currentItemEditedAtom, resumeDataAtom } from "@/store";
+import { currentItemEditedAtom, isEditingAtom, resumeDataAtom } from "@/store";
 import { useAtom } from "jotai";
 import DividerEditor from "../items/divider/editor";
 import HeadingEditor from "../items/heading/editor";
@@ -9,21 +9,23 @@ import SectionEditor from "../items/section/editor";
 import LinksEditor from "../items/links/editor";
 import { Checkbox } from "@/src/components/ui/checkbox";
 import { Label } from "@/src/components/ui/label";
+import { X } from "lucide-react";
 
 // editor with common attribute
 export default function ItemEditor() {
   const [, setResumeData] = useAtom(resumeDataAtom);
   const [itemEdited, setItemEdited] = useAtom(currentItemEditedAtom);
+  const [, setIsEditing] = useAtom(isEditingAtom);    
 
   const handleDelete = () => {
-    setResumeData((prev) => {
-      return prev.filter((item) => item.id !== itemEdited?.id);
+    setResumeData(prev => {
+      return prev.filter(item => item.id !== itemEdited?.id);
     });
     setItemEdited(null);
   };
   const toggleDraft = () => {
-    setResumeData((prev) => {
-      const result = prev.map((item) => {
+    setResumeData(prev => {
+      const result = prev.map(item => {
         if (item.id === itemEdited?.id) {
           const newItem = {
             ...item,
@@ -45,6 +47,15 @@ export default function ItemEditor() {
 
   return (
     <>
+      <div
+        onClick={() => {
+          setItemEdited(null);
+          setIsEditing(false);
+        }}
+        className="flex justify-end cursor-pointer"
+      >
+        <X className="w-6 h-6 " />
+      </div>
       {/* editor */}
       {/* {itemEdited.type} */}
       {/* {itemEdited.id} */}
