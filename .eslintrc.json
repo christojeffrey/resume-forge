@@ -1,7 +1,10 @@
 {
-  // "extends": "next/core-web-vitals",
+  "extends": "next/core-web-vitals"
   // "rules": {
   //   // "@typescript-eslint/no-explicit-any": "error"
+  // }
+  // "rules": {
+  //   "@typescript-eslint/no-explicit-any": "error"
   // }
   // "extends": ["eslint:recommended", "next"]
 }
