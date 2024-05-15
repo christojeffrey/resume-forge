@@ -5,8 +5,10 @@ export const hardCodedData: ResumeItem[] = [
     type: "title",
     data: "Jeffrey",
     draft: false,
+    id: "1",
   },
   {
+    id: "2",
     type: "links",
     data: [
       {
@@ -14,27 +16,25 @@ export const hardCodedData: ResumeItem[] = [
         href: "https://christojeffrey.com",
       },
       {
-        text: "christojeffrey.com",
-        href: "https://christojeffrey.com",
-      },
-      {
-        text: "christojeffrey.com",
-        href: "https://christojeffrey.com",
+        text: "github.com/christojeffrey",
+        href: "https://github.com/christojeffrey",
       },
     ],
     draft: false,
   },
   {
+    id: "3",
     type: "heading",
     data: "Education",
     draft: false,
   },
   {
+    id: "4",
     type: "section",
     data: {
       title: "Institut Teknologi Bandung",
       subtitle: "Computer Science",
-      date: "2020 - 202",
+      date: "2020 - 2024",
       moreInformation: "GPA: 3.00/4.00",
       details: {
         htmlValue:
@@ -50,6 +50,7 @@ export const hardCodedData: ResumeItem[] = [
     draft: false,
   },
   {
+    id: "5",
     type: "divider",
     draft: false,
   },

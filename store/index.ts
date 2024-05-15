@@ -7,7 +7,7 @@ export const userAtom = atom<any>(undefined);
 export const isAuthenticatedAtom = atom(false);
 export const isSavingAtom = atom(false);
 
-export const modeAtom = atom<"edit" | "view">("edit");
+export const modeAtom = atom<"edit" | "view">("view");
 
 export const isEditingAtom = atom(false);
 
@@ -18,7 +18,7 @@ export const messagesAtom = atom<CoreMessage[]>([]);
 export const latestAnalysisAtom = atom<any>({});
 
 export const AIFeatureRightNowAtom = atom<"chat" | "analyze" | "cover-letter">(
-  "chat"
+  "analyze"
 );
 
 export const generateID = (data: ResumeData) => {

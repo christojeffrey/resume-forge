@@ -1,13 +1,25 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useMemo, useRef, useState } from "react";
-import ReactQuill, { UnprivilegedEditor } from "react-quill";
+import { UnprivilegedEditor } from "react-quill";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
 
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+
+    return ({ forwardedRef, ...props }: any) => (
+      <RQ ref={forwardedRef} {...props} />
+    );
+  },
+  {
+    ssr: false,
+  }
+);
 import "react-quill/dist/quill.snow.css";
 import { Button } from "./button";
 import { toast } from "sonner";
@@ -86,7 +98,7 @@ export function RichInput({ value: initialValue, onChange }: any) {
     <>
       <Popover open={openPopover} onOpenChange={setOpenPopover}>
         <ReactQuill
-          ref={quillRef}
+          forwardedRef={quillRef}
           onChangeSelection={handleChangeSelection}
           theme="snow"
           value={value}
