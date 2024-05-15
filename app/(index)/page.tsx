@@ -1,12 +1,12 @@
 "use client";
 import { useAtom } from "jotai";
-import ResumeDraggablePart from "../_components/resume-draggable-part";
+import ResumeDraggablePart from "../_components/draggable-part";
 import { isEditingAtom, modeAtom } from "@/store";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AIAnalysis from "../_components/ai-part";
-import ResumeEditorPart from "../_components/resume-editor-part";
-import ResumePreviewPart from "../_components/resume-preview-part";
+import ResumeEditorPart from "../_components/editor-part";
+import ResumePreviewPart from "../_components/preview-part";
 
 // main page
 

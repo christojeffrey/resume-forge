@@ -32,7 +32,7 @@ export default function ResumeDraggablePart() {
   );
 }
 function EmptyResumePrompt() {
-  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [, setResumeData] = useAtom(resumeDataAtom);
 
   function handleCreateExampleButtonClick() {
     setResumeData(generateID(hardCodedData));

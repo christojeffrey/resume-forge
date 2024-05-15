@@ -1,4 +1,4 @@
-import ResumePreview from "../_components/resume-preview-part/resume-preview";
+import ResumePreview from "../_components/preview-part/resume-preview";
 
 export default function PreviewPage() {
   return (

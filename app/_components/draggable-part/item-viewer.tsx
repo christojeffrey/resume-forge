@@ -1,8 +1,5 @@
 "use client";
-import {
-  currentItemEditedAtom,
-  resumeDataAtom,
-} from "@/store";
+import { currentItemEditedAtom, resumeDataAtom } from "@/store";
 import DividerViewer from "../items/divider/viewer";
 import HeadingViewer from "../items/heading/viewer";
 import LinksViewer from "../items/links/viewer";
@@ -21,7 +18,7 @@ import { Eye, EyeOff } from "lucide-react";
 export default function ItemViewer({ id }: { id: string }) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
   const item = resumeData.find((item: any) => item.id === id);
-  // console.log("item:", JSON.stringify(item, null, 2));
+  console.log("item:", JSON.stringify(item, null, 2));
   const [isEditing, setIsEditing] = useAtom(isEditingAtom);
   const [currentItemEdited, setCurrentItemEdited] = useAtom(
     currentItemEditedAtom
@@ -67,8 +64,7 @@ export default function ItemViewer({ id }: { id: string }) {
               onClick={handleEditButtonClick}
               className={`flex-1 overflow-auto group ${item.draft ? "opacity-20" : ""}`}
             >
-              {item.type}
-              {/* {typeToDraggableItem[item.type]({ item })} */}
+              {typeToDraggableItem[item.type]({ item })}
             </div>
             {/* icons */}
             {item.draft ? (
