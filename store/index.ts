@@ -5,13 +5,14 @@ export const recomputePreviewAtom = atom(true);
 export const userAtom = atom<any>(undefined);
 export const isAuthenticatedAtom = atom(false);
 export const isSavingAtom = atom(false);
+
 export const modeAtom = atom<"edit" | "view">("edit");
 
 export const isEditingAtom = atom(false);
-// react component
-export const editingComponentAtom = atom<React.ReactNode>(null);
 
-// AI stuff
+export const currentItemEditedAtom = atom<any>({});
+
+// AI part
 export const messagesAtom = atom<CoreMessage[]>([]);
 export const latestAnalysisAtom = atom<any>({});
 

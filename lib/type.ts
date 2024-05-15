@@ -20,7 +20,7 @@ const headingSchema = z.object({
 });
 
 const itemSchema = z.object({
-  type: z.literal("item"),
+  type: z.literal("section"),
   data: z.object({
     title: z.string(),
     subtitle: z.string(),

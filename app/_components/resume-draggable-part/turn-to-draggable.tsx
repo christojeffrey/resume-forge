@@ -32,7 +32,6 @@ export function TurnToDraggable({
   id,
   index,
   children,
-  array,
   className,
   isAnyDragged = false,
 }: any) {
@@ -55,8 +54,6 @@ export function TurnToDraggable({
 
                 <div className="flex-1 overflow-auto">{children}</div>
               </div>
-              {/* if not the last, add separator */}
-              {/* <Separator /> */}
               {/* adder */}
               <div className={`w-full h-4 px-8`}>
                 <Adder location={index + 1}>

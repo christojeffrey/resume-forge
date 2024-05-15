@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -33,7 +34,7 @@ const initialDataForEachType = {
     draft: false,
   },
   section: {
-    type: "item",
+    type: "section",
     data: {
       title: "testing",
       subtitle: "testing",

@@ -1,16 +1,15 @@
-import { Button } from "@/components/ui/button";
+"use client";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { editingComponentAtom, isEditingAtom, resumeDataAtom } from "@/store";
+  currentItemEditedAtom,
+  resumeDataAtom,
+} from "@/store";
+import DividerViewer from "../items/divider/viewer";
+import HeadingViewer from "../items/heading/viewer";
+import LinksViewer from "../items/links/viewer";
+import SectionViewer from "../items/section/viewer";
+import TitleViewer from "../items/title/viewer";
 import { useAtom } from "jotai";
-import { Checkbox } from "@/components/ui/checkbox";
+import { isEditingAtom } from "@/store";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -18,23 +17,15 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Eye, EyeOff } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
 
-export function CommonEditor({
-  id,
-  item,
-  View,
-  Editor,
-}: {
-  id: string;
-  item: any;
-  View: React.ReactNode;
-  Editor: React.ReactNode;
-}) {
-  const [_resumeData, setResumeData] = useAtom(resumeDataAtom);
-  const [editingComponent, setEditingComponent] = useAtom(editingComponentAtom);
+export default function ItemViewer({ id }: { id: string }) {
+  const [resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const item = resumeData.find((item: any) => item.id === id);
+  // console.log("item:", JSON.stringify(item, null, 2));
   const [isEditing, setIsEditing] = useAtom(isEditingAtom);
+  const [currentItemEdited, setCurrentItemEdited] = useAtom(
+    currentItemEditedAtom
+  );
 
   const toggleDraft = () => {
     setResumeData((prev: any) => {
@@ -55,18 +46,13 @@ export function CommonEditor({
     setResumeData((prev: any) => {
       return prev.filter((item: any) => item.id !== id);
     });
-    setEditingComponent(null);
+    // set id editing
+    setCurrentItemEdited(null);
   };
 
   function handleEditButtonClick() {
-    setEditingComponent(
-      EditorWithCommonAttribute({
-        editor: Editor,
-        item: item,
-        toggleDraft: toggleDraft,
-        handleDelete: handleDelete,
-      })
-    );
+    // set currentIDEdited
+    setCurrentItemEdited(item);
     setIsEditing(true);
   }
   return (
@@ -81,7 +67,8 @@ export function CommonEditor({
               onClick={handleEditButtonClick}
               className={`flex-1 overflow-auto group ${item.draft ? "opacity-20" : ""}`}
             >
-              {View}
+              {item.type}
+              {/* {typeToDraggableItem[item.type]({ item })} */}
             </div>
             {/* icons */}
             {item.draft ? (
@@ -115,47 +102,12 @@ export function CommonEditor({
     </>
   );
 }
-
-function EditorWithCommonAttribute({
-  editor,
-  item,
-  toggleDraft,
-  handleDelete,
-}: {
-  editor: React.ReactNode;
-  item: any;
-  toggleDraft: () => void;
-  handleDelete: () => void;
-}) {
-  console.log("testing");
-
-  return (
-    <>
-      {editor}
-      <div className="flex flex-col gap-2 mt-2">
-        {/* common editor */}
-        <div className="flex items-center space-x-2 justify-between">
-          <div className="flex gap-2">
-            {/* <Checkbox
-              id="draft"
-              defaultChecked={item.draft}
-              checked={item.draft}
-              onCheckedChange={toggleDraft}
-            />
-            <Label
-              htmlFor="draft"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              draft
-            </Label> */}
-          </div>
-          {/* delete */}
-          <Button onClick={handleDelete} variant="destructive">
-            Delete
-          </Button>
-          {/* <Button onClick={() => {}}>suggest!</Button> */}
-        </div>
-      </div>
-    </>
-  );
-}
+const typeToDraggableItem: {
+  [key: string]: any;
+} = {
+  divider: DividerViewer,
+  heading: HeadingViewer,
+  title: TitleViewer,
+  section: SectionViewer,
+  links: LinksViewer,
+};

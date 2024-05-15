@@ -1,3 +1,4 @@
+"use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Chat from "./_components/Chat";
 import GenerateCoverLetter from "./_components/GenerateCoverLetter";

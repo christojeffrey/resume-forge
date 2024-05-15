@@ -20,7 +20,7 @@ export function resumeDataToPlainText(resumeData: any) {
       if (item.type === "heading") {
         newResumeText += "# " + item.data + "\n";
       }
-      if (item.type === "item") {
+      if (item.type === "section") {
         newResumeText += item.data.title + "\n";
         newResumeText += item.data.subtitle + "\n";
         newResumeText += item.data.date + "\n";

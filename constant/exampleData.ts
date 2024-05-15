@@ -19,8 +19,8 @@ export type ResumeHeading = {
   draft: boolean;
 };
 
-export type ResumeItem = {
-  type: "item";
+export type ResumeSection = {
+  type: "section";
   data: {
     title: string;
     subtitle: string;
@@ -39,14 +39,14 @@ export type ResumeDivider = {
   draft: boolean;
 };
 
-export type ResumeData =
+export type ResumeItem =
   | ResumeTitle
   | ResumeLinks
   | ResumeHeading
-  | ResumeItem
+  | ResumeSection
   | ResumeDivider;
 
-export const hardCodedData: ResumeData[] = [
+export const hardCodedData: ResumeItem[] = [
   {
     type: "title",
     data: "Jeffrey",
@@ -76,17 +76,19 @@ export const hardCodedData: ResumeData[] = [
     draft: false,
   },
   {
-    type: "item",
+    type: "section",
     data: {
-      title: "Bachelor of Science in Computer Science",
-      subtitle: "University of the Philippines Los Baños",
-      date: "2018-2022",
+      title: "Institut Teknologi Bandung",
+      subtitle: "Computer Science",
+      date: "2020 - 202",
       moreInformation: "GPA: 3.00/4.00",
       details: {
-        htmlValue: "<p>asfd</p>",
+        htmlValue:
+          "<p>- excellent student, number one in the field</p><p>- Took courses in data structures, algorithms, and machine learning.</p><p>- Proficient in Python, with 3 years of experience.</p><p>- Designed and implemented a database system for a small business.</p>",
         objectValue: [
           {
-            insert: "asfd\n",
+            insert:
+              "- excellent student, number one in the field\n- Took courses in data structures, algorithms, and machine learning.\n- Proficient in Python, with 3 years of experience.\n- Designed and implemented a database system for a small business.\n",
           },
         ],
       },

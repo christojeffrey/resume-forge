@@ -5,11 +5,11 @@ import ResumeLinks from "./_components/links";
 import ResumeTitle from "./_components/title";
 import { Page, Document } from "@react-pdf/renderer";
 
-const typeToComponents = [
+const typeToResumeComponents = [
   { type: "title", component: ResumeTitle },
   { type: "links", component: ResumeLinks },
   { type: "heading", component: ResumeHeading },
-  { type: "item", component: ResumeItem },
+  { type: "section", component: ResumeItem },
   { type: "divider", component: Divider },
 ];
 
@@ -32,7 +32,7 @@ export const Resume = ({ resumeData = [] }: { resumeData: any }) => {
           if (draft) {
             return null;
           }
-          const Component = typeToComponents.find(
+          const Component = typeToResumeComponents.find(
             component => component.type === type
           )?.component;
           if (!Component) {
