@@ -58,7 +58,7 @@ import { useState } from "react";
 function getID(item: any, length: number) {
   return {
     ...item,
-    id: length,
+    id: "id-" + length,
   };
 }
 export default function Adder({

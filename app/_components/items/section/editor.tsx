@@ -5,7 +5,6 @@ import { useAtom } from "jotai";
 
 import { Input } from "@/components/ui/input";
 import { RichInput } from "@/components/ui/rich-input";
-import { useState } from "react";
 
 export default function SectionEditor() {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
@@ -19,15 +18,16 @@ export default function SectionEditor() {
     setResumeData((prev: any) => {
       const result = prev.map((item: any) => {
         if (item.id === itemEdited.id) {
-          return {
+          const newItem = {
             ...item,
             data: {
               ...item.data,
               [type]: value,
             },
           };
+          setItemEdited(newItem);
+          return newItem;
         }
-        setItemEdited(item);
         return item;
       });
       return result;

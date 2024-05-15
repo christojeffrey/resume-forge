@@ -47,7 +47,6 @@ export default function ItemEditor() {
       {itemEdited.type}
       {itemEdited.id}
       <div>{typeToEditor[itemEdited.type]()}</div>
-      testing
       <div className="flex flex-col gap-2 mt-2">
         {/* common editor */}
         <div className="flex items-center space-x-2 justify-between">

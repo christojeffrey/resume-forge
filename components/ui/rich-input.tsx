@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
+import "react-quill/dist/quill.snow.css";
 // only allow bold for now
 export function RichInput({ value: initialValue, onChange }: any) {
   const [value, setValue] = useState(initialValue);
