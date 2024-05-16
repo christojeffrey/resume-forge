@@ -20,6 +20,8 @@ export default function Analyze() {
     setAnalysisResponse(response);
   }
 
+ 
+
   return (
     <div className="flex flex-col">
       <div className="text-3xl">analyze</div>

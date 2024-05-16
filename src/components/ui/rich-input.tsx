@@ -115,17 +115,19 @@ export function RichInput({ value: initialValue, onChange }: any) {
         />
         <PopoverTrigger></PopoverTrigger>
         <PopoverContent>
-          <div>{highlightedText}</div>
-          <Button
-            onClick={handleParaphraseButtonClick}
-            disabled={!highlightedText}
-          >
-            paraphrase!
-          </Button>
+          <div className="flex flex-col">
+            <div className="text-xs text-slate-700">{highlightedText}</div>
+            <Button
+              onClick={handleParaphraseButtonClick}
+              disabled={!highlightedText}
+            >
+              paraphrase!
+            </Button>
+          </div>
           {/* paraphrase suggestion */}
           <div>
             {paraphraseSuggestions.map((suggestion, index) => (
-              <div key={index} className="flex">
+              <div key={index} className="flex gap-2">
                 <div className="flex-1">{suggestion}</div>
                 <Button
                   className="w-12"

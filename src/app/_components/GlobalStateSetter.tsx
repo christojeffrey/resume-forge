@@ -1,6 +1,5 @@
 "use client";
 
-import { hardCodedData } from "@/constant/exampleData";
 import { ResumeData } from "@/src/lib/type";
 import {
   generateID,
@@ -30,10 +29,10 @@ export default function GlobalStateSetter({
   useEffect(() => {
     setUser(user);
     setIsAuthenticated(isAuthenticated);
-    // if authenticated, use the one from server. if not, check localstorage. if doesn't exist, use hardcoded
+    // if authenticated, use the one from server. if not, check localstorage.
     const localResumeData = localStorage.getItem("resumeData")
       ? JSON.parse(localStorage.getItem("resumeData") as string)
-      : hardCodedData;
+      : [];
 
     const validResumeData = isAuthenticated ? resumeData : localResumeData;
     setResumeData(generateID(validResumeData));

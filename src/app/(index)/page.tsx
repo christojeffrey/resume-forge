@@ -1,7 +1,7 @@
 "use client";
 import { useAtom } from "jotai";
 import ResumeDraggablePart from "../_components/draggable-part";
-import { isEditingAtom, modeAtom } from "@/src/store";
+import { isEditingAtom, modeAtom, resumeDataAtom } from "@/src/store";
 
 import {
   Tabs,
@@ -10,15 +10,18 @@ import {
   TabsTrigger,
 } from "@/src/components/ui/tabs";
 import AIAnalysis from "../_components/ai-part";
-import ResumeEditorPart from "../_components/editor-part";
 import ResumePreviewPart from "../_components/preview-part";
+import EmptyResumePrompt from "../_components/empty-resume-prompt";
 
 // main page
 
 export default function Home() {
   const [mode] = useAtom(modeAtom);
-  const [isEditing, setIsEditing] = useAtom(isEditingAtom);
+  const [resumeData] = useAtom(resumeDataAtom);
 
+  if (resumeData.length === 0) {
+    return <EmptyResumePrompt />;
+  }
   return (
     <div className="h-full">
       {/* phone */}

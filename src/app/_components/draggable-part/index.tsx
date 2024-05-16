@@ -12,15 +12,11 @@ import { ScrollArea } from "@/src/components/ui/scroll-area";
 import Adder from "../adder";
 import { Button } from "@/src/components/ui/button";
 import ItemViewer from "./item-viewer";
-import { hardCodedData } from "@/constant/exampleData";
 import { ResumeData, ResumeItem } from "@/src/lib/type";
 
 export default function ResumeDraggablePart() {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
 
-  if (resumeData.length === 0) {
-    return <EmptyResumePrompt />;
-  }
   return (
     <div className="flex flex-col justify-between h-full">
       <ScrollArea>
@@ -32,35 +28,7 @@ export default function ResumeDraggablePart() {
     </div>
   );
 }
-function EmptyResumePrompt() {
-  const [, setResumeData] = useAtom(resumeDataAtom);
 
-  function handleCreateExampleButtonClick() {
-    setResumeData(generateID(hardCodedData));
-  }
-  return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <p className="text-lg font-semibold text-slate-500">
-        Your resume is empty
-      </p>
-      <p className="text-slate-400">
-        Click the button below to add a new section
-      </p>
-      {/* add new component, or create from example */}
-      <Adder>
-        <Button variant="outline">Add</Button>
-      </Adder>
-      {/* create from example */}
-      <Button
-        variant="outline"
-        className="mt-2"
-        onClick={handleCreateExampleButtonClick}
-      >
-        Create from example
-      </Button>
-    </div>
-  );
-}
 function ResumeEditor() {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
 
