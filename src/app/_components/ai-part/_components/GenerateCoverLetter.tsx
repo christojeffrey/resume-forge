@@ -9,7 +9,7 @@ import {
   SelectLabel,
 } from "@/src/components/ui/select";
 import { resumeDataToPlainText } from "@/src/lib/utils";
-import { resumeDataAtom } from "@/store";
+import { resumeDataAtom } from "@/src/store";
 import { Button } from "@/src/components/ui/button";
 import { useAtom } from "jotai";
 import { useState } from "react";

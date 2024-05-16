@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
 import { resumeDataToPlainText } from "@/src/lib/utils";
-import { latestAnalysisAtom, resumeDataAtom } from "@/store";
+import { latestAnalysisAtom, resumeDataAtom } from "@/src/store";
 import { useAtom } from "jotai";
 
 export default function Analyze() {

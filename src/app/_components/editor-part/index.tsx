@@ -1,5 +1,5 @@
 "use client";
-import { currentItemEditedAtom, isEditingAtom } from "@/store";
+import { currentItemEditedAtom, isEditingAtom } from "@/src/store";
 import { useAtom } from "jotai";
 import ItemEditor from "./item-editor";
 import { X } from "lucide-react";

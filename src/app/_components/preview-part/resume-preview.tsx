@@ -10,7 +10,7 @@ import { pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { Resume } from "./resume";
-import { resumeDataAtom, recomputePreviewAtom } from "@/store";
+import { resumeDataAtom, recomputePreviewAtom } from "@/src/store";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/src/components/ui/button";

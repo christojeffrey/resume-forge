@@ -3,7 +3,7 @@ import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { LinksType } from "@/src/lib/type";
-import { currentItemEditedAtom, resumeDataAtom } from "@/store";
+import { currentItemEditedAtom, resumeDataAtom } from "@/src/store";
 import { useAtom } from "jotai";
 
 export default function LinksEditor() {

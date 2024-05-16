@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
-import { resumeDataAtom } from "@/store";
+import { resumeDataAtom } from "@/src/store";
 import { useAtom } from "jotai";
 
 const initialTitle: TitleType = {

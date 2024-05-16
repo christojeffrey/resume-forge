@@ -3,7 +3,7 @@
 import { Textarea } from "@/src/components/ui/textarea";
 
 import { Label } from "@/src/components/ui/label";
-import { currentItemEditedAtom, resumeDataAtom } from "@/store";
+import { currentItemEditedAtom, resumeDataAtom } from "@/src/store";
 import { useAtom } from "jotai";
 import { HeadingType } from "@/src/lib/type";
 

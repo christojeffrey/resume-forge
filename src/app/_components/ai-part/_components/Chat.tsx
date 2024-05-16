@@ -7,7 +7,7 @@ import { readStreamableValue } from "ai/rsc";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
 import { resumeDataToPlainText } from "@/src/lib/utils";
 import { useAtom } from "jotai";
-import { messagesAtom, resumeDataAtom } from "@/store";
+import { messagesAtom, resumeDataAtom } from "@/src/store";
 import Markdown from "react-markdown";
 export default function Chat() {
   const [resumeData] = useAtom(resumeDataAtom);

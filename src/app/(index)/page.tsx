@@ -1,7 +1,7 @@
 "use client";
 import { useAtom } from "jotai";
 import ResumeDraggablePart from "../_components/draggable-part";
-import { isEditingAtom, modeAtom } from "@/store";
+import { isEditingAtom, modeAtom } from "@/src/store";
 
 import {
   Tabs,

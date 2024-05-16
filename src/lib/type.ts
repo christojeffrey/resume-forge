@@ -26,14 +26,7 @@ const itemSchema = z.object({
     subtitle: z.string(),
     date: z.string(),
     moreInformation: z.string(),
-    details: z.object({
-      htmlValue: z.string(),
-      objectValue: z.array(
-        z.object({
-          insert: z.string(),
-        })
-      ),
-    }),
+    details: z.string(),
   }),
 });
 

@@ -18,7 +18,7 @@ import {
   AvatarImage,
 } from "@/src/components/ui/avatar";
 import { useAtom } from "jotai";
-import { isAuthenticatedAtom, modeAtom, userAtom } from "@/store";
+import { isAuthenticatedAtom, modeAtom, userAtom } from "@/src/store";
 import { Button } from "@/src/components/ui/button";
 import {
   Select,

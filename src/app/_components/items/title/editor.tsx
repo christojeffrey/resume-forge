@@ -2,7 +2,7 @@
 import { Label } from "@/src/components/ui/label";
 import { Textarea } from "@/src/components/ui/textarea";
 import { TitleType } from "@/src/lib/type";
-import { currentItemEditedAtom, resumeDataAtom } from "@/store";
+import { currentItemEditedAtom, resumeDataAtom } from "@/src/store";
 import { useAtom } from "jotai";
 
 export default function TitleEditor() {

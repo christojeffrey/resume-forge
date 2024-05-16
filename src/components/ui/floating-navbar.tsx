@@ -6,7 +6,7 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { cn } from "@/utils/cn";
+import { cn } from "@/src/utils/cn";
 import Link from "next/link";
 
 export const FloatingNav = ({
@@ -35,7 +35,6 @@ export const FloatingNav = ({
         if (direction < 0) {
           setVisible(true);
         } else {
-          
           setVisible(true);
         }
       }

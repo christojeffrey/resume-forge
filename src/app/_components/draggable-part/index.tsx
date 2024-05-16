@@ -1,7 +1,7 @@
 "use client";
 import { useAtom } from "jotai";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { generateID, resumeDataAtom } from "@/store";
+import { generateID, resumeDataAtom } from "@/src/store";
 import {
   reorder,
   StrictModeDroppable,

@@ -1,12 +1,12 @@
 "use client";
-import { currentItemEditedAtom, resumeDataAtom } from "@/store";
+import { currentItemEditedAtom, resumeDataAtom } from "@/src/store";
 import DividerViewer from "../items/divider/viewer";
 import HeadingViewer from "../items/heading/viewer";
 import LinksViewer from "../items/links/viewer";
 import SectionViewer from "../items/section/viewer";
 import TitleViewer from "../items/title/viewer";
 import { useAtom } from "jotai";
-import { isEditingAtom } from "@/store";
+import { isEditingAtom } from "@/src/store";
 import {
   ContextMenu,
   ContextMenuContent,

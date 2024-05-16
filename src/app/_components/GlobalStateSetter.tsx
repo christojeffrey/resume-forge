@@ -7,7 +7,7 @@ import {
   isAuthenticatedAtom,
   resumeDataAtom,
   userAtom,
-} from "@/store";
+} from "@/src/store";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";

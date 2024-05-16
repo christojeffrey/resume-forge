@@ -30,10 +30,6 @@ import { toast } from "sonner";
 // only allow bold for now
 export function RichInput({ value: initialValue, onChange }: any) {
   const [value, setValue] = useState(initialValue);
-  // const ReactQuill = useMemo(
-  //   () => dynamic(() => import("react-quill"), { ssr: false }),
-  //   []
-  // );
   const [openPopover, setOpenPopover] = useState(false);
   const [highlightedText, setHighlightedText] = useState("");
   const [highlightedTextIndex, setHighlightedTextIndex] = useState(0);
@@ -50,19 +46,20 @@ export function RichInput({ value: initialValue, onChange }: any) {
   ) {
     const range = editor.getSelection();
     if (range) {
-      if (range.length === 0) {
-        console.log("User cursor is at index", range.index);
-      }
+      setParaphraseSuggestions([]);
+
+      // if (range.length === 0) {
+      //   // console.log("User cursor is at index", range.index);
+      // }
       if (range.length > 0) {
         setOpenPopover(true);
         const text = editor.getText(range.index, range.length);
-        console.log("User has highlighted: ", text);
+        // console.log("User has highlighted: ", text);
         setHighlightedText(text);
         setHighlightedTextIndex(range.index);
-        setParaphraseSuggestions([]);
       }
     } else {
-      console.log("User cursor is not in the editor");
+      // console.log("User cursor is not in the editor");
     }
   }
   function handleChange(
@@ -84,16 +81,22 @@ export function RichInput({ value: initialValue, onChange }: any) {
   }
   async function handleParaphraseButtonClick() {
     // call api
+
     try {
-      const response = await fetch("/api/ai/paraphrase", {
+      fetch("/api/ai/paraphrase", {
         method: "POST",
         body: JSON.stringify({
           textToParaphrase: highlightedText,
         }),
-      });
-      const data = await response.json();
-      console.log(data);
-      setParaphraseSuggestions(data);
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setParaphraseSuggestions(data);
+        })
+        .catch(e => {
+          toast("fetch error!");
+        });
     } catch (e) {
       toast("fetch error!");
     }

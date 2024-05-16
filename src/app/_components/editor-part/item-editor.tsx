@@ -1,6 +1,10 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
-import { currentItemEditedAtom, isEditingAtom, resumeDataAtom } from "@/store";
+import {
+  currentItemEditedAtom,
+  isEditingAtom,
+  resumeDataAtom,
+} from "@/src/store";
 import { useAtom } from "jotai";
 import DividerEditor from "../items/divider/editor";
 import HeadingEditor from "../items/heading/editor";
@@ -15,7 +19,7 @@ import { X } from "lucide-react";
 export default function ItemEditor() {
   const [, setResumeData] = useAtom(resumeDataAtom);
   const [itemEdited, setItemEdited] = useAtom(currentItemEditedAtom);
-  const [, setIsEditing] = useAtom(isEditingAtom);    
+  const [, setIsEditing] = useAtom(isEditingAtom);
 
   const handleDelete = () => {
     setResumeData(prev => {

@@ -8,7 +8,7 @@ import {
 import Chat from "./_components/Chat";
 import GenerateCoverLetter from "./_components/GenerateCoverLetter";
 import Analyze from "./_components/Analyze";
-import { AIFeatureRightNowAtom } from "@/store";
+import { AIFeatureRightNowAtom } from "@/src/store";
 import { useAtom } from "jotai";
 
 export default function AIAnalysis() {

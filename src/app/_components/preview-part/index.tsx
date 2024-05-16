@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { isSavingAtom, resumeDataAtom, userAtom } from "@/store";
+import { isSavingAtom, resumeDataAtom, userAtom } from "@/src/store";
 
 export default function ResumePreviewPart() {
   const [isSaving, setIsSaving] = useAtom(isSavingAtom);
