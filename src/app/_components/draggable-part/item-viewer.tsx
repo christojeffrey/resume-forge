@@ -22,6 +22,12 @@ import SectionEditor from "../items/section/editor";
 import LinksEditor from "../items/links/editor";
 import ItemEditor from "./item-editor";
 import { getID } from "../adder";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 
 export default function ItemViewerAndEditor({ id }: { id: string }) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
@@ -112,26 +118,35 @@ export function ItemViewer({ id }: { id: string }) {
             {/* fill */}
             <div
               onClick={handleDoEdit}
-              className={`flex-1 overflow-auto group ${item?.draft ? "opacity-20" : ""}`}
+              className={`flex-1 overflow-auto group mr-2 ${item?.draft ? "opacity-20" : ""}`}
             >
               {typeToDraggableItem[item.type]({ item })}
             </div>
-            {/* icons */}
-            {item.draft ? (
-              <EyeOff
-                className="size-5 group-hover:opacity-100 opacity-50"
-                onClick={() => {
-                  toggleDraft();
-                }}
-              />
-            ) : (
-              <Eye
-                className="size-5 group-hover:opacity-100 opacity-50"
-                onClick={() => {
-                  toggleDraft();
-                }}
-              />
-            )}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger className="my-auto">
+                  {/* icons */}
+                  {item.draft ? (
+                    <EyeOff
+                      className="size-5 group-hover:opacity-100 opacity-50"
+                      onClick={() => {
+                        toggleDraft();
+                      }}
+                    />
+                  ) : (
+                    <Eye
+                      className="size-5 group-hover:opacity-100 opacity-50"
+                      onClick={() => {
+                        toggleDraft();
+                      }}
+                    />
+                  )}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Toggle set Item as Draft</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </ContextMenuTrigger>
         {/* right click content */}

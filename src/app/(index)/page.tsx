@@ -15,13 +15,14 @@ import EmptyResumePrompt from "../_components/empty-resume-prompt";
 import { Button } from "@/src/components/ui/button";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Resume } from "../_components/preview-part/resume";
-import { Plus } from "lucide-react";
+import { Download } from "lucide-react";
+
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/src/components/ui/context-menu";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 
 // main page
 
@@ -54,23 +55,23 @@ export default function Home() {
       <div className="hidden xl:block w-3/4 mx-auto h-full py-2 gap-2">
         <div className="flex flex-col h-full gap-2">
           {/* top */}
-          <div className="flex-1 flex h-full gap-2 overflow-auto">
+          <div className="flex-1 flex h-full overflow-auto">
             {/* left */}
             <div
-              className={`${mode === "edit" ? "w-2/5" : "w-1/2"} flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
+              className={`${mode === "edit" ? "w-2/5" : "w-1/2"} mr-1 flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
             >
               <ResumeDraggablePart />
             </div>
 
             {/* right */}
             <div
-              className={`${mode === "edit" ? "w-2/5" : "w-1/2"} flex flex-col h-full transition-all duration-300 ease-out`}
+              className={`${mode === "edit" ? "w-2/5 mr-1" : "w-1/2"} ml-1 flex flex-col h-full transition-all duration-300 ease-out`}
             >
               <ResumePreviewPart />
             </div>
             {/* AI */}
             <div
-              className={`${mode === "edit" ? "w-1/5 opacity-100" : "w-0 opacity-0"} flex flex-col h-full transition-all duration-300 ease-out overflow-x-clip`}
+              className={`${mode === "edit" ? "w-1/5 opacity-100 ml-1" : "w-0 opacity-0"} flex flex-col h-full transition-all duration-300 ease-out overflow-x-clip`}
             >
               <AIAnalysis />
             </div>
@@ -104,7 +105,20 @@ export default function Home() {
                 document={Resume({ resumeData })}
                 fileName="resume.pdf"
               >
-                {({ blob, url, loading, error }) => "Download"}
+                {({ blob, url, loading, error }) => (
+                  <>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Download />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Download Resume</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </>
+                )}
               </PDFDownloadLink>
             </Button>
           </div>
