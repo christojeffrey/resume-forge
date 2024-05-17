@@ -19,12 +19,22 @@ export const useContainerDimensions = (
       setDimensions(getDimensions());
     }
 
+    const resizeObserver = new ResizeObserver(() => {
+      setDimensions(getDimensions());
+    });
+
+    if (myRef.current) {
+      resizeObserver.observe(myRef.current);
+    }
+
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [myRef]);
+
+  console.log("testing dimensions: ", dimensions, "myRef: ", myRef.current);
 
   return dimensions;
 };

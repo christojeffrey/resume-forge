@@ -117,7 +117,7 @@ export default function ResumePreview({
           onLoadSuccess={onDocumentLoadSuccess}
           className="my-1" // to prevent scroll bar from showing up when the container actually has enough space
           onClick={() => {
-            router.push("/preview");
+            // router.push("/preview");
           }}
         >
           {/* -2 to prevent jitter */}

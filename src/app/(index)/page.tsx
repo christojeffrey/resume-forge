@@ -25,15 +25,15 @@ export default function Home() {
   return (
     <div className="h-full">
       {/* phone */}
-      <Tabs defaultValue="edit" className="xl:hidden flex flex-col h-full p-2">
+      <Tabs
+        defaultValue="edit"
+        className="xl:hidden flex flex-col h-full p-2 overflow-auto"
+      >
         <TabsList className="w-fit mx-auto">
           <TabsTrigger value="edit">Edit</TabsTrigger>
           <TabsTrigger value="view">View</TabsTrigger>
         </TabsList>
-        <TabsContent
-          value="edit"
-          className="flex flex-col h-full overflow-auto gap-2"
-        >
+        <TabsContent value="edit">
           <ResumeDraggablePart />
         </TabsContent>
         <TabsContent value="view">
@@ -45,16 +45,23 @@ export default function Home() {
         <div className="flex h-full gap-2">
           {/* left */}
           <div
-            className={`w-1/2 flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
+            className={`${mode === "edit" ? "w-2/5" : "w-1/2"} flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
           >
             <ResumeDraggablePart />
           </div>
 
           {/* right */}
           <div
-            className={`w-1/2 flex flex-col h-full transition-all duration-300 ease-out`}
+            className={`${mode === "edit" ? "w-2/5" : "w-1/2"} flex flex-col h-full transition-all duration-300 ease-out`}
           >
-            {mode === "edit" ? <AIAnalysis /> : <ResumePreviewPart />}
+            <ResumePreviewPart />
+          </div>
+          <div
+            className={`${mode === "edit" ? "w-1/5" : "w-0"} overflow-x-clip h-full transition-all duration-300 ease-out`}
+          >
+            <div className="full">
+              <AIAnalysis />
+            </div>
           </div>
         </div>
       </div>

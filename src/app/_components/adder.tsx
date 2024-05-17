@@ -1,6 +1,10 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
-import { resumeDataAtom } from "@/src/store";
+import {
+  currentItemEditedAtom,
+  isEditingAtom,
+  resumeDataAtom,
+} from "@/src/store";
 import { useAtom } from "jotai";
 
 const initialTitle: TitleType = {
@@ -102,18 +106,23 @@ export default function Adder({
   location?: number; // added after index number <location>
 }) {
   const [, setResumeData] = useAtom(resumeDataAtom);
+  const [isEditing, setIsEditing] = useAtom(isEditingAtom);
+  const [currentItemEdited, setCurrentItemEdited] = useAtom(
+    currentItemEditedAtom
+  );
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleAdd = (type: ItemTypeOptions) => {
     setResumeData((prev: ResumeData) => {
+      const newItem = getID(initialDataForEachType[type], prev.length);
+      if (type !== "divider") {
+        setCurrentItemEdited(newItem);
+        setIsEditing(true);
+      }
       if (location !== undefined) {
-        return [
-          ...prev.slice(0, location),
-          getID(initialDataForEachType[type], prev.length),
-          ...prev.slice(location),
-        ];
+        return [...prev.slice(0, location), newItem, ...prev.slice(location)];
       } else {
-        return [...prev, getID(initialDataForEachType[type], prev.length)];
+        return [...prev, newItem];
       }
     });
   };

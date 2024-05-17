@@ -31,10 +31,12 @@ export default function ResumeDraggablePart() {
         <div className="flex flex-col justify-between h-full">
           <ScrollArea className="flex-1">
             <ResumeEditor />
+            <Adder>
+              <div className="transition-all hover:opacity-100 opacity-0 bg-slate-200 rounded-xl text-slate-800 text-center p-8 m-4">
+                ADD
+              </div>
+            </Adder>
           </ScrollArea>
-          <Adder>
-            <Button variant="outline">Add</Button>
-          </Adder>
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent>
