@@ -62,17 +62,16 @@ export default function Chat() {
     }
   }
 
-  async function invokeChat() {
+  async function invokeChat(chatInput: string) {
     const newMessages: CoreMessage[] = [
       ...messages,
       {
-        content: `${input}`,
+        content: `${chatInput}`,
         role: "user",
       },
     ];
 
     setMessages(newMessages);
-    setInput("");
 
     const result = await continueConversation(
       newMessages,
@@ -161,8 +160,7 @@ export default function Chat() {
               onClick={async () => {
                 // clear chat, and generate cover letter
                 setMessages([]);
-                setInput("Generate cover letter");
-                await invokeChat();
+                await invokeChat("Generate cover letter");
               }}
             >
               Generate cover letter
@@ -173,7 +171,9 @@ export default function Chat() {
         <form
           className="w-full mx-auto"
           action={async () => {
-            await invokeChat();
+            const currentInput = input;
+            setInput("");
+            await invokeChat(currentInput);
           }}
         >
           <Input
