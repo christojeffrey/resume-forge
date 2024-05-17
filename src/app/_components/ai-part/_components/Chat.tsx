@@ -22,6 +22,7 @@ import {
   CollapsibleTrigger,
 } from "@/src/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
+import { Input } from "@/src/components/ui/input";
 
 export default function Chat() {
   const [resumeData] = useAtom(resumeDataAtom);
@@ -148,14 +149,28 @@ export default function Chat() {
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <Button className="" variant="link">
+            <Button
+              className=""
+              variant="link"
+              onClick={async () => {
+                // clear chat, and generate cover letter
+                setMessages([]);
+                setInput("Generate cover letter");
+                await invokeChat();
+              }}
+            >
               Generate cover letter
             </Button>
           </CollapsibleContent>
         </Collapsible>
 
-        <form className="w-full mx-auto" action={invokeChat}>
-          <input
+        <form
+          className="w-full mx-auto"
+          action={async () => {
+            await invokeChat();
+          }}
+        >
+          <Input
             className="bottom-0 w-full p-2 border border-gray-300 rounded shadow-xl"
             value={input}
             placeholder="Suggest improvement for my resume!"
