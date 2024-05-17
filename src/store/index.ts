@@ -13,12 +13,9 @@ export const isEditingAtom = atom(false);
 
 export const currentItemEditedAtom = atom<ResumeItem | null>(null);
 
-
 // AI part
 export const messagesAtom = atom<CoreMessage[]>([]);
 export const latestAnalysisAtom = atom<any>({});
-
-export const AIFeatureRightNowAtom = atom<"chat" | "cover-letter">("chat");
 
 export const generateID = (data: ResumeData) => {
   return data.map((item, index) => {
