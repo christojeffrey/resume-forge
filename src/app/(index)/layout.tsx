@@ -3,7 +3,7 @@ import { Separator } from "@/src/components/ui/separator";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="h-screen flex flex-col">
+      <div className="h-screen flex flex-col px-2 xl:p-0">
         <NavBar />
         <Separator />
         {/* fill */}

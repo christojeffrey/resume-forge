@@ -35,8 +35,8 @@ export default function NavBar() {
   const [mode, setMode] = useAtom(modeAtom);
   console.log("user", user);
   return (
-    <>
-      <nav className="flex justify-between items-center w-3/4 mx-auto my-2">
+    <div className="w-full">
+      <nav className="flex justify-between items-center w-full xl:w-3/4 xl:mx-auto my-2">
         <div className="font-bold">Resume Forge</div>
         <div className="flex gap-6">
           {/* mode */}
@@ -93,6 +93,6 @@ export default function NavBar() {
           )}
         </div>
       </nav>
-    </>
+    </div>
   );
 }
