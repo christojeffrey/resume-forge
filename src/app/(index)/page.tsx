@@ -77,7 +77,7 @@ export default function Home() {
           </div>
           <div className=" flex justify-between">
             <div className="flex items-center gap-2">
-              <Tabs>
+              {/* <Tabs>
                 <TabsList>
                   {Array.from(Array(3).keys()).map(i => (
                     <ContextMenu key={i + 1}>
@@ -97,7 +97,7 @@ export default function Home() {
               </Tabs>
               <Button variant="outline" className="p-2">
                 <Plus className="h-4" />
-              </Button>
+              </Button> */}
             </div>
             <Button variant="outline">
               <PDFDownloadLink

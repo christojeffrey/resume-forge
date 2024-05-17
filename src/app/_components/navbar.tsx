@@ -20,15 +20,15 @@ import {
 import { useAtom } from "jotai";
 import { isAuthenticatedAtom, modeAtom, userAtom } from "@/src/store";
 import { Button } from "@/src/components/ui/button";
+
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
+
+import { Bot } from "lucide-react";
 export default function NavBar() {
   const [user] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
@@ -41,21 +41,26 @@ export default function NavBar() {
         <div className="flex gap-6">
           {/* mode */}
           <div className="hidden xl:block">
-            <Select
-              onValueChange={value => {
-                console.log("value", value);
-                setMode(value as "edit" | "view");
-              }}
-              defaultValue={mode}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Mode" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="view">View</SelectItem>
-                <SelectItem value="edit">AI Edit</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Bot
+                      size={36}
+                      className={`cursor-pointer ${
+                        mode === "edit" ? "text-blue-500" : "text-gray-500"
+                      }`}
+                      onClick={() => {
+                        setMode(mode === "edit" ? "view" : "edit");
+                      }}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {mode === "edit" ? "Disable AI Edit" : "Enable AI Edit"}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </div>
           {isAuthenticated ? (
             <DropdownMenu>

@@ -100,7 +100,7 @@ export function RichInput({ value: initialValue, onChange }: any) {
       const json = await data.json();
       setParaphraseSuggestions(json);
     } catch (e) {
-      toast("fetch error!");
+      toast.error("fetch error!");
     }
     setIsLoading(false);
   }
