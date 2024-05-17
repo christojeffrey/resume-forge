@@ -13,19 +13,37 @@ import Adder from "../adder";
 import { Button } from "@/src/components/ui/button";
 import ItemViewer from "./item-viewer";
 import { ResumeData, ResumeItem } from "@/src/lib/type";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/src/components/ui/context-menu";
 
 export default function ResumeDraggablePart() {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
-
+  function handleRemoveAll() {
+    setResumeData([]);
+  }
   return (
-    <div className="flex flex-col justify-between h-full">
-      <ScrollArea>
-        <ResumeEditor />
-      </ScrollArea>
-      <Adder>
-        <Button variant="outline">Add</Button>
-      </Adder>
-    </div>
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <div className="flex flex-col justify-between h-full">
+          <ScrollArea className="flex-1">
+            <ResumeEditor />
+          </ScrollArea>
+          <Adder>
+            <Button variant="outline">Add</Button>
+          </Adder>
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem onClick={handleRemoveAll} className="text-red-500">
+          Remove all
+        </ContextMenuItem>
+        {/* <ContextMenuItem>Add</ContextMenuItem> */}
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }
 

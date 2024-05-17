@@ -20,7 +20,7 @@ import HeadingEditor from "../items/heading/editor";
 import TitleEditor from "../items/title/editor";
 import SectionEditor from "../items/section/editor";
 import LinksEditor from "../items/links/editor";
-import ItemEditor from "../editor-part/item-editor";
+import ItemEditor from "./item-editor";
 
 export default function ItemViewerAndEditor({ id }: { id: string }) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);

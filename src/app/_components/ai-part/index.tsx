@@ -18,28 +18,23 @@ export default function AIAnalysis() {
   return (
     <>
       {/* create from linkedin? recommendation that can be applied directly with a click of a button? */}
-
+      <Analyze />
       <Tabs
         defaultValue={AIFeatureRightNow}
         value={AIFeatureRightNow}
         className="h-full flex flex-col"
         onValueChange={value => {
-          setAIFeatureRightNowAtom(
-            value as "chat" | "analyze" | "cover-letter"
-          );
+          setAIFeatureRightNowAtom(value as "chat" | "cover-letter");
         }}
       >
         <TabsList className="w-fit">
-          <TabsTrigger value="analyze">Analyze</TabsTrigger>
           <TabsTrigger value="chat">Chat</TabsTrigger>
           <TabsTrigger value="cover-letter">Cover Letter</TabsTrigger>
         </TabsList>
         <TabsContent value="chat" className="flex-1 overflow-auto">
           <Chat />
         </TabsContent>
-        <TabsContent value="analyze" className=" flex-1 overflow-auto">
-          <Analyze />
-        </TabsContent>
+
         <TabsContent value="cover-letter">
           <GenerateCoverLetter />
         </TabsContent>
