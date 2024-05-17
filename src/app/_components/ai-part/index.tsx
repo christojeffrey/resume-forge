@@ -10,35 +10,20 @@ import GenerateCoverLetter from "./_components/GenerateCoverLetter";
 import Analyze from "./_components/Analyze";
 import { AIFeatureRightNowAtom } from "@/src/store";
 import { useAtom } from "jotai";
+import { Separator } from "@/src/components/ui/separator";
 
 export default function AIAnalysis() {
   const [AIFeatureRightNow, setAIFeatureRightNowAtom] = useAtom(
     AIFeatureRightNowAtom
   );
   return (
-    <>
+    <div className="flex h-full flex-col">
       {/* create from linkedin? recommendation that can be applied directly with a click of a button? */}
       <Analyze />
-      <Tabs
-        defaultValue={AIFeatureRightNow}
-        value={AIFeatureRightNow}
-        className="h-full flex flex-col"
-        onValueChange={value => {
-          setAIFeatureRightNowAtom(value as "chat" | "cover-letter");
-        }}
-      >
-        <TabsList className="w-fit">
-          <TabsTrigger value="chat">Chat</TabsTrigger>
-          <TabsTrigger value="cover-letter">Cover Letter</TabsTrigger>
-        </TabsList>
-        <TabsContent value="chat" className="flex-1 overflow-auto">
-          <Chat />
-        </TabsContent>
-
-        <TabsContent value="cover-letter">
-          <GenerateCoverLetter />
-        </TabsContent>
-      </Tabs>
-    </>
+      <Separator />
+      <div className="flex-1 overflow-auto ">
+        <Chat />
+      </div>
+    </div>
   );
 }

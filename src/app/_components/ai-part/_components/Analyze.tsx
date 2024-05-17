@@ -20,57 +20,34 @@ export default function Analyze() {
     setAnalysisResponse(response);
   }
 
- 
-
   return (
-    <div className="flex flex-col">
-      <div className="text-3xl">analyze</div>
-      <Button onClick={handleAnalysisButtonClick}>analyze</Button>
-      {/* keywordAndATSOptimization score */}
-      {analysisResponse.keywordAndATSOptimization !== undefined && (
-        <div>
-          <div className="text-xl font-bold mt-4">
-            Keyword And ATS Optimization
-          </div>
-          <ProgressBarScore
-            maxScore={10}
-            currentScore={analysisResponse.keywordAndATSOptimization}
-            title="keyword And ATS Optimization"
-          />
+    <div className="flex gap-4">
+      <div className="flex-1 flex gap-2">
+        <div className="py-2">
+          <div>score</div>
+          <div className="text-6xl">96</div>
         </div>
-      )}
-      {/* ActionVerbs score */}
-      {analysisResponse.actionVerbs !== undefined && (
-        <div>
-          <div className="text-xl font-bold mt-4">
-            Action Verbs Optimization
+        <div className="flex-1 justify-center items-center flex flex-col gap-4">
+          <div className="w-full">
+            <p className="flex items-center justify-between">
+              <span>ATS Keywords</span>
+              <span>78</span>
+            </p>
+            <ProgressBar value={78} color="teal" className="" />
           </div>
-          <ProgressBarScore
-            maxScore={10}
-            currentScore={analysisResponse.actionVerbs}
-            title="keyword And ATS Optimization"
-          />
+          <div className="w-full">
+            <p className="flex items-center justify-between">
+              <span>Action Words</span>
+              <span>89</span>
+            </p>
+            <ProgressBar value={89} color="rose" className="" />
+          </div>
         </div>
-      )}
-      {/* relevantIndustries */}
-      {analysisResponse.relevantIndustries && (
-        <div>
-          <div className="text-xl font-bold mt-4">Relevant Industries</div>
+      </div>
 
-          {analysisResponse.relevantIndustries.map((industry: string) => (
-            <div key={industry}>{industry}</div>
-          ))}
-        </div>
-      )}
-      {/* suggestions */}
-      {analysisResponse.suggestions && (
-        <div>
-          <div className="text-xl font-bold mt-4">Suggestions</div>
-          {analysisResponse.suggestions.map((suggestion: string) => (
-            <div key={suggestion}>{suggestion}</div>
-          ))}
-        </div>
-      )}
+      <div>
+        <Button variant="outline">R</Button>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { type CoreMessage } from "ai";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { continueConversation } from "@/src/app/actions";
 import { readStreamableValue } from "ai/rsc";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
@@ -15,6 +15,14 @@ import {
 } from "@/src/store";
 import Markdown from "react-markdown";
 import { Button } from "@/src/components/ui/button";
+
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/src/components/ui/collapsible";
+import { ChevronsUpDown } from "lucide-react";
+
 export default function Chat() {
   const [resumeData] = useAtom(resumeDataAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
@@ -23,7 +31,15 @@ export default function Chat() {
   const [currentItemEdited, setCurrentItemEdited] = useAtom(
     currentItemEditedAtom
   );
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   let currentlyEditedSummary = "";
   if (isEditing) {
     if (currentItemEdited) {
@@ -76,51 +92,77 @@ export default function Chat() {
     }
   }
   return (
-    <div className="flex flex-col h-full">
-      {/* show context */}
-      <div>
-        {/* if is editing, only make use currently edited block as context */}
-        {isEditing ? (
-          <div>
-            <div>{currentlyEditedSummary}</div>
-          </div>
-        ) : (
-          <div>
-            <div>resume data</div>
-            {/* <pre>{JSON.stringify(resumeData, null, 2)}</pre> */}
-          </div>
-        )}
+    <div className="flex flex-col h-full gap-2">
+      <div className="flex justify-between">
+        {/* show context */}
+        <div className="text-sm text-slate-500 font-bold">
+          {/* if is editing, only make use currently edited block as context */}
+          {isEditing ? (
+            <div>
+              <div>{currentlyEditedSummary}</div>
+            </div>
+          ) : (
+            <div>
+              <div>resume data</div>
+            </div>
+          )}
+        </div>
+        {/* reset conversation */}
+        <Button
+          onClick={() => {
+            setMessages([]);
+          }}
+          variant="link"
+          className="text-red-500"
+        >
+          Clear Chat
+        </Button>
       </div>
-      {/* reset conversation */}
-      <Button
-        onClick={() => {
-          setMessages([]);
-        }}
-      >
-        Reset conversation
-      </Button>
+
       {/* chat */}
-      <ScrollArea className="flex-1  overflow-auto">
+      <ScrollArea className="flex-1 overflow-auto">
         <div className="">
           {messages.map((m, i) => (
-            <div key={i} className="whitespace-pre-wrap">
-              {m.role === "user" ? "User: " : "AI: "}
+            <div
+              key={i}
+              className={`p-2 ${m.role === "user" ? "bg-slate-100 rounded-md" : ""} whitespace-pre-wrap`}
+            >
+              {/* {m.role === "user" ? "User: " : "AI: "} */}
               <Markdown>{m.content as string}</Markdown>
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
 
-      {/* bottom part - input */}
-      <form className="w-4/5 mx-auto" action={invokeChat}>
-        <div>suggestion input:</div>
-        <input
-          className="bottom-0 w-full p-2 border border-gray-300 rounded shadow-xl"
-          value={input}
-          placeholder="Suggest improvement for my resume!"
-          onChange={e => setInput(e.target.value)}
-        />
-      </form>
+      <div>
+        {/* bottom part - input */}
+        <Collapsible>
+          <CollapsibleTrigger asChild>
+            <div className="flex items-center justify-between space-x-4 ">
+              <p className="text-sm font-semibold">Suggestions</p>
+              <Button variant="ghost" size="sm" className="w-9 p-0">
+                <ChevronsUpDown className="h-4 w-4" />
+                <span className="sr-only">Toggle</span>
+              </Button>
+            </div>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <Button className="" variant="link">
+              Generate cover letter
+            </Button>
+          </CollapsibleContent>
+        </Collapsible>
+
+        <form className="w-full mx-auto" action={invokeChat}>
+          <input
+            className="bottom-0 w-full p-2 border border-gray-300 rounded shadow-xl"
+            value={input}
+            placeholder="Suggest improvement for my resume!"
+            onChange={e => setInput(e.target.value)}
+          />
+        </form>
+      </div>
     </div>
   );
 }

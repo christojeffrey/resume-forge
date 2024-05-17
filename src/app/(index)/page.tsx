@@ -70,11 +70,9 @@ export default function Home() {
             </div>
             {/* AI */}
             <div
-              className={`${mode === "edit" ? "w-1/5" : "w-0"} overflow-x-clip h-full transition-all duration-300 ease-out`}
+              className={`${mode === "edit" ? "w-1/5 opacity-100" : "w-0 opacity-0"} flex flex-col h-full transition-all duration-300 ease-out overflow-x-clip`}
             >
-              <div className="full">
-                <AIAnalysis />
-              </div>
+              <AIAnalysis />
             </div>
           </div>
           <div className=" flex justify-between">
@@ -89,7 +87,9 @@ export default function Home() {
                         </TabsTrigger>
                       </ContextMenuTrigger>
                       <ContextMenuContent>
-                        <ContextMenuItem>duplicate workspace {i + 1}</ContextMenuItem>
+                        <ContextMenuItem>
+                          duplicate workspace {i + 1}
+                        </ContextMenuItem>
                       </ContextMenuContent>
                     </ContextMenu>
                   ))}
