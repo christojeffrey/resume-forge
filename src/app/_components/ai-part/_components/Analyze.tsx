@@ -8,16 +8,26 @@ export default function Analyze() {
   const [resumeData] = useAtom(resumeDataAtom);
 
   const [analysisResponse, setAnalysisResponse] = useAtom(latestAnalysisAtom);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleAnalysisButtonClick() {
+    setIsLoading(true);
     const resume = resumeDataToPlainText(resumeData);
 
     const response = await fetch("/api/ai/analyze", {
       method: "POST",
       body: JSON.stringify({ resume }),
-    }).then(res => res.json());
-    console.log("response", response);
-    setAnalysisResponse(response);
+    });
+    if (!response.ok) {
+      console.error("Failed to analyze resume");
+      setIsLoading(false);
+      toast.error("Failed to analyze resume");
+      return;
+    }
+    const data = await response.json();
+    console.log("data", data);
+    setAnalysisResponse(data);
+    setIsLoading(false);
   }
 
   return (
@@ -39,7 +49,11 @@ export default function Analyze() {
                   : "?"}
               </span>
             </p>
-            <ProgressBar value={analysisResponse.ATSKeywords ?? 0} color="teal" className="" />
+            <ProgressBar
+              value={analysisResponse.ATSKeywords ?? 0}
+              color="teal"
+              className=""
+            />
           </div>
           <div className="w-full">
             <p className="flex items-center justify-between">
@@ -61,8 +75,13 @@ export default function Analyze() {
       </div>
 
       <div>
-        <Button variant="outline" onClick={handleAnalysisButtonClick}>
-          R
+        <Button
+          variant="outline"
+          onClick={handleAnalysisButtonClick}
+          disabled={isLoading}
+          className="w-12 h-12"
+        >
+          {isLoading ? <Loader2 className="animate-spin" /> : <RefreshCw />}
         </Button>
       </div>
     </div>
@@ -70,6 +89,9 @@ export default function Analyze() {
 }
 
 import { Card, ProgressBar } from "@tremor/react";
+import { useState } from "react";
+import { Loader2, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 
 export function ProgressBarScore({
   currentScore,

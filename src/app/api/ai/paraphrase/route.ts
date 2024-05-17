@@ -9,8 +9,9 @@ const google = createGoogleGenerativeAI({
 const model = google("models/gemini-1.5-pro-latest");
 export async function POST(req: Request) {
   const { textToParaphrase } = await req.json();
-
   try {
+    // test return 500
+    // throw new Error("test error");
     const { object } = await generateObject({
       model,
       schema: z.array(z.string()),

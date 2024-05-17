@@ -7,16 +7,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 //   TODO: turn this into markdown instead
-export function resumeDataToPlainText(resumeData: ResumeData) {
+export function resumeDataToPlainText(
+  resumeData: ResumeData,
+  filterDraft = true
+) {
   let newResumeText = "";
-  resumeData.forEach((item) => {
-    if (!item.draft) {
+  resumeData.forEach(item => {
+    if (filterDraft && !item.draft) {
       if (item.type === "title") {
         newResumeText += item.data + "\n";
       }
       if (item.type === "links") {
-        newResumeText +=
-          item.data.map((link) => link.href).join("\n") + "\n";
+        newResumeText += item.data.map(link => link.href).join("\n") + "\n";
       }
       if (item.type === "heading") {
         newResumeText += "# " + item.data + "\n";

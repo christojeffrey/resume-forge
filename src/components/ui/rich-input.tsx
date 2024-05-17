@@ -27,16 +27,20 @@ const ReactQuill = dynamic(
 import "react-quill/dist/quill.snow.css";
 import { Button } from "./button";
 import { toast } from "sonner";
+import { Loader2, PenLine } from "lucide-react";
+import { Separator } from "./separator";
 // only allow bold for now
 export function RichInput({ value: initialValue, onChange }: any) {
   const [value, setValue] = useState(initialValue);
   const [openPopover, setOpenPopover] = useState(false);
   const [highlightedText, setHighlightedText] = useState("");
   const [highlightedTextIndex, setHighlightedTextIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [paraphraseSuggestions, setParaphraseSuggestions] = useState<string[]>(
-    []
-  );
+  const [paraphraseSuggestions, setParaphraseSuggestions] = useState<string[]>([
+    "a",
+    "b",
+  ]);
   const quillRef = useRef<any>(null);
 
   function handleChangeSelection(
@@ -78,28 +82,27 @@ export function RichInput({ value: initialValue, onChange }: any) {
       .getEditor()
       .deleteText(highlightedTextIndex, highlightedText.length);
     quillRef.current.getEditor().insertText(highlightedTextIndex, suggestion);
+    setOpenPopover(false);
   }
   async function handleParaphraseButtonClick() {
     // call api
-
+    setIsLoading(true);
     try {
-      fetch("/api/ai/paraphrase", {
+      const data = await fetch("/api/ai/paraphrase", {
         method: "POST",
         body: JSON.stringify({
           textToParaphrase: highlightedText,
         }),
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          setParaphraseSuggestions(data);
-        })
-        .catch(e => {
-          toast("fetch error!");
-        });
+      });
+      if (!data.ok) {
+        throw new Error("fetch error!");
+      }
+      const json = await data.json();
+      setParaphraseSuggestions(json);
     } catch (e) {
       toast("fetch error!");
     }
+    setIsLoading(false);
   }
   return (
     <>
@@ -114,31 +117,38 @@ export function RichInput({ value: initialValue, onChange }: any) {
           modules={{ toolbar: ["bold"] }}
         />
         <PopoverTrigger></PopoverTrigger>
-        <PopoverContent>
-          <div className="flex flex-col">
+        <PopoverContent className="w-96 flex flex-col gap-4">
+          <div className="flex flex-row justify-between items-center gap-2">
             <div className="text-xs text-slate-700">{highlightedText}</div>
             <Button
+              className="w-36"
               onClick={handleParaphraseButtonClick}
-              disabled={!highlightedText}
+              disabled={isLoading}
+              variant="outline"
             >
-              paraphrase!
+              {isLoading ? <Loader2 className="animate-spin" /> : "paraphrase!"}
             </Button>
           </div>
+
           {/* paraphrase suggestion */}
-          <div>
-            {paraphraseSuggestions.map((suggestion, index) => (
-              <div key={index} className="flex gap-2">
-                <div className="flex-1">{suggestion}</div>
-                <Button
-                  className="w-12"
-                  variant="ghost"
-                  onClick={() => handleApplyParaphrase(suggestion)}
-                >
-                  apply
-                </Button>
+          {paraphraseSuggestions.length !== 0 && (
+            <>
+              <Separator className="mb-2" />
+              <div className="flex flex-col gap-2">
+                {paraphraseSuggestions.map((suggestion, index) => (
+                  <div key={index} className="">
+                    <div
+                      className="w-full text-left flex justify-between p-4 hover:bg-slate-100 rounded-xl cursor-pointer"
+                      onClick={() => handleApplyParaphrase(suggestion)}
+                    >
+                      <div className="flex-1">{suggestion}</div>
+                      <PenLine />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </PopoverContent>
       </Popover>
     </>
