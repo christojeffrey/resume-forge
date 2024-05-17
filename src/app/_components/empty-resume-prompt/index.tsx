@@ -10,8 +10,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
-import { Input } from "@/src/components/ui/input";
 import { Textarea } from "@/src/components/ui/textarea";
+import { Input } from "@/src/components/ui/input";
+
+import pdfToText from "react-pdftotext";
 
 export default function EmptyResumePrompt() {
   const [, setResumeData] = useAtom(resumeDataAtom);
@@ -30,7 +32,15 @@ export default function EmptyResumePrompt() {
     console.log("response", response);
     setResumeData(response);
   }
-
+  function extractText(event: any) {
+    const file = event.target.files[0];
+    pdfToText(file)
+      .then((text: string) => {
+        console.log(text);
+        setDescription(text);
+      })
+      .catch((error: any) => console.error("Failed to extract text from pdf"));
+  }
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <p className="text-lg font-semibold text-slate-500">
@@ -54,7 +64,7 @@ export default function EmptyResumePrompt() {
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="outline" className="mt-2">
-            Generate Resume
+            Generate Resume from description
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -67,7 +77,36 @@ export default function EmptyResumePrompt() {
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
-            <Button onClick={handleGenerateResumeClick} variant="ghost" className="mt-2">
+            <Button
+              onClick={handleGenerateResumeClick}
+              variant="ghost"
+              className="mt-2"
+            >
+              Generate!
+            </Button>
+          </div>
+        </PopoverContent>
+      </Popover>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="mt-2">
+            Generate Resume from pdf
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div className="flex flex-col">
+            <div className="text-xs mb-2">Input your pdf</div>
+            <Input
+              type="file"
+              accept="application/pdf"
+              onChange={extractText}
+            />
+
+            <Button
+              onClick={handleGenerateResumeClick}
+              variant="ghost"
+              className="mt-2"
+            >
               Generate!
             </Button>
           </div>

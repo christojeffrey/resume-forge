@@ -47,6 +47,7 @@
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
     "react-pdf": "^7.7.1",
+    "react-pdftotext": "^1.2.0",
     "react-quill": "^2.0.0",
     "react-resizable-panels": "^2.0.19",
     "sonner": "^1.4.41",
