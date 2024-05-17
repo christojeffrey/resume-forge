@@ -13,6 +13,7 @@ export const isEditingAtom = atom(false);
 
 export const currentItemEditedAtom = atom<ResumeItem | null>(null);
 
+
 // AI part
 export const messagesAtom = atom<CoreMessage[]>([]);
 export const latestAnalysisAtom = atom<any>({});

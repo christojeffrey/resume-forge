@@ -91,7 +91,7 @@ import {
   TitleType,
 } from "@/src/lib/type";
 
-function getID(item: ResumeItem, length: number) {
+export function getID(item: ResumeItem, length: number) {
   return {
     ...item,
     id: "id-" + length,

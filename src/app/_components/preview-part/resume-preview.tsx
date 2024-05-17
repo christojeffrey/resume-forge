@@ -20,6 +20,13 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
   import.meta.url
 ).toString();
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/src/components/ui/context-menu";
+import Link from "next/link";
 
 export default function ResumePreview({
   width,
@@ -107,22 +114,42 @@ export default function ResumePreview({
     );
   }
 
+  function handleRefresh() {
+    setDoRecomputePreview(!doRecomputePreview);
+  }
+
   return (
     <div ref={ref} className="flex flex-col h-full w-full justify-between">
       {/* later issue - this will give noticable bottom margin by giving flex grow */}
       <ScrollArea className="flex-1 border-slate-400 border">
-        {/* pdf preview */}
-        <PDFViewerDocument
-          file={pdfString}
-          onLoadSuccess={onDocumentLoadSuccess}
-          className="my-1" // to prevent scroll bar from showing up when the container actually has enough space
-          onClick={() => {
-            // router.push("/preview");
-          }}
-        >
-          {/* -2 to prevent jitter */}
-          <PDFViewerPage pageNumber={pageNumber} width={dimension.width - 2} />
-        </PDFViewerDocument>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            {/* pdf preview */}
+            <PDFViewerDocument
+              file={pdfString}
+              onLoadSuccess={onDocumentLoadSuccess}
+              className="my-1" // to prevent scroll bar from showing up when the container actually has enough space
+              onClick={() => {
+                // router.push("/preview");
+              }}
+            >
+              {/* -2 to prevent jitter */}
+              <PDFViewerPage
+                pageNumber={pageNumber}
+                width={dimension.width - 2}
+              />
+            </PDFViewerDocument>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem onClick={handleRefresh}>Refresh</ContextMenuItem>
+            <ContextMenuItem asChild>
+              <Link href="/preview" target="_blank">
+                Open Preview
+              </Link>
+            </ContextMenuItem>
+            <ContextMenuItem>Download</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       </ScrollArea>
       <div className="flex justify-between">
         {/* page navigation */}
@@ -149,21 +176,10 @@ export default function ResumePreview({
               {`>`}
             </button>
           </div>
-          <PDFDownloadLink
-            document={Resume({ resumeData })}
-            fileName="resume.pdf"
-          >
-            {({ blob, url, loading, error }) => "Download"}
-          </PDFDownloadLink>
         </div>
         {/* button */}
         <div className="flex items-center justify-end">
-          <Button
-            onClick={() => {
-              setDoRecomputePreview(!doRecomputePreview);
-            }}
-            variant="outline"
-          >
+          <Button onClick={handleRefresh} variant="outline">
             refresh
           </Button>
         </div>

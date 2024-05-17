@@ -21,6 +21,7 @@ import TitleEditor from "../items/title/editor";
 import SectionEditor from "../items/section/editor";
 import LinksEditor from "../items/links/editor";
 import ItemEditor from "./item-editor";
+import { getID } from "../adder";
 
 export default function ItemViewerAndEditor({ id }: { id: string }) {
   const [resumeData, setResumeData] = useAtom(resumeDataAtom);
@@ -84,6 +85,21 @@ export function ItemViewer({ id }: { id: string }) {
     setCurrentItemEdited(item);
     setIsEditing(true);
   }
+
+  function handleDuplicateBelow() {
+    const index = resumeData.findIndex(i => i.id === id);
+    let newItem = { ...item } as ResumeItem;
+    newItem = getID(newItem, resumeData.length);
+    setResumeData(prev => {
+      const result = [...prev];
+      result.splice(index + 1, 0, newItem);
+      return result;
+    });
+  }
+  function handleRemoveAll() {
+    setResumeData([]);
+  }
+
   if (!item) return null;
 
   return (
@@ -124,6 +140,12 @@ export function ItemViewer({ id }: { id: string }) {
           <ContextMenuItem onClick={handleDelete}>delete</ContextMenuItem>
           <ContextMenuItem onClick={toggleDraft}>
             {item.draft ? "show on resume" : "turn to draft"}
+          </ContextMenuItem>
+          <ContextMenuItem onClick={handleDuplicateBelow}>
+            duplicate below
+          </ContextMenuItem>
+          <ContextMenuItem onClick={handleRemoveAll} className="text-red-500">
+            remove all
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
