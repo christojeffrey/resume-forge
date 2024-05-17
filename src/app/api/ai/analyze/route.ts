@@ -15,18 +15,31 @@ export async function POST(req: Request) {
     const { object } = await generateObject({
       model,
       schema: z.object({
-        keywordAndATSOptimization: z.number(),
-        actionVerbs: z.number(),
-        relevantIndustries: z.array(z.string()),
-        suggestions: z.array(
-          z.string().describe("suggestion in alphanumeric only")
-        ),
+        overall: z
+          .string()
+          .describe("The overall score of the resume out of 100"),
+        ATSKeywords: z
+          .string()
+          .describe("The score of the resume based on ATS Keywords out of 100"),
+        actionKeywords: z
+          .string()
+          .describe(
+            "The score of the resume based on Action Keywords out of 100"
+          ),
       }),
       system:
         "You are an Excellent Human Resource Agent who's job is to review resumes and provide feedback. You are reviewing a resume of a candidate who is applying for a job. Be constructive, point out the good thing before giving suggestion",
-      prompt: `Review the resume of the candidate applying for a job position. The resume is given in plain text, so focus on the content. The resume is as follows: ${resume}`,
+      prompt: `Review the resume based on some criteria out of 100. The resume is as follows: ${resume}`,
     });
-    return Response.json(object);
+
+    // parse the object as number
+    const newObject = {
+      overall: parseFloat(object.overall),
+      ATSKeywords: parseFloat(object.ATSKeywords),
+      actionKeywords: parseFloat(object.actionKeywords),
+    };
+
+    return Response.json(newObject);
   } catch (e) {
     console.log("ERROR!");
     console.error(e);

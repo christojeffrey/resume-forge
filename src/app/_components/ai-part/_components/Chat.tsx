@@ -121,20 +121,26 @@ export default function Chat() {
       </div>
 
       {/* chat */}
-      <ScrollArea className="flex-1 overflow-auto">
-        <div className="">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={`p-2 ${m.role === "user" ? "bg-slate-100 rounded-md" : ""} whitespace-pre-wrap`}
-            >
-              {/* {m.role === "user" ? "User: " : "AI: "} */}
-              <Markdown>{m.content as string}</Markdown>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
+      {messages.length === 0 ? (
+        <div className="flex-1 flex justify-center items-center font-bold text-slate-500">
+          say hi!
         </div>
-      </ScrollArea>
+      ) : (
+        <ScrollArea className="flex-1 overflow-auto">
+          <div>
+            {messages.map((m, i) => (
+              <div
+                key={i}
+                className={`p-2 ${m.role === "user" ? "bg-slate-100 rounded-md" : ""} whitespace-pre-wrap`}
+              >
+                {/* {m.role === "user" ? "User: " : "AI: "} */}
+                <Markdown>{m.content as string}</Markdown>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        </ScrollArea>
+      )}
 
       <div>
         {/* bottom part - input */}

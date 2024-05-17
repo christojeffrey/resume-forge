@@ -23,30 +23,47 @@ export default function Analyze() {
   return (
     <div className="flex gap-4">
       <div className="flex-1 flex gap-2">
-        <div className="py-2">
+        <div className="py-2 w-1/3 flex justify-center items-center flex-col">
           <div>score</div>
-          <div className="text-6xl">96</div>
+          <div className="text-6xl">
+            {analysisResponse.overall ? analysisResponse.overall : "?"}
+          </div>
         </div>
         <div className="flex-1 justify-center items-center flex flex-col gap-4">
           <div className="w-full">
             <p className="flex items-center justify-between">
               <span>ATS Keywords</span>
-              <span>78</span>
+              <span>
+                {analysisResponse.ATSKeywords
+                  ? analysisResponse.ATSKeywords
+                  : "?"}
+              </span>
             </p>
-            <ProgressBar value={78} color="teal" className="" />
+            <ProgressBar value={analysisResponse.ATSKeywords ?? 0} color="teal" className="" />
           </div>
           <div className="w-full">
             <p className="flex items-center justify-between">
               <span>Action Words</span>
-              <span>89</span>
+              <span>
+                {" "}
+                {analysisResponse.actionKeywords
+                  ? analysisResponse.actionKeywords
+                  : "?"}
+              </span>
             </p>
-            <ProgressBar value={89} color="rose" className="" />
+            <ProgressBar
+              value={analysisResponse.actionKeywords ?? 0}
+              color="rose"
+              className=""
+            />
           </div>
         </div>
       </div>
 
       <div>
-        <Button variant="outline">R</Button>
+        <Button variant="outline" onClick={handleAnalysisButtonClick}>
+          R
+        </Button>
       </div>
     </div>
   );
