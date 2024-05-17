@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/**/*.ts": {
+      "api/ai/**/*.ts": {
         "maxDuration": 40
       }
     }
