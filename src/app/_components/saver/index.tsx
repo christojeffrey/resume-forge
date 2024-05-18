@@ -61,7 +61,7 @@ export default function Saver() {
     localStorage.setItem("resumesData", JSON.stringify(resumesData));
 
     if (userData) {
-      await fetch(`/api/resume/${userData?.email}`, {
+      await fetch(`/api/resumes/${userData?.email}`, {
         method: "POST",
         body: JSON.stringify(resumesData),
       });
