@@ -27,3 +27,6 @@ export const generateID = (data: ResumeData) => {
 };
 // main page
 export const resumeDataAtom = atom<ResumeData>([]);
+
+
+export const mixPanelAtom = atom<any>(undefined);

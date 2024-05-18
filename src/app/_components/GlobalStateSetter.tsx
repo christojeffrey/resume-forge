@@ -4,13 +4,16 @@ import { ResumeData } from "@/src/lib/type";
 import {
   generateID,
   isAuthenticatedAtom,
+  mixPanelAtom,
   resumeDataAtom,
   userAtom,
 } from "@/src/store";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
+import Mixpanel from "mixpanel";
 
+// Create an instance of the mixpanel client
 export default function GlobalStateSetter({
   user,
   isAuthenticated,
@@ -26,6 +29,7 @@ export default function GlobalStateSetter({
   const [_isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [isSet, setIsSet] = useState(false);
   const [_resumeData, setResumeData] = useAtom(resumeDataAtom);
+  const [mixPanel, setMixPanel] = useAtom(mixPanelAtom);
   useEffect(() => {
     setUser(user);
     setIsAuthenticated(isAuthenticated);
@@ -41,6 +45,15 @@ export default function GlobalStateSetter({
     console.log(resumeData);
     console.log(localResumeData);
     setResumeData(generateID(validResumeData));
+
+    let mixpanel = Mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || "");
+    setMixPanel(mixpanel);
+    if (user) {
+      mixpanel.people.set(user.id, {
+        $name: user.family_name + " " + user.given_name,
+        $email: user.email,
+      });
+    }
     setIsSet(true);
   }, []);
 

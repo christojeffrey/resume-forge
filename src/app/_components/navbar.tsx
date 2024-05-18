@@ -18,7 +18,12 @@ import {
   AvatarImage,
 } from "@/src/components/ui/avatar";
 import { useAtom } from "jotai";
-import { isAuthenticatedAtom, modeAtom, userAtom } from "@/src/store";
+import {
+  isAuthenticatedAtom,
+  mixPanelAtom,
+  modeAtom,
+  userAtom,
+} from "@/src/store";
 import { Button } from "@/src/components/ui/button";
 
 import {
@@ -33,6 +38,7 @@ export default function NavBar() {
   const [user] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
   const [mode, setMode] = useAtom(modeAtom);
+  const [mixPanel] = useAtom(mixPanelAtom);
   console.log("user", user);
   return (
     <div className="w-full">
@@ -51,6 +57,9 @@ export default function NavBar() {
                         mode === "edit" ? "text-blue-500" : "text-gray-500"
                       }`}
                       onClick={() => {
+                        mixPanel.track("AI Mode", {
+                          distinct_id: user?.id,
+                        });
                         setMode(mode === "edit" ? "view" : "edit");
                       }}
                     />
@@ -84,7 +93,17 @@ export default function NavBar() {
             <div className="flex gap-2">
               {/* login sign in */}
               <LoginLink>
-                <Button variant="outline">Sign in</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    mixPanel.track("Sign In", {
+                      distinct_id: user?.id,
+                      "Sign In Method": "Nav Bar Button Click",
+                    });
+                  }}
+                >
+                  Sign in
+                </Button>
               </LoginLink>
               <RegisterLink>
                 <Button>Sign up</Button>
