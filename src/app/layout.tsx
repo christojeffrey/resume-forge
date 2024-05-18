@@ -20,7 +20,6 @@ export default async function RootLayout({
   const { isAuthenticated, getUser } = getKindeServerSession();
   const authenticated = await isAuthenticated();
   const user = await getUser();
-
   let resumesData = null;
   if (authenticated) {
     resumesData = (

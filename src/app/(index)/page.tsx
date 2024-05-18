@@ -51,7 +51,6 @@ export default function Home() {
   const isMobile = useIsMobile();
   const [mode] = useAtom(modeAtom);
   const [resumeData] = useAtom(resumeDataAtom);
-  console.log("tesitng");
 
   if (resumeData.length === 0) {
     return (
