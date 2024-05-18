@@ -55,7 +55,7 @@ export default function ResumePreviewPart() {
       </div>
       {/* bottom part */}
       <div>
-        <Button onClick={handleSave} disabled={isSaving}>
+        <Button onClick={handleSave} disabled={isSaving} className="w-24">
           {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           save
         </Button>
