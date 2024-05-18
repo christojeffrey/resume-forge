@@ -103,11 +103,7 @@ export default function Home() {
   );
 }
 
-export function BottomWorkspace({
-  hideDownload = false,
-}: {
-  hideDownload?: boolean;
-}) {
+function BottomWorkspace({ hideDownload = false }: { hideDownload?: boolean }) {
   const [currentResumeWorkspace, setCurrentResumeWorkspace] = useAtom(
     currentResumeWorkspaceAtom
   );
