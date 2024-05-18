@@ -34,7 +34,5 @@ export const useContainerDimensions = (
     };
   }, [myRef]);
 
-  console.log("testing dimensions: ", dimensions, "myRef: ", myRef.current);
-
   return dimensions;
 };

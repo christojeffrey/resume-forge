@@ -131,6 +131,16 @@ export function ItemViewer({ id }: { id: string }) {
                       className="size-5 group-hover:opacity-100 opacity-50"
                       onClick={() => {
                         toggleDraft();
+
+                        (window as any).dataLayer.push({
+                          event: "event",
+                          eventProps: {
+                            category: "resume",
+                            action: "toggleDraft",
+                            label: item.id,
+                          },
+                        });
+                        console.log("toggleDraft", item.id);
                       }}
                     />
                   ) : (
