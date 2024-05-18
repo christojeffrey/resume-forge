@@ -34,7 +34,7 @@ export default function Analyze() {
     <div className="flex gap-4">
       <div className="flex-1 flex gap-2">
         <div className="py-2 w-1/3 flex justify-center items-center flex-col">
-          <div>score</div>
+          <div>Score</div>
           <div className="text-6xl">
             {analysisResponse.overall ? analysisResponse.overall : "?"}
           </div>
