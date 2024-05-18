@@ -13,7 +13,7 @@ import SectionEditor from "../items/section/editor";
 import LinksEditor from "../items/links/editor";
 import { Checkbox } from "@/src/components/ui/checkbox";
 import { Label } from "@/src/components/ui/label";
-import { X } from "lucide-react";
+import { Trash, X } from "lucide-react";
 
 // editor with common attribute
 export default function ItemEditor() {
@@ -83,8 +83,8 @@ export default function ItemEditor() {
             </Label>
           </div>
           {/* delete */}
-          <Button onClick={handleDelete} variant="destructive">
-            Delete
+          <Button onClick={handleDelete} className="text-red-500" variant="ghost">
+            <Trash className="w-6 h-6" />
           </Button>
           {/* <Button onClick={() => {}}>suggest!</Button> */}
         </div>

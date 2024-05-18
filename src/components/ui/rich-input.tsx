@@ -117,7 +117,10 @@ export function RichInput({ value: initialValue, onChange }: any) {
           modules={{ toolbar: ["bold"] }}
         />
         <PopoverTrigger></PopoverTrigger>
-        <PopoverContent className="w-96 flex flex-col gap-4">
+        <PopoverContent
+          className="w-96 flex flex-col gap-4"
+          onOpenAutoFocus={e => e.preventDefault()}
+        >
           <div className="flex flex-row justify-between items-center gap-2">
             <div className="text-xs text-slate-700">{highlightedText}</div>
             <Button
