@@ -1,13 +1,13 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
 import { resumeDataToPlainText } from "@/src/lib/utils";
-import { latestAnalysisAtom, resumeDataAtom } from "@/src/store";
+import { resumeDataAtom } from "@/src/store";
 import { useAtom } from "jotai";
 
 export default function Analyze() {
   const [resumeData] = useAtom(resumeDataAtom);
 
-  const [analysisResponse, setAnalysisResponse] = useAtom(latestAnalysisAtom);
+  const [analysisResponse, setAnalysisResponse] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleAnalysisButtonClick() {

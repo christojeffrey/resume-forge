@@ -7,7 +7,6 @@ import { useAtom } from "jotai";
 import {
   currentItemEditedAtom,
   isEditingAtom,
-  messagesAtom,
   resumeDataAtom,
 } from "@/src/store";
 import Markdown from "react-markdown";
@@ -23,7 +22,6 @@ import { Input } from "@/src/components/ui/input";
 import { useChat } from "ai/react";
 export default function Chat() {
   const [resumeData] = useAtom(resumeDataAtom);
-  // const [messages, setMessages] = useAtom(messagesAtom);
   // const [input, setInput] = useState("");
   const [isEditing, setIsEditing] = useAtom(isEditingAtom);
   const [currentItemEdited, setCurrentItemEdited] = useAtom(

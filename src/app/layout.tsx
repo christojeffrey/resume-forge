@@ -21,10 +21,10 @@ export default async function RootLayout({
   const authenticated = await isAuthenticated();
   const user = await getUser();
 
-  let resumeData = null;
+  let resumesData = null;
   if (authenticated) {
-    resumeData = (
-      await fetch(`${BASE_URL}/api/resume/${user?.email}`).then(res =>
+    resumesData = (
+      await fetch(`${BASE_URL}/api/resumes/${user?.email}`).then(res =>
         res.json()
       )
     ).body;
@@ -53,10 +53,10 @@ export default async function RootLayout({
         <GlobalStateSetter
           isAuthenticated={authenticated}
           user={user}
-          resumeData={resumeData}
+          resumesData={resumesData}
         >
           {children}
-          <Toaster />
+          <Toaster closeButton />
         </GlobalStateSetter>
       </body>
     </html>

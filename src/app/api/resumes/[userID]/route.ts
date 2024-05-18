@@ -23,9 +23,9 @@ export async function GET(
   const client = getMongoDBClient();
   try {
     client.connect();
-    const resume = client.db("resume-database").collection("resumes");
+    const resumes = client.db("resume-database").collection("resumes");
 
-    data = await resume.findOne({ name: userID });
+    data = await resumes.findOne({ name: userID });
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
@@ -41,17 +41,17 @@ export async function POST(
   { params }: { params: { userID: string } }
 ) {
   // get body
-  const body = await request.json();
+  const resumes = await request.json();
   const { userID } = params;
   const client = getMongoDBClient();
   try {
     client.connect();
-    const resume = client.db("resume-database").collection("resumes");
-    await resume.updateOne(
-      { name: userID, workspace: "1" },
+    const resumes = client.db("resume-database").collection("resumes");
+    await resumes.updateOne(
+      { name: userID },
       {
         $set: {
-          body: body,
+          body: resumes,
           name: userID,
         },
       },
@@ -62,5 +62,5 @@ export async function POST(
     await client.close();
   }
 
-  return Response.json(body);
+  return Response.json(resumes);
 }

@@ -5,11 +5,17 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { isSavingAtom, resumeDataAtom, userAtom } from "@/src/store";
+import {
+  isSavingAtom,
+  resumeDataAtom,
+  resumesDataAtom,
+  userAtom,
+} from "@/src/store";
 
 export default function ResumePreviewPart() {
   const [isSaving, setIsSaving] = useAtom(isSavingAtom);
   const [resumeData] = useAtom(resumeDataAtom);
+  const [resumesData, setResumesData] = useAtom(resumesDataAtom);
   const [userData, _setUserData] = useAtom(userAtom);
 
   const [timeoutSaveItem, setTimeoutSaveItem] = useState<NodeJS.Timeout | null>(
@@ -19,11 +25,15 @@ export default function ResumePreviewPart() {
   useEffect(() => {
     // use timeout
     if (timeoutSaveItem) {
+      console.log("clearing timeout");
       clearTimeout(timeoutSaveItem);
     }
-    const t = setTimeout(async () => {
-      await handleSave();
-    }, 15000);
+    const t = setTimeout(
+      async () => {
+        await handleSave();
+      },
+      userData ? 15000 : 3000
+    );
     setTimeoutSaveItem(t);
 
     return () => {
@@ -36,12 +46,12 @@ export default function ResumePreviewPart() {
   const handleSave = async () => {
     if (isSaving) return;
     setIsSaving(true);
-    localStorage.setItem("resumeData", JSON.stringify(resumeData));
+    localStorage.setItem("resumesData", JSON.stringify(resumesData));
 
     if (userData) {
       await fetch(`/api/resume/${userData?.email}`, {
         method: "POST",
-        body: JSON.stringify(resumeData),
+        body: JSON.stringify(resumesData),
       });
     }
     toast("Saved!", { icon: "👍" });
