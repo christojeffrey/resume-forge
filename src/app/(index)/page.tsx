@@ -38,6 +38,11 @@ import {
 } from "@/src/components/ui/context-menu";
 import Saver from "../_components/saver";
 import { useIsMobile } from "@/src/hooks/useIsMobile";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/src/components/ui/resizable";
 
 // main page
 
@@ -88,23 +93,31 @@ export default function Home() {
           {/* top */}
           <div className="flex-1 flex h-full overflow-auto">
             {/* left */}
-            <div
-              className={`${mode === "edit" ? "w-2/5" : "w-1/2"} mr-1 flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
-            >
-              <ResumeDraggablePart />
-            </div>
+            <ResizablePanelGroup direction="horizontal" className="flex-1">
+              <ResizablePanel
+                minSize={30}
+                className={`${mode === "edit" ? "w-full" : "w-full"} mr-1 flex flex-col h-full overflow-auto gap-2 transition-all duration-300 ease-out`}
+              >
+                <ResumeDraggablePart />
+              </ResizablePanel>
+              <ResizableHandle className="mx-1" />
 
-            {/* right */}
-            <div
-              className={`${mode === "edit" ? "w-2/5 mr-1" : "w-1/2"} ml-1 flex flex-col h-full transition-all duration-300 ease-out`}
-            >
-              <ResumePreviewPart />
-            </div>
+              {/* right */}
+              <ResizablePanel
+                minSize={30}
+                className={`${mode === "edit" ? "w-full mr-2" : "w-full"} ml-1 flex flex-col h-full transition-all duration-300 ease-out`}
+              >
+                <ResumePreviewPart />
+              </ResizablePanel>
+            </ResizablePanelGroup>
             {/* AI */}
             <div
-              className={`${mode === "edit" ? "w-1/5 opacity-100 ml-1" : "w-0 opacity-0"} flex flex-col h-full transition-all duration-300 ease-out overflow-x-clip`}
+              className={`${mode === "edit" ? "w-72 opacity-100 ml-1" : "w-0 opacity-0"} transition-all duration-300 ease-out overflow-x-clip relative`}
             >
-              <AIAnalysis />
+              {/* prevent this from collapsing when closed */}
+              <div className="w-72 h-full overflow-x-clip absolute">
+                <AIAnalysis />
+              </div>
             </div>
           </div>
           <BottomWorkspace />
@@ -124,7 +137,7 @@ function BottomWorkspace({ hideDownload = false }: { hideDownload?: boolean }) {
     <>
       <div className="flex justify-between">
         <div className="flex items-center gap-2">
-          <Tabs value={currentResumeWorkspace} className="hidden">
+          <Tabs value={currentResumeWorkspace} className="">
             <TabsList>
               {Array.from(Array(3).keys()).map(i => (
                 <ContextMenu key={i + 1}>

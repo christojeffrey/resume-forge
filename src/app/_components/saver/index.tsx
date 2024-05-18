@@ -30,6 +30,7 @@ export default function Saver() {
     const t = setTimeout(
       () => {
         if (!doSchuduledSave) {
+          console.log("testing");
           setDoScheduledSave(true);
         }
       },
