@@ -25,11 +25,15 @@ export default function ResumePreviewPart() {
   useEffect(() => {
     // use timeout
     if (timeoutSaveItem) {
+      console.log("clearing timeout");
       clearTimeout(timeoutSaveItem);
     }
-    const t = setTimeout(async () => {
-      await handleSave();
-    }, 15000);
+    const t = setTimeout(
+      async () => {
+        await handleSave();
+      },
+      userData ? 15000 : 3000
+    );
     setTimeoutSaveItem(t);
 
     return () => {

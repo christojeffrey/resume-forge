@@ -56,7 +56,7 @@ export default async function RootLayout({
           resumesData={resumesData}
         >
           {children}
-          <Toaster />
+          <Toaster closeButton />
         </GlobalStateSetter>
       </body>
     </html>

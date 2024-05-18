@@ -27,6 +27,10 @@ export default function EmptyResumePrompt() {
     setResumeData(generateID(hardCodedData));
   }
   async function handleGenerateResumeClick() {
+    if (description === "") {
+      toast.error("don't leave me empty!");
+      return;
+    }
     setIsLoading(true);
     const response = await fetch("/api/ai/generate-resume", {
       method: "POST",
