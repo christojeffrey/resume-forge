@@ -74,7 +74,6 @@ export default function Chat() {
     handleSubmit(e, {
       options: {
         body: {
-          messages: messages,
           resume: resumeDataToPlainText(
             isEditing && currentItemEdited ? [currentItemEdited] : resumeData
           ),

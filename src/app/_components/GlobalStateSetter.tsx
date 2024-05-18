@@ -42,10 +42,7 @@ export default function GlobalStateSetter({
       isAuthenticated && resumeData ? resumeData : localResumeData;
 
     console.log("validResumeData");
-    console.log(resumeData);
-    console.log(localResumeData);
     setResumeData(generateID(validResumeData));
-
     let mixpanel = Mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || "");
     setMixPanel(mixpanel);
     if (user) {
