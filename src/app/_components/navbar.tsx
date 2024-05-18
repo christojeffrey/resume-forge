@@ -85,7 +85,13 @@ export default function NavBar() {
                 <DropdownMenuLabel>{user?.email || "User"}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <LogoutLink>
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      localStorage.removeItem("resumesData");
+                    }}
+                  >
+                    Logout
+                  </DropdownMenuItem>
                 </LogoutLink>
               </DropdownMenuContent>
             </DropdownMenu>

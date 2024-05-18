@@ -5,6 +5,7 @@ import {
   isAuthenticatedAtom,
   mixPanelAtom,
   resumeDataAtom,
+  resumesDataAtom,
   updateResumesDataEffect,
   userAtom,
 } from "@/src/store";
@@ -33,9 +34,11 @@ export default function GlobalStateSetter({
   const [isSet, setIsSet] = useState(false);
   const [_resumeData, setResumeData] = useAtom(resumeDataAtom);
   const [mixPanel, setMixPanel] = useAtom(mixPanelAtom);
+  const [_, setResumesData] = useAtom(resumesDataAtom);
   useEffect(() => {
     setUser(user);
     setIsAuthenticated(isAuthenticated);
+
     // if authenticated, use the one from server. if not, check localstorage.
     const localResumesData = localStorage.getItem("resumesData")
       ? JSON.parse(localStorage.getItem("resumesData") as string)
@@ -46,6 +49,7 @@ export default function GlobalStateSetter({
     const validResumesData =
       isAuthenticated && resumesData ? resumesData : localResumesData;
 
+    setResumesData(validResumesData);
     console.log("validResumesData");
     setResumeData(generateID(validResumesData["1"]));
     let mixpanel = Mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN || "");

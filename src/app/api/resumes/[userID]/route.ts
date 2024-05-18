@@ -41,7 +41,7 @@ export async function POST(
   { params }: { params: { userID: string } }
 ) {
   // get body
-  const resumes = await request.json();
+  const resumesData = await request.json();
   const { userID } = params;
   const client = getMongoDBClient();
   try {
@@ -51,7 +51,7 @@ export async function POST(
       { name: userID },
       {
         $set: {
-          body: resumes,
+          body: resumesData,
           name: userID,
         },
       },
@@ -62,5 +62,5 @@ export async function POST(
     await client.close();
   }
 
-  return Response.json(resumes);
+  return Response.json(resumesData);
 }

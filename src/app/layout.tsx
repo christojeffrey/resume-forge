@@ -22,11 +22,20 @@ export default async function RootLayout({
   const user = await getUser();
   let resumesData = null;
   if (authenticated) {
-    resumesData = (
-      await fetch(`${BASE_URL}/api/resumes/${user?.email}`).then(res =>
-        res.json()
-      )
-    ).body;
+    const response = await fetch(`${BASE_URL}/api/resumes/${user?.email}`)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("User not found");
+        }
+        return res.json();
+      })
+      .catch(() => {
+        return null;
+      });
+    console.log("response", response);
+    if (response) {
+      resumesData = response.body;
+    }
   }
 
   return (
