@@ -1,9 +1,6 @@
 "use client";
 
-import { type CoreMessage } from "ai";
 import { useEffect, useRef, useState } from "react";
-import { continueConversation } from "@/src/app/actions";
-import { readStreamableValue } from "ai/rsc";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
 import { resumeDataToPlainText } from "@/src/lib/utils";
 import { useAtom } from "jotai";
@@ -21,10 +18,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/src/components/ui/collapsible";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, Send, StopCircle } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
 import { useChat } from "ai/react";
-import { Textarea } from "@/src/components/ui/textarea";
 export default function Chat() {
   const [resumeData] = useAtom(resumeDataAtom);
   // const [messages, setMessages] = useAtom(messagesAtom);
@@ -41,6 +37,8 @@ export default function Chat() {
     handleSubmit,
     setMessages,
     setInput,
+    isLoading,
+    stop,
   } = useChat();
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,6 +47,7 @@ export default function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   let currentlyEditedSummary = "";
   if (isEditing) {
     if (currentItemEdited) {
@@ -69,6 +68,21 @@ export default function Chat() {
       }
     }
   }
+  function handleInvokeChat(e: React.FormEvent<HTMLFormElement>) {
+    if (isLoading) return;
+    if (input === "") return;
+    handleSubmit(e, {
+      options: {
+        body: {
+          messages: messages,
+          resume: resumeDataToPlainText(
+            isEditing && currentItemEdited ? [currentItemEdited] : resumeData
+          ),
+          isOnlyPartialResume: isEditing && currentItemEdited ? true : false,
+        },
+      },
+    });
+  }
 
   return (
     <div className="flex flex-col h-full gap-2">
@@ -87,7 +101,13 @@ export default function Chat() {
           )}
         </div>
         {/* reset conversation */}
-        <Button onClick={() => {}} variant="link" className="text-red-500">
+        <Button
+          onClick={() => {
+            setMessages([]);
+          }}
+          variant="link"
+          className="text-red-500"
+        >
           Clear Chat
         </Button>
       </div>
@@ -114,45 +134,62 @@ export default function Chat() {
         </ScrollArea>
       )}
 
-      <div>
-        {/* bottom part - input */}
-        <Collapsible>
-          <CollapsibleTrigger asChild>
-            <div className="flex items-center justify-between space-x-4 ">
-              <p className="text-sm font-semibold">Suggestions</p>
-              <Button variant="ghost" size="sm" className="w-9 p-0">
-                <ChevronsUpDown className="h-4 w-4" />
-                <span className="sr-only">Toggle</span>
-              </Button>
-            </div>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <form onSubmit={handleSubmit} className="">
-              <Button
-                type="submit"
-                className="break-words text-left"
-                variant="link"
-                onClick={() => {
-                  // clear chat, and generate cover letter
-                  setMessages([]);
-                  // intentionally without await
-                  // invokeChat("Generate Cover Letter for Software Engineer Role");
-                  setInput("Generate Cover Letter");
-                }}
-              >
-                Generate Cover Letter
-              </Button>
-            </form>
-          </CollapsibleContent>
-        </Collapsible>
+      {/* bottom part - input */}
+      <Collapsible>
+        <CollapsibleTrigger asChild>
+          <div className="flex items-center justify-between space-x-4 ">
+            <p className="text-sm font-semibold">Suggestions</p>
+            <Button variant="ghost" size="sm" className="w-9 p-0">
+              <ChevronsUpDown className="h-4 w-4" />
+              <span className="sr-only">Toggle</span>
+            </Button>
+          </div>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <form onSubmit={handleInvokeChat} className="">
+            <Button
+              type="submit"
+              className="break-words text-left"
+              variant="link"
+              onClick={() => {
+                // clear chat, and generate cover letter
+                setMessages([]);
+                // intentionally without await
+                // invokeChat("Generate Cover Letter for Software Engineer Role");
+                setInput("Generate Cover Letter");
+              }}
+            >
+              Generate Cover Letter
+            </Button>
+          </form>
+        </CollapsibleContent>
+      </Collapsible>
 
-        <form className="w-full mx-auto" onSubmit={handleSubmit}>
+      <div>
+        <form className="w-full mx-auto flex gap-2" onSubmit={handleInvokeChat}>
           <Input
             className="bottom-0 w-full p-2 border border-gray-300 rounded shadow-xl"
             value={input}
             placeholder="Suggest improvement for my resume!"
             onChange={handleInputChange}
+            disabled={isLoading}
           />
+          {isLoading ? (
+            <Button
+              variant="destructive"
+              className="w-12"
+              onClick={e => {
+                e.preventDefault();
+                stop();
+              }}
+            >
+              <StopCircle />
+            </Button>
+          ) : (
+            <Button type="submit" variant="ghost" className="w-12">
+              <Send />
+            </Button>
+          )}
         </form>
       </div>
     </div>
