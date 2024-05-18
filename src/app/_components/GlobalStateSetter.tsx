@@ -40,7 +40,7 @@ export default function GlobalStateSetter({
     const localResumesData = localStorage.getItem("resumesData")
       ? JSON.parse(localStorage.getItem("resumesData") as string)
       : {
-          primary: [],
+          "1": [],
         };
 
     const validResumesData =

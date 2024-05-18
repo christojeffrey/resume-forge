@@ -116,9 +116,9 @@ export function BottomWorkspace({
 
   return (
     <>
-      <div className=" flex justify-between">
+      <div className="flex justify-between">
         <div className="flex items-center gap-2">
-          <Tabs value={currentResumeWorkspace}>
+          <Tabs value={currentResumeWorkspace} className="hidden">
             <TabsList>
               {Array.from(Array(3).keys()).map(i => (
                 <ContextMenu key={i + 1}>
