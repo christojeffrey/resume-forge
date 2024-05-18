@@ -133,7 +133,7 @@ export function ItemViewer({ id }: { id: string }) {
                         toggleDraft();
 
                         (window as any).dataLayer.push({
-                          event: "event",
+                          event: "toggleEyeEvent",
                           eventProps: {
                             category: "resume",
                             action: "toggleDraft",
