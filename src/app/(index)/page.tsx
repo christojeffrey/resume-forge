@@ -1,7 +1,13 @@
 "use client";
 import { useAtom } from "jotai";
 import ResumeDraggablePart from "../_components/draggable-part";
-import { isEditingAtom, modeAtom, resumeDataAtom } from "@/src/store";
+import {
+  currentResumeWorkspaceAtom,
+  isEditingAtom,
+  modeAtom,
+  resumeDataAtom,
+  updateResumeDataBasedOnCurrentWorkspaceEffect,
+} from "@/src/store";
 
 import {
   Tabs,
@@ -15,7 +21,7 @@ import EmptyResumePrompt from "../_components/empty-resume-prompt";
 import { Button } from "@/src/components/ui/button";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Resume } from "../_components/preview-part/resume";
-import { Download } from "lucide-react";
+import { Download, Plus } from "lucide-react";
 
 import {
   Tooltip,
@@ -23,15 +29,27 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/src/components/ui/tooltip";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/src/components/ui/context-menu";
 
 // main page
 
 export default function Home() {
+  useAtom(updateResumeDataBasedOnCurrentWorkspaceEffect);
   const [mode] = useAtom(modeAtom);
   const [resumeData] = useAtom(resumeDataAtom);
 
   if (resumeData.length === 0) {
-    return <EmptyResumePrompt />;
+    return (
+      <div className="h-full flex flex-col py-2 xl:px-0 px-2  xl:w-3/4 mx-auto">
+        <EmptyResumePrompt />
+        <BottomWorkspace hideDownload />
+      </div>
+    );
   }
   return (
     <div className="h-full">
@@ -50,8 +68,9 @@ export default function Home() {
         <TabsContent value="view">
           <ResumePreviewPart />
         </TabsContent>
+        <BottomWorkspace />
       </Tabs>
-      {/* full */}
+      {/* full screen*/}
       <div className="hidden xl:block w-3/4 mx-auto h-full py-2 gap-2">
         <div className="flex flex-col h-full gap-2">
           {/* top */}
@@ -76,54 +95,77 @@ export default function Home() {
               <AIAnalysis />
             </div>
           </div>
-          <div className=" flex justify-between">
-            <div className="flex items-center gap-2">
-              {/* <Tabs>
-                <TabsList>
-                  {Array.from(Array(3).keys()).map(i => (
-                    <ContextMenu key={i + 1}>
-                      <ContextMenuTrigger>
-                        <TabsTrigger value={(i + 1).toString()}>
-                          {i + 1}
-                        </TabsTrigger>
-                      </ContextMenuTrigger>
-                      <ContextMenuContent>
-                        <ContextMenuItem>
-                          duplicate workspace {i + 1}
-                        </ContextMenuItem>
-                      </ContextMenuContent>
-                    </ContextMenu>
-                  ))}
-                </TabsList>
-              </Tabs>
-              <Button variant="outline" className="p-2">
-                <Plus className="h-4" />
-              </Button> */}
-            </div>
-            <Button variant="outline">
-              <PDFDownloadLink
-                document={Resume({ resumeData })}
-                fileName="resume.pdf"
-              >
-                {({ blob, url, loading, error }) => (
-                  <>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <Download />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Download Resume</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </>
-                )}
-              </PDFDownloadLink>
-            </Button>
-          </div>
+          <BottomWorkspace />
         </div>
       </div>
     </div>
+  );
+}
+
+export function BottomWorkspace({
+  hideDownload = false,
+}: {
+  hideDownload?: boolean;
+}) {
+  const [currentResumeWorkspace, setCurrentResumeWorkspace] = useAtom(
+    currentResumeWorkspaceAtom
+  );
+  const [resumeData] = useAtom(resumeDataAtom);
+
+  return (
+    <>
+      <div className=" flex justify-between">
+        <div className="flex items-center gap-2">
+          <Tabs value={currentResumeWorkspace}>
+            <TabsList>
+              {Array.from(Array(3).keys()).map(i => (
+                <ContextMenu key={i + 1}>
+                  <ContextMenuTrigger>
+                    <TabsTrigger
+                      value={(i + 1).toString()}
+                      onClick={() => {
+                        console.log("changing workspace");
+                        setCurrentResumeWorkspace((i + 1).toString());
+                      }}
+                    >
+                      {i + 1}
+                    </TabsTrigger>
+                  </ContextMenuTrigger>
+                  <ContextMenuContent>
+                    <ContextMenuItem>
+                      duplicate workspace {i + 1}
+                    </ContextMenuItem>
+                  </ContextMenuContent>
+                </ContextMenu>
+              ))}
+            </TabsList>
+          </Tabs>
+          {/* <Button variant="outline" className="p-2">
+                <Plus className="h-4" />
+              </Button> */}
+        </div>
+        <Button variant="outline" className={`${hideDownload ? "hidden" : ""}`}>
+          <PDFDownloadLink
+            document={Resume({ resumeData })}
+            fileName="resume.pdf"
+          >
+            {({ blob, url, loading, error }) => (
+              <>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Download />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Download Resume</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </>
+            )}
+          </PDFDownloadLink>
+        </Button>
+      </div>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 import { useAtom } from "jotai";
-import { generateID, resumeDataAtom } from "@/src/store";
+import { resumeDataAtom } from "@/src/store";
 import { useState } from "react";
 import Adder from "../adder";
 import { Button } from "@/src/components/ui/button";
@@ -16,6 +16,7 @@ import { Input } from "@/src/components/ui/input";
 import pdfToText from "react-pdftotext";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { generateID } from "@/src/lib/utils";
 
 export default function EmptyResumePrompt() {
   const [, setResumeData] = useAtom(resumeDataAtom);

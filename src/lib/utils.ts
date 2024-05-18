@@ -6,6 +6,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const generateID = (data: ResumeData) => {
+  return data.map((item, index) => {
+    return {
+      ...item,
+      id: `id-${index}`,
+    };
+  });
+};
+
 //   TODO: turn this into markdown instead
 export function resumeDataToPlainText(
   resumeData: ResumeData,

@@ -1,5 +1,5 @@
 import { resumeDataSchema } from "@/src/lib/type";
-import { generateID } from "@/src/store";
+import { generateID } from "@/src/lib/utils";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { generateObject } from "ai";
 

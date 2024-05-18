@@ -1,7 +1,7 @@
 "use client";
 import { useAtom } from "jotai";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { generateID, resumeDataAtom } from "@/src/store";
+import { resumeDataAtom } from "@/src/store";
 import {
   reorder,
   StrictModeDroppable,
@@ -10,9 +10,8 @@ import {
 import { useState } from "react";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
 import Adder from "../adder";
-import { Button } from "@/src/components/ui/button";
 import ItemViewer from "./item-viewer";
-import { ResumeData, ResumeItem } from "@/src/lib/type";
+import { ResumeItem } from "@/src/lib/type";
 import {
   ContextMenu,
   ContextMenuContent,
