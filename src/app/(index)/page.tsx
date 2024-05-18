@@ -36,13 +36,17 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/src/components/ui/context-menu";
+import Saver from "../_components/saver";
+import { useIsMobile } from "@/src/hooks/useIsMobile";
 
 // main page
 
 export default function Home() {
   useAtom(updateResumeDataBasedOnCurrentWorkspaceEffect);
+  const isMobile = useIsMobile();
   const [mode] = useAtom(modeAtom);
   const [resumeData] = useAtom(resumeDataAtom);
+  console.log("tesitng");
 
   if (resumeData.length === 0) {
     return (
@@ -52,27 +56,34 @@ export default function Home() {
       </div>
     );
   }
+
+  if (isMobile) {
+    return (
+      <div className="h-full">
+        {/* phone */}
+        <Tabs
+          defaultValue="edit"
+          className="xl:hidden flex flex-col h-full p-2 overflow-auto"
+        >
+          <TabsList className="w-fit mx-auto">
+            <TabsTrigger value="edit">Edit</TabsTrigger>
+            <TabsTrigger value="view">View</TabsTrigger>
+          </TabsList>
+          <TabsContent value="edit" className="flex-1">
+            <ResumeDraggablePart />
+          </TabsContent>
+          <TabsContent value="view" className="flex-1">
+            <ResumePreviewPart />
+          </TabsContent>
+          <BottomWorkspace />
+        </Tabs>
+      </div>
+    );
+  }
   return (
     <div className="h-full">
-      {/* phone */}
-      <Tabs
-        defaultValue="edit"
-        className="xl:hidden flex flex-col h-full p-2 overflow-auto"
-      >
-        <TabsList className="w-fit mx-auto">
-          <TabsTrigger value="edit">Edit</TabsTrigger>
-          <TabsTrigger value="view">View</TabsTrigger>
-        </TabsList>
-        <TabsContent value="edit">
-          <ResumeDraggablePart />
-        </TabsContent>
-        <TabsContent value="view">
-          <ResumePreviewPart />
-        </TabsContent>
-        <BottomWorkspace />
-      </Tabs>
       {/* full screen*/}
-      <div className="hidden xl:block w-3/4 mx-auto h-full py-2 gap-2">
+      <div className="w-3/4 mx-auto h-full py-2 gap-2">
         <div className="flex flex-col h-full gap-2">
           {/* top */}
           <div className="flex-1 flex h-full overflow-auto">
@@ -113,7 +124,6 @@ export function BottomWorkspace({
   );
   const [resumeData] = useAtom(resumeDataAtom);
   const [resumesData, setResumesData] = useAtom(resumesDataAtom);
-
   return (
     <>
       <div className=" flex justify-between">
@@ -166,27 +176,33 @@ export function BottomWorkspace({
                 <Plus className="h-4" />
               </Button> */}
         </div>
-        <Button variant="outline" className={`${hideDownload ? "hidden" : ""}`}>
-          <PDFDownloadLink
-            document={Resume({ resumeData })}
-            fileName="resume.pdf"
+        <div className="flex gap-2">
+          <Saver />
+          <Button
+            variant="outline"
+            className={`${hideDownload ? "hidden" : ""}`}
           >
-            {({ blob, url, loading, error }) => (
-              <>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Download />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Download Resume</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </>
-            )}
-          </PDFDownloadLink>
-        </Button>
+            <PDFDownloadLink
+              document={Resume({ resumeData })}
+              fileName="resume.pdf"
+            >
+              {({ blob, url, loading, error }) => (
+                <>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Download />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Download Resume</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </>
+              )}
+            </PDFDownloadLink>
+          </Button>
+        </div>
       </div>
     </>
   );

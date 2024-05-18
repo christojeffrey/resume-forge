@@ -27,6 +27,7 @@ import {
   ContextMenuTrigger,
 } from "@/src/components/ui/context-menu";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 
 export default function ResumePreview({
   width,
@@ -36,17 +37,12 @@ export default function ResumePreview({
   isFullScreen?: boolean;
 }) {
   // run recompute first time
-  const router = useRouter();
   const [pdfString, setPdfString] = useState("");
   const [numPages, setNumPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [resumeData] = useAtom(resumeDataAtom);
   const [doRecomputePreview, setDoRecomputePreview] =
     useAtom(recomputePreviewAtom);
-
-  useEffect(() => {
-    setDoRecomputePreview(true);
-  }, []);
 
   const onDocumentLoadSuccess = ({ numPages }: any) => {
     setNumPages(numPages);
@@ -65,7 +61,9 @@ export default function ResumePreview({
       clearTimeout(timeoutItem);
     }
     const t = setTimeout(() => {
-      setDoRecomputePreview(!doRecomputePreview);
+      if (!doRecomputePreview) {
+        setDoRecomputePreview(true);
+      }
     }, 1000);
     setTimeoutItem(t);
 
@@ -96,6 +94,7 @@ export default function ResumePreview({
       };
     };
     if (doRecomputePreview) {
+      console.log("do recompute value!");
       updateBase64String();
       setDoRecomputePreview(false);
     }
@@ -115,11 +114,14 @@ export default function ResumePreview({
   }
 
   function handleRefresh() {
-    setDoRecomputePreview(!doRecomputePreview);
+    setDoRecomputePreview(true);
   }
 
   return (
-    <div ref={ref} className="flex flex-col h-full w-full justify-between">
+    <div
+      ref={ref}
+      className="flex flex-col h-full w-full justify-between"
+    >
       {/* later issue - this will give noticable bottom margin by giving flex grow */}
       <ScrollArea className="flex-1 border-slate-400 border">
         <ContextMenu>
@@ -136,7 +138,7 @@ export default function ResumePreview({
               {/* -2 to prevent jitter */}
               <PDFViewerPage
                 pageNumber={pageNumber}
-                width={dimension.width - 2}
+                width={dimension.width - 3}
               />
             </PDFViewerDocument>
           </ContextMenuTrigger>
@@ -151,36 +153,36 @@ export default function ResumePreview({
           </ContextMenuContent>
         </ContextMenu>
       </ScrollArea>
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-2">
         {/* page navigation */}
-        <div className="">
+        <div className="flex gap-2 items-center">
           <p>
             Page {pageNumber || (numPages ? 1 : "--")} / {numPages || "--"}
           </p>
 
           <div>
-            <button
-              type="button"
+            <Button
               disabled={pageNumber <= 1}
               onClick={previousPage}
-              className="font-bold mx-2"
+              className="font-bold mx-2 text-lg"
+              variant="ghost"
             >
-              {`<`}
-            </button>
-            <button
-              type="button"
+              <ChevronLeft />
+            </Button>
+            <Button
               disabled={pageNumber >= numPages}
               onClick={nextPage}
-              className="font-bold mx-2"
+              className="font-bold mx-2 text-lg"
+              variant="ghost"
             >
-              {`>`}
-            </button>
+              <ChevronRight />
+            </Button>
           </div>
         </div>
         {/* button */}
         <div className="flex items-center justify-end">
-          <Button onClick={handleRefresh} variant="outline">
-            refresh
+          <Button onClick={handleRefresh} variant="ghost">
+            <RefreshCw />
           </Button>
         </div>
       </div>
