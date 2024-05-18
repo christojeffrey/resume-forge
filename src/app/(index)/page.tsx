@@ -6,6 +6,7 @@ import {
   isEditingAtom,
   modeAtom,
   resumeDataAtom,
+  resumesDataAtom,
   updateResumeDataBasedOnCurrentWorkspaceEffect,
 } from "@/src/store";
 
@@ -111,6 +112,7 @@ export function BottomWorkspace({
     currentResumeWorkspaceAtom
   );
   const [resumeData] = useAtom(resumeDataAtom);
+  const [resumesData, setResumesData] = useAtom(resumesDataAtom);
 
   return (
     <>
@@ -132,9 +134,29 @@ export function BottomWorkspace({
                     </TabsTrigger>
                   </ContextMenuTrigger>
                   <ContextMenuContent>
-                    <ContextMenuItem>
-                      duplicate workspace {i + 1}
-                    </ContextMenuItem>
+                    {Array.from(Array(3).keys()).map(friend => {
+                      if (friend === i) {
+                        return <></>;
+                      }
+                      return (
+                        <ContextMenuItem
+                          key={friend}
+                          onClick={() => {
+                            const sourceWorkspaceAsString = (i + 1).toString();
+                            const targetWorkspaceAsString = (
+                              friend + 1
+                            ).toString();
+                            setResumesData({
+                              ...resumesData,
+                              [targetWorkspaceAsString]:
+                                resumesData[sourceWorkspaceAsString],
+                            });
+                          }}
+                        >
+                          duplicate workspace {i + 1} to {friend + 1}
+                        </ContextMenuItem>
+                      );
+                    })}
                   </ContextMenuContent>
                 </ContextMenu>
               ))}
