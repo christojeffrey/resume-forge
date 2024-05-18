@@ -184,12 +184,9 @@ function BottomWorkspace({ hideDownload = false }: { hideDownload?: boolean }) {
                 <Plus className="h-4" />
               </Button> */}
         </div>
-        <div className="flex gap-2">
+        <div className={`flex gap-2 ${hideDownload ? "hidden" : ""}`}>
           <Saver />
-          <Button
-            variant="outline"
-            className={`${hideDownload ? "hidden" : ""}`}
-          >
+          <Button variant="outline">
             <PDFDownloadLink
               document={Resume({ resumeData })}
               fileName="resume.pdf"
