@@ -1,4 +1,4 @@
-import NavBar from "../_components/navbar";
+import NavBar from "./_components/navbar";
 import { Separator } from "@/src/components/ui/separator";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

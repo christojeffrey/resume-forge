@@ -1,6 +1,6 @@
 "use client";
 import { useAtom } from "jotai";
-import ResumeDraggablePart from "../_components/draggable-part";
+import ResumeDraggablePart from "./_components/draggable-part";
 import {
   currentResumeWorkspaceAtom,
   isEditingAtom,
@@ -16,12 +16,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/ui/tabs";
-import AIAnalysis from "../_components/ai-part";
-import ResumePreviewPart from "../_components/preview-part";
-import EmptyResumePrompt from "../_components/empty-resume-prompt";
+import AIAnalysis from "./_components/ai-part";
+import ResumePreviewPart from "./_components/preview-part";
+import EmptyResumePrompt from "./_components/empty-resume-prompt";
 import { Button } from "@/src/components/ui/button";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Resume } from "../_components/preview-part/resume";
+import { Resume } from "./_components/preview-part/resume";
 import { Download, Plus } from "lucide-react";
 
 import {
@@ -36,7 +36,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/src/components/ui/context-menu";
-import Saver from "../_components/saver";
+import Saver from "./_components/saver";
 import { useIsMobile } from "@/src/hooks/useIsMobile";
 import {
   ResizableHandle,

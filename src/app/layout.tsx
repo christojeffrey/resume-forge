@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Toaster } from "@/src/components/ui/sonner";
-import GlobalStateSetter from "./_components/GlobalStateSetter";
+import GlobalStateSetter from "../feature/playground/_components/GlobalStateSetter";
 import Script from "next/script";
 
 const BASE_URL = process.env.BASE_URL || "";
