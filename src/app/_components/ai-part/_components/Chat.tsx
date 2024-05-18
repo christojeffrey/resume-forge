@@ -23,17 +23,25 @@ import {
 } from "@/src/components/ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
-
+import { useChat } from "ai/react";
+import { Textarea } from "@/src/components/ui/textarea";
 export default function Chat() {
   const [resumeData] = useAtom(resumeDataAtom);
-  const [messages, setMessages] = useAtom(messagesAtom);
-  const [input, setInput] = useState("");
+  // const [messages, setMessages] = useAtom(messagesAtom);
+  // const [input, setInput] = useState("");
   const [isEditing, setIsEditing] = useAtom(isEditingAtom);
   const [currentItemEdited, setCurrentItemEdited] = useAtom(
     currentItemEditedAtom
   );
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
-
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    setMessages,
+    setInput,
+  } = useChat();
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -62,35 +70,6 @@ export default function Chat() {
     }
   }
 
-  async function invokeChat(chatInput: string) {
-    const newMessages: CoreMessage[] = [
-      ...messages,
-      {
-        content: `${chatInput}`,
-        role: "user",
-      },
-    ];
-
-    setMessages(newMessages);
-
-    const result = await continueConversation(
-      newMessages,
-      resumeDataToPlainText(
-        isEditing && currentItemEdited ? [currentItemEdited] : resumeData
-      ),
-      isEditing && currentItemEdited ? true : false
-    );
-
-    for await (const content of readStreamableValue(result.message)) {
-      setMessages([
-        ...newMessages,
-        {
-          role: "assistant",
-          content: content as string,
-        },
-      ]);
-    }
-  }
   return (
     <div className="flex flex-col h-full gap-2">
       <div className="flex justify-between">
@@ -108,13 +87,7 @@ export default function Chat() {
           )}
         </div>
         {/* reset conversation */}
-        <Button
-          onClick={() => {
-            setMessages([]);
-          }}
-          variant="link"
-          className="text-red-500"
-        >
+        <Button onClick={() => {}} variant="link" className="text-red-500">
           Clear Chat
         </Button>
       </div>
@@ -127,7 +100,7 @@ export default function Chat() {
       ) : (
         <ScrollArea className="flex-1 overflow-auto">
           <div>
-            {messages.map((m, i) => (
+            {messages.map((m: any, i: number) => (
               <div
                 key={i}
                 className={`p-2 ${m.role === "user" ? "bg-slate-100 rounded-md" : ""} whitespace-pre-wrap`}
@@ -154,33 +127,31 @@ export default function Chat() {
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <Button
-              className=""
-              variant="link"
-              onClick={async () => {
-                // clear chat, and generate cover letter
-                setMessages([]);
-                await invokeChat("Generate cover letter");
-              }}
-            >
-              Generate cover letter
-            </Button>
+            <form onSubmit={handleSubmit} className="">
+              <Button
+                type="submit"
+                className="break-words text-left"
+                variant="link"
+                onClick={() => {
+                  // clear chat, and generate cover letter
+                  setMessages([]);
+                  // intentionally without await
+                  // invokeChat("Generate Cover Letter for Software Engineer Role");
+                  setInput("Generate Cover Letter");
+                }}
+              >
+                Generate Cover Letter
+              </Button>
+            </form>
           </CollapsibleContent>
         </Collapsible>
 
-        <form
-          className="w-full mx-auto"
-          action={async () => {
-            const currentInput = input;
-            setInput("");
-            await invokeChat(currentInput);
-          }}
-        >
+        <form className="w-full mx-auto" onSubmit={handleSubmit}>
           <Input
             className="bottom-0 w-full p-2 border border-gray-300 rounded shadow-xl"
             value={input}
             placeholder="Suggest improvement for my resume!"
-            onChange={e => setInput(e.target.value)}
+            onChange={handleInputChange}
           />
         </form>
       </div>

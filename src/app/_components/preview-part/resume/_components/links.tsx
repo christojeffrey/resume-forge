@@ -17,7 +17,12 @@ export default function ResumeLinks({ item }: { item: LinksType }) {
         <Link
           key={index}
           src={link.href}
-          style={{ margin: 1, textDecoration: "underline", color: "black" }}
+          style={{
+            margin: 1,
+            marginBottom: 5,
+            marginHorizontal: 5,
+            color: "black",
+          }}
         >
           {link.text}
         </Link>

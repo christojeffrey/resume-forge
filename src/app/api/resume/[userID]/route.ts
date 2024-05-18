@@ -48,7 +48,7 @@ export async function POST(
     client.connect();
     const resume = client.db("resume-database").collection("resumes");
     await resume.updateOne(
-      { name: userID },
+      { name: userID, workspace: "1" },
       {
         $set: {
           body: body,
