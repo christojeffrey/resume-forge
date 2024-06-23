@@ -7,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
+
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
@@ -113,7 +114,7 @@ export function RichInput({ value: initialValue, onChange }: any) {
           value={value}
           onChange={handleChange}
           formats={["bold", "list"]}
-          modules={{ toolbar: ["bold"] }}
+          modules={{ toolbar: [] }}
         />
         <PopoverTrigger></PopoverTrigger>
         <PopoverContent

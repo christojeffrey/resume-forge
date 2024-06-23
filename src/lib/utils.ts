@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ResumeData } from "./type";
+import { parseQuillDelta } from "./parser";
+// import QuillParser from "quill-parser";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -46,4 +48,25 @@ export function resumeDataToPlainText(
   });
 
   return newResumeText;
+}
+
+// used to simplify quill delta object, for easier manipulating.
+export function simplifyQuillDelta(quillDelta: any) {
+  const parsedQuill = parseQuillDelta({ ops: quillDelta });
+  // parse it again. if it has ordered list, add 'number' attribute in attributes
+  let isPreviousAnOrderedList = false;
+  let previousNumber = 0;
+  for (let i = 0; i < parsedQuill.paragraphs.length; i++) {
+    const paragraph = parsedQuill.paragraphs[i];
+    if (paragraph.attributes?.list === "ordered") {
+      if (!isPreviousAnOrderedList) {
+        isPreviousAnOrderedList = true;
+        previousNumber = 1;
+      }
+      paragraph.attributes.number = previousNumber++;
+    } else {
+      isPreviousAnOrderedList = false;
+    }
+  }
+  return parsedQuill;
 }
