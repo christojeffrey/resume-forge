@@ -88,17 +88,13 @@ function TextRunsRenderer({ textRuns }: any) {
 function ParagraphRenderer({ paragraph }: any) {
   // styles
   const styles = StyleSheet.create({
-    list: {
-      display: "flex",
-      flexDirection: "column",
-    },
     listItem: {
       display: "flex",
       flexDirection: "row",
       gap: 4,
       width: "100%",
     },
-    bullet: {
+    bulletList: {
       marginTop: 6,
     },
     text: {
@@ -109,9 +105,13 @@ function ParagraphRenderer({ paragraph }: any) {
   });
   if (paragraph.attributes?.list === "ordered") {
     return (
-      <View>
+      <View style={styles.listItem}>
+        {/* left side */}
+        <View>
+          <Text>{paragraph.attributes.number}.</Text>
+        </View>
+        {/* right side */}
         <Text>
-          {paragraph.attributes.number}.{" "}
           <TextRunsRenderer textRuns={paragraph.textRuns} />
         </Text>
       </View>
@@ -121,7 +121,7 @@ function ParagraphRenderer({ paragraph }: any) {
     return (
       <View style={styles.listItem}>
         {/* left side */}
-        <View style={styles.bullet}>
+        <View style={styles.bulletList}>
           <Svg width={2} height={2}>
             <Circle cx="1" cy="1" r="2" fill="black" />
           </Svg>
