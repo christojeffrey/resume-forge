@@ -7,7 +7,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
-
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
@@ -29,7 +28,7 @@ import { Button } from "./button";
 import { toast } from "sonner";
 import { Loader2, PenLine } from "lucide-react";
 import { Separator } from "./separator";
-// only allow bold for now
+
 export function RichInput({ value: initialValue, onChange }: any) {
   const [value, setValue] = useState(initialValue);
   const [openPopover, setOpenPopover] = useState(false);
@@ -113,7 +112,7 @@ export function RichInput({ value: initialValue, onChange }: any) {
           theme="snow"
           value={value}
           onChange={handleChange}
-          formats={["bold"]}
+          formats={["bold", "list"]}
           modules={{ toolbar: ["bold"] }}
         />
         <PopoverTrigger></PopoverTrigger>
