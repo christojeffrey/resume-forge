@@ -2,7 +2,6 @@ import { SectionType } from "@/src/lib/type";
 import { Text, View } from "@react-pdf/renderer";
 import RichTextRenderer from "./rich-text-renderer";
 
-
 export default function ResumeSection({ item }: { item: SectionType }) {
   const quillDelta = item.data.details.objectValue;
   return (

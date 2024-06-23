@@ -33,29 +33,25 @@ function ParagraphRenderer({ paragraph }: any) {
   // styles
   const styles = StyleSheet.create({
     listItem: {
-      display: "flex",
       flexDirection: "row",
       gap: 4,
-      width: "100%",
+      textAlign: "justify",
     },
     bulletList: {
-      marginTop: 6,
+      marginTop: 5,
+      marginRight: 4,
     },
-    text: {
-      flex: 1,
-      paddingBottom: 0,
-      marginBottom: 0,
+    textPart: {
+      width: "100%",
     },
   });
   if (paragraph.attributes?.list === "ordered") {
     return (
       <View style={styles.listItem}>
         {/* left side */}
-        <View>
-          <Text>{paragraph.attributes.number}.</Text>
-        </View>
+        <Text>{paragraph.attributes.number}.</Text>
         {/* right side */}
-        <Text>
+        <Text style={styles.textPart}>
           <TextRunsRenderer textRuns={paragraph.textRuns} />
         </Text>
       </View>
@@ -66,12 +62,12 @@ function ParagraphRenderer({ paragraph }: any) {
       <View style={styles.listItem}>
         {/* left side */}
         <View style={styles.bulletList}>
-          <Svg width={2} height={2}>
-            <Circle cx="1" cy="1" r="2" fill="black" />
+          <Svg width={6} height={6}>
+            <Circle cx="3" cy="3" r="3" fill="black" />
           </Svg>
         </View>
         {/* right side */}
-        <Text>
+        <Text style={styles.textPart}>
           <TextRunsRenderer textRuns={paragraph.textRuns} />
         </Text>
       </View>
