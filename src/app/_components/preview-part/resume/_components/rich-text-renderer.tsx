@@ -38,7 +38,7 @@ function ParagraphRenderer({ paragraph }: any) {
       textAlign: "justify",
     },
     bulletList: {
-      marginTop: 5,
+      marginTop: 6,
       marginRight: 4,
     },
     textPart: {
@@ -62,8 +62,8 @@ function ParagraphRenderer({ paragraph }: any) {
       <View style={styles.listItem}>
         {/* left side */}
         <View style={styles.bulletList}>
-          <Svg width={6} height={6}>
-            <Circle cx="3" cy="3" r="3" fill="black" />
+          <Svg width={4} height={4}>
+            <Circle cx="2" cy="2" r="2" fill="black" />
           </Svg>
         </View>
         {/* right side */}

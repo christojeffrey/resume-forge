@@ -13,6 +13,28 @@ export default function LinksEditor() {
     any,
   ];
 
+  function handleAdd() {
+    setResumeData((prev: any) => {
+      const result = prev.map((tempItem: any) => {
+        if (tempItem.id === itemEdited.id) {
+          const newItem = {
+            ...tempItem,
+            data: [
+              ...tempItem.data,
+              {
+                text: "linkedin",
+                href: "https://linkedin.com/in/username",
+              },
+            ],
+          };
+          setItemEdited(newItem);
+          return newItem;
+        }
+        return tempItem;
+      });
+      return result;
+    });
+  }
   function handleDelete(index: number) {
     setResumeData(prev => {
       const result = prev.map((tempItem: any) => {
@@ -86,6 +108,9 @@ export default function LinksEditor() {
             </Button>
           </div>
         ))}
+        <Button variant="ghost" onClick={handleAdd}>
+          add
+        </Button>
       </div>
     </>
   );

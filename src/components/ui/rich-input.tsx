@@ -114,7 +114,9 @@ export function RichInput({ value: initialValue, onChange }: any) {
           value={value}
           onChange={handleChange}
           formats={["bold", "list"]}
-          modules={{ toolbar: [] }}
+          modules={{
+            toolbar: ["bold", { list: "ordered" }, { list: "bullet" }],
+          }}
         />
         <PopoverTrigger></PopoverTrigger>
         <PopoverContent

@@ -135,6 +135,9 @@ function insertFormula(op: QuillOp, parsed: ParsedQuillDelta) {
 function insertNewline(op: QuillOp, parsed: ParsedQuillDelta) {
   // if line attributes, apply those to the previous paragraph
   if (op.attributes) {
+    if (parsed.paragraphs[parsed.paragraphs.length - 1] === undefined) {
+      parsed.paragraphs[parsed.paragraphs.length - 1] = {};
+    }
     parsed.paragraphs[parsed.paragraphs.length - 1].attributes = op.attributes;
     if (op.attributes.list === "ordered") {
       // if already an active numbered list
